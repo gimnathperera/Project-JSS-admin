@@ -85,7 +85,6 @@ const applyPagination = (
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
-
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
     []
   );
@@ -219,12 +218,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell>Order Details</TableCell>
-              <TableCell>Order ID</TableCell>
-              <TableCell>Source</TableCell>
-              <TableCell align="right">Amount</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>Worker Details</TableCell>
+              <TableCell>Job Allocation</TableCell>
+              <TableCell>Shift Details</TableCell>
+              <TableCell align="right">Certification Status</TableCell>
+              <TableCell align="right">Send Messages</TableCell>
+              <TableCell align="right">Send to “TO DO LIST”</TableCell>
+              <TableCell align="right">Send to “Notifications”</TableCell>
+              <TableCell align="right">Incoming</TableCell>
+              <TableCell align="right">Edit Worker</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

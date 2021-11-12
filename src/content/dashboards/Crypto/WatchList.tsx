@@ -10,30 +10,33 @@ import {
 } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
 import WatchListColumn1 from './WatchListColumn1';
 import WatchListColumn2 from './WatchListColumn2';
 import WatchListColumn3 from './WatchListColumn3';
-import WatchListRow from './WatchListRow';
+import WatchListColumn1Chart from './WatchListColumn1Chart';
+import RecentActivity from '../../applications/Users/profile/RecentActivity';
 
-const EmptyResultsWrapper = styled('img')(
+const WatchListColumn1ChartWrapper = styled(WatchListColumn1Chart)(
   ({ theme }) => `
-      max-width: 100%;
-      width: ${theme.spacing(66)};
-      height: ${theme.spacing(34)};
+        height: 130px;
 `
 );
 
 function WatchList() {
-
   const [tabs, setTab] = useState<string | null>('watch_list_columns');
-
-  const handleViewOrientation = (
-    event: MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    setTab(newValue);
+  const price = {
+    week: {
+      labels: [
+        'Monday',
+        'Tueday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday'
+      ],
+      data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16]
+    }
   };
 
   return (
@@ -44,19 +47,7 @@ function WatchList() {
         justifyContent="space-between"
         sx={{ pb: 3 }}
       >
-        <Typography variant="h3">Watch List</Typography>
-        <ToggleButtonGroup
-          value={tabs}
-          exclusive
-          onChange={handleViewOrientation}
-        >
-          <ToggleButton disableRipple value="watch_list_columns">
-            <ViewWeekTwoToneIcon />
-          </ToggleButton>
-          <ToggleButton disableRipple value="watch_list_rows">
-            <TableRowsTwoToneIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Typography variant="h3">Overview</Typography>
       </Box>
       <Grid
         container
@@ -65,47 +56,53 @@ function WatchList() {
         alignItems="stretch"
         spacing={3}
       >
-        {tabs === 'watch_list_columns' && (
-          <>
-            <Grid item lg={4} xs={12}>
-              <WatchListColumn1 />
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <WatchListColumn2 />
-            </Grid>
-            <Grid item lg={4} xs={12}>
-              <WatchListColumn3 />
-            </Grid>
-          </>
-        )}
-
-        {tabs === 'watch_list_rows' && (
-          <Grid item xs={12}>
-            <WatchListRow />
+        <>
+          <Grid item lg={4} xs={12}>
+            <WatchListColumn1 />
           </Grid>
-        )}
-
-        {!tabs && (
-          <Grid item xs={12}>
-            <Card sx={{ textAlign: 'center', p: 3 }}>
-              <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
-
-              <Typography
-                align="center"
-                variant="h2"
-                fontWeight="normal"
-                color="text.secondary"
-                sx={{ mt: 3 }}
-                gutterBottom
-              >
-                Click something, anything!
-              </Typography>
-              <Button variant="contained" size="large" sx={{ mt: 4 }}>
-                Maybe, a button?
-              </Button>
-            </Card>
+          <Grid item lg={4} xs={12}>
+            <WatchListColumn2 />
           </Grid>
-        )}
+          <Grid item lg={4} xs={12}>
+            <WatchListColumn3 />
+          </Grid>
+        </>
+
+        <Grid item xs={12}>
+          <Card
+            sx={{
+              textAlign: 'center',
+              p: 3,
+              display: 'flex',
+              flexDirection: 'row'
+            }}
+          >
+            <Grid
+              xs={9}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <Box sx={{ textAlign: 'left' }}>
+                <Typography variant="h3" component="h3" gutterBottom>
+                  Today’s Summary
+                </Typography>
+                <Typography variant="subtitle2">
+                  as of 25 Aug 2021, 09:41 PM
+                </Typography>
+              </Box>
+              <WatchListColumn1ChartWrapper
+                data={price.week.data}
+                labels={price.week.labels}
+              />
+            </Grid>
+            <Grid xs={3}>
+              <RecentActivity />
+            </Grid>
+          </Card>
+        </Grid>
       </Grid>
     </>
   );

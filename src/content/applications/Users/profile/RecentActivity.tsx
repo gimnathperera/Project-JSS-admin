@@ -9,10 +9,10 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
-
+import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
+import AddTaskTwoToneIcon from '@mui/icons-material/AddTaskTwoTone';
+import DoneAllTwoToneIcon from '@mui/icons-material/DoneAllTwoTone';
+import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
       background: ${theme.colors.primary.lighter};
@@ -23,72 +23,69 @@ const AvatarPrimary = styled(Avatar)(
 );
 
 function RecentActivity() {
-
   const theme = useTheme();
 
   return (
     <Card>
-      <CardHeader title="Recent Activity" />
       <Divider />
       <Box px={2} py={4} display="flex" alignItems="flex-start">
         <AvatarPrimary>
-          <ShoppingBagTwoToneIcon />
+          <BusinessCenterTwoToneIcon />
         </AvatarPrimary>
         <Box pl={2} flex={1}>
-          <Typography variant="h3">Orders</Typography>
+          <Typography
+            variant="h3"
+            color="#9FA2B4"
+            sx={{ fontSize: '16px', textAlign: 'center', fontWeight: '600' }}
+          >
+            Total Jobs
+          </Typography>
 
           <Box pt={2} display="flex">
-            <Box pr={8}>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
-                Total
-              </Typography>
+            <Box sx={{ width: '100%', textAlign: 'center' }}>
               <Typography variant="h2">485</Typography>
             </Box>
-            <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
-                Failed
-              </Typography>
-              <Typography variant="h2">8</Typography>
-            </Box>
           </Box>
         </Box>
       </Box>
       <Divider />
       <Box px={2} py={4} display="flex" alignItems="flex-start">
         <AvatarPrimary>
-          <FavoriteTwoToneIcon />
+          <DoneAllTwoToneIcon />
         </AvatarPrimary>
         <Box pl={2} flex={1}>
-          <Typography variant="h3">Favourites</Typography>
+          <Typography
+            variant="h3"
+            color="#9FA2B4"
+            sx={{ fontSize: '16px', textAlign: 'center', fontWeight: '600' }}
+          >
+            Completed Jobs
+          </Typography>
 
           <Box pt={2} display="flex">
-            <Box pr={8}>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
-                Products
-              </Typography>
+            <Box sx={{ width: '100%', textAlign: 'center' }}>
               <Typography variant="h2">64</Typography>
             </Box>
-            <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
-                Lists
-              </Typography>
-              <Typography variant="h2">15</Typography>
+          </Box>
+        </Box>
+      </Box>
+      <Divider />
+      <Box px={2} py={4} display="flex" alignItems="flex-start">
+        <AvatarPrimary>
+          <GroupsTwoToneIcon />
+        </AvatarPrimary>
+        <Box pl={2} flex={1}>
+          <Typography
+            variant="h3"
+            color="#9FA2B4"
+            sx={{ fontSize: '16px', textAlign: 'center', fontWeight: '600' }}
+          >
+            Registered Employees
+          </Typography>
+
+          <Box pt={2} display="flex">
+            <Box sx={{ width: '100%', textAlign: 'center' }}>
+              <Typography variant="h2">654</Typography>
             </Box>
           </Box>
         </Box>
@@ -96,35 +93,25 @@ function RecentActivity() {
       <Divider />
       <Box px={2} py={4} display="flex" alignItems="flex-start">
         <AvatarPrimary>
-          <StarTwoToneIcon />
+          <AddTaskTwoToneIcon />
         </AvatarPrimary>
         <Box pl={2} flex={1}>
-          <Typography variant="h3">Reviews</Typography>
+          <Typography
+            variant="h3"
+            color="#9FA2B4"
+            sx={{ fontSize: '16px', textAlign: 'center', fontWeight: '600' }}
+          >
+            New
+          </Typography>
 
           <Box pt={2} display="flex">
-            <Box pr={8}>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
-                Total
-              </Typography>
-              <Typography variant="h2">654</Typography>
-            </Box>
-            <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
-                Useful
-              </Typography>
-              <Typography variant="h2">21</Typography>
+            <Box sx={{ width: '100%', textAlign: 'center' }}>
+              <Typography variant="h2">64</Typography>
             </Box>
           </Box>
         </Box>
       </Box>
+      <Divider />
     </Card>
   );
 }

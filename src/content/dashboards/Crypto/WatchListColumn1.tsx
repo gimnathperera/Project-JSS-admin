@@ -1,53 +1,34 @@
-import { Card, Box, Typography, Avatar } from '@mui/material';
+import { Card, Box, Typography } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import Label from 'src/components/Label';
-import Text from 'src/components/Text';
-import WatchListColumn1Chart from './WatchListColumn1Chart';
-
-const AvatarWrapper = styled(Avatar)(
-  ({ theme }) => `
-        background: transparent;
-        margin-right: ${theme.spacing(0.5)};
-`
-);
-
-const WatchListColumn1ChartWrapper = styled(WatchListColumn1Chart)(
-  ({ theme }) => `
-        height: 130px;
-`
-);
-
+import CustomersBackgroundImage from '../../../assets/images/customers.svg';
 function WatchListColumn1() {
-
-  const price = {
-    week: {
-      labels: [
-        'Monday',
-        'Tueday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ],
-      data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16]
-    }
-  };
-
   return (
-    <Card>
+    <Card
+      sx={{
+        backgroundImage: `url(${CustomersBackgroundImage})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'auto',
+        backgroundPosition: 'center',
+        borderRadius: '20px',
+        boxShadow: ' 0px 4px 4px #fbcf96',
+        backgroundColor: '#feefdc'
+      }}
+    >
       <Box sx={{ p: 3 }}>
         <Box display="flex" alignItems="center">
-          <AvatarWrapper>
-            <img alt="BTC" src="/static/images/placeholders/logo/bitcoin.png" />
-          </AvatarWrapper>
           <Box>
-            <Typography variant="h4" noWrap>
-              Bitcoin
-            </Typography>
-            <Typography variant="subtitle1" noWrap>
-              BTC
+            <Typography
+              variant="h4"
+              noWrap
+              color="#f9af50"
+              sx={{
+                fontSize: '24px',
+                letterSpacing: '0.2px',
+                fontWeight: '600'
+              }}
+            >
+              Customers
             </Typography>
           </Box>
         </Box>
@@ -59,12 +40,19 @@ function WatchListColumn1() {
             pt: 3
           }}
         >
-          <Typography variant="h2" sx={{ pr: 1, mb: 1 }}>
-            $56,475.99
+          <Typography
+            variant="h2"
+            color="#f9af50"
+            sx={{
+              fontSize: '35px',
+              pr: 1,
+              mb: 1,
+              letterSpacing: '0.2px',
+              fontWeight: '600'
+            }}
+          >
+            10
           </Typography>
-          <Text color="success">
-            <b>+12.5%</b>
-          </Text>
         </Box>
         <Box
           sx={{
@@ -72,19 +60,9 @@ function WatchListColumn1() {
             alignItems: 'center',
             justifyContent: 'flex-start'
           }}
-        >
-          <Label color="success">+$500</Label>
-          <Typography variant="body2" color="text.secondary" sx={{ pl: 1 }}>
-            last 24h
-          </Typography>
-        </Box>
+        ></Box>
       </Box>
-      <Box height={130} sx={{ ml: -1.5 }}>
-        <WatchListColumn1ChartWrapper
-          data={price.week.data}
-          labels={price.week.labels}
-        />
-      </Box>
+      <Box height={100} sx={{ ml: -1.5 }}></Box>
     </Card>
   );
 }

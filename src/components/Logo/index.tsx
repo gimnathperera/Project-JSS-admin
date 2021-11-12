@@ -1,6 +1,7 @@
 import { Box, Hidden, Tooltip } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import LogoImage from '../../assets/images/Logo.svg';
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -98,22 +99,16 @@ const LogoText = styled(Box)(
 );
 
 function Logo() {
-
-
   return (
     <LogoWrapper to="/overview">
-      <LogoSignWrapper>
+      {/* Have to separate logo and text */}
+      {/* <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
         </LogoSign>
-      </LogoSignWrapper>
+      </LogoSignWrapper> */}
       <Hidden smDown>
-        <LogoTextWrapper>
-          <Tooltip title="Version 1.1.0" arrow placement="right">
-            <VersionBadge>1.1</VersionBadge>
-          </Tooltip>
-          <LogoText>Tokyo Free White</LogoText>
-        </LogoTextWrapper>
+        <img src={LogoImage} />
       </Hidden>
     </LogoWrapper>
   );

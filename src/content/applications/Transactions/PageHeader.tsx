@@ -3,9 +3,7 @@ import { Typography, Button, Grid } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
-
-  const user =
-  {
+  const user = {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg'
   };
@@ -13,11 +11,9 @@ function PageHeader() {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Transactions
+          All Workers
         </Typography>
-        <Typography variant="subtitle2">
-          {user.name}, these are your recent transactions
-        </Typography>
+        <Typography variant="subtitle2">All tickets</Typography>
       </Grid>
       <Grid item>
         <Button
@@ -25,7 +21,7 @@ function PageHeader() {
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
         >
-          Create transaction
+          New Worker Registration
         </Button>
       </Grid>
     </Grid>

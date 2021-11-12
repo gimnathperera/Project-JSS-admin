@@ -28,8 +28,10 @@ const FormSubHeaderSection = styled(Box)(
 );
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const handleOnSubmit = (values) => {
-    console.log('====');
+    navigate('/dashboards/crypto');
   };
   const initialFormValues = {
     email: '',
