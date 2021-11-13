@@ -1,19 +1,18 @@
 import { Helmet } from 'react-helmet-async';
-import PageHeader from './PageHeader';
+import CreateJobHeader from './CreateJobHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
+import CreateJobForm from './CreateJobForm';
 
-import RecentOrders from './RecentOrders';
-
-function ApplicationsTransactions() {
+const CreateJob = () => {
   return (
     <>
       <Helmet>
-        <title>All Customers</title>
+        <title>All workers</title>
       </Helmet>
-      <PageTitleWrapper maxWidth="xl">
-        <PageHeader />
+      <PageTitleWrapper maxWidth="lg">
+        <CreateJobHeader />
       </PageTitleWrapper>
       <Container maxWidth="xl">
         <Grid
@@ -24,13 +23,12 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <RecentOrders />
+            <CreateJobForm />
           </Grid>
         </Grid>
       </Container>
       <Footer />
     </>
   );
-}
-
-export default ApplicationsTransactions;
+};
+export default CreateJob;

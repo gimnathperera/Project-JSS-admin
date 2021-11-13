@@ -1,22 +1,30 @@
-import { Typography } from '@mui/material';
+import { Typography, Button, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
-  const user =
-  {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+  const navigate = useNavigate();
 
   return (
-    <>
-      <Typography variant="h3" component="h3" gutterBottom>
-        User Settings
-      </Typography>
-      <Typography variant="subtitle2">
-        {user.name},{' '}
-        this could be your user settings panel.
-      </Typography>
-    </>
+    <Grid container justifyContent="space-between" alignItems="center">
+      <Grid item>
+        <Typography variant="h3" component="h3" gutterBottom>
+          All Customers
+        </Typography>
+        <Typography variant="subtitle2">Customer Details</Typography>
+      </Grid>
+      <Grid item>
+        <Button
+          sx={{ mt: { xs: 2, md: 0 } }}
+          variant="contained"
+          startIcon={<AddTwoToneIcon fontSize="small" />}
+          onClick={() => navigate('/dashboards/create-customer')}
+        >
+          Register a New Customer
+        </Button>
+      </Grid>
+    </Grid>
   );
 }
 

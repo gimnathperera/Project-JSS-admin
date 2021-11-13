@@ -30,7 +30,7 @@ import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import BulkActions from './BulkActions';
-import IncomingChip from '../../../assets/icons/IncomingChip';
+import customerLogo from '../../../../assets/images/customerLogo.png';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -231,15 +231,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell align="center">Worker Details</TableCell>
-              <TableCell align="center">Job Allocation</TableCell>
-              <TableCell align="center">Shift Details</TableCell>
-              <TableCell align="center">Certification Status</TableCell>
-              <TableCell align="center">Send Messages</TableCell>
-              <TableCell align="center">Send to “TO DO LIST”</TableCell>
-              <TableCell align="center">Send to “Notifications”</TableCell>
-              <TableCell align="center">Incoming</TableCell>
-              <TableCell align="center">Edit Worker</TableCell>
+              <TableCell align="center">Customer Details</TableCell>
+              <TableCell align="center">All Jobs</TableCell>
+              <TableCell align="center">Active Jobs</TableCell>
+              <TableCell align="center">Allocated Workers</TableCell>
+              <TableCell align="center">Contact Details</TableCell>
+              <TableCell align="center">Priority</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -253,7 +251,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                   key={cryptoOrder.id}
                   selected={isCryptoOrderSelected}
                 >
-                  <TableCell padding="checkbox">
+                  <TableCell padding="checkbox" align="right">
                     <Checkbox
                       color="primary"
                       checked={isCryptoOrderSelected}
@@ -263,18 +261,20 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       value={isCryptoOrderSelected}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <Box
                       sx={{
                         display: 'flex',
                         flexDirection: 'row',
-                        columnGap: '15px'
+                        columnGap: '15px',
+                        justifyContent: 'center'
                       }}
                     >
                       <Avatar
                         variant="rounded"
                         alt={user.name}
-                        src={user.avatar}
+                        src={customerLogo}
+                        sx={{ width: 60, height: 40 }}
                       />
                       <Box>
                         <Typography
@@ -283,6 +283,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           color="text.primary"
                           gutterBottom
                           noWrap
+                          align="left"
                         >
                           {cryptoOrder.orderDetails}
                         </Typography>
@@ -290,13 +291,14 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           variant="body2"
                           color="text.secondary"
                           noWrap
+                          align="left"
                         >
                           {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
                         </Typography>
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -310,7 +312,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -322,30 +324,36 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    {getStatusLabel(cryptoOrder.status)}
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.orderDetails}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                    </Typography>
                   </TableCell>
 
                   <TableCell align="center">
-                    <TextField
-                      multiline
-                      rows={3}
-                      defaultValue=""
-                      variant="filled"
-                      InputProps={{ disableUnderline: true }}
-                    />
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.orderDetails}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                    </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <SendButton variant="contained" color="error">
-                      Send
-                    </SendButton>
-                  </TableCell>
-                  <TableCell align="center">
-                    <SendButton variant="contained" color="primary">
-                      Send
-                    </SendButton>
-                  </TableCell>
-                  <TableCell align="center">
-                    <IncomingChip />
+                    {getStatusLabel(cryptoOrder.status)}
                   </TableCell>
                   <TableCell align="center">
                     <Tooltip title="Edit Ticket" arrow>

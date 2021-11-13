@@ -12,15 +12,17 @@ const PageTitle = styled(Box)(
 
 interface PageTitleWrapperProps {
   children?: ReactNode;
+  maxWidth?: WidthType;
 }
 
-const PageTitleWrapper: FC<PageTitleWrapperProps> = ({ children }) => {
+const PageTitleWrapper: FC<PageTitleWrapperProps> = ({
+  children,
+  maxWidth = 'lg'
+}) => {
   return (
     <>
       <PageTitle>
-        <Container maxWidth="lg">
-          {children}
-        </Container>
+        <Container maxWidth={maxWidth}>{children}</Container>
       </PageTitle>
     </>
   );
@@ -29,5 +31,7 @@ const PageTitleWrapper: FC<PageTitleWrapperProps> = ({ children }) => {
 PageTitleWrapper.propTypes = {
   children: PropTypes.node.isRequired
 };
+
+type WidthType = 'lg' | 'xl' | 'xs' | 'md' | 'sm';
 
 export default PageTitleWrapper;

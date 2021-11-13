@@ -27,7 +27,7 @@ const menuItems: MenuItems[] = [
     items: [
       {
         name: 'Overview',
-        link: '/overview',
+        link: '/dashboards/crypto',
         icon: DesignServicesTwoToneIcon
       }
     ]
@@ -37,7 +37,7 @@ const menuItems: MenuItems[] = [
     items: [
       {
         name: 'Jobs',
-        link: '/dashboards/crypto',
+        link: '/components/accordions',
         icon: BusinessCenterTwoToneIcon
       }
     ]
@@ -53,7 +53,7 @@ const menuItems: MenuItems[] = [
       {
         name: 'Workers',
         icon: HailIcon,
-        link: '/management/profile/details'
+        link: '/dashboards/create-worker'
       },
       {
         name: 'Customers',
@@ -73,7 +73,7 @@ const menuItems: MenuItems[] = [
       {
         name: 'Inventory',
         icon: BuildTwoToneIcon,
-        link: '/components/accordions'
+        link: '/components/buttons'
       }
     ]
   }

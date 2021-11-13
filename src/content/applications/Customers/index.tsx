@@ -10,7 +10,7 @@ function ApplicationsTransactions() {
   return (
     <>
       <Helmet>
-        <title>All Customers</title>
+        <title>Update worker details</title>
       </Helmet>
       <PageTitleWrapper maxWidth="xl">
         <PageHeader />
