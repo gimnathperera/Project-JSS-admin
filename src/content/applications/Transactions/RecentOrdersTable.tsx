@@ -348,7 +348,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                     <IncomingChip />
                   </TableCell>
                   <TableCell align="center">
-                    <Tooltip title="Edit Ticket" arrow>
+                    <Tooltip title="Edit Request" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {

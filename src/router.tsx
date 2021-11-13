@@ -105,10 +105,10 @@ const routes: PartialRouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Navigate to="/dashboards/crypto" replace />
+        element: <Navigate to="/dashboards/overview" replace />
       },
       {
-        path: 'crypto',
+        path: 'overview',
         element: <Crypto />
       },
       {
@@ -122,20 +122,15 @@ const routes: PartialRouteObject[] = [
       {
         path: 'create-job',
         element: <JobCreate />
-      }
-    ]
-  },
-  {
-    path: 'management',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate to="/management/transactions" replace />
       },
       {
-        path: 'transactions',
+        path: 'woker-requests',
         element: <Transactions />
+      },
+      ,
+      {
+        path: 'jobs',
+        element: <Jobs />
       },
       {
         path: 'profile',
@@ -153,20 +148,6 @@ const routes: PartialRouteObject[] = [
             element: <UserSettings />
           }
         ]
-      }
-    ]
-  },
-  {
-    path: 'components',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Navigate to="/components/buttons" replace />
-      },
-      {
-        path: 'accordions',
-        element: <Jobs />
       }
     ]
   }

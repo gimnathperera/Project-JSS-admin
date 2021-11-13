@@ -19,8 +19,8 @@ const SidebarWrapper = styled(Box)(
         @media (min-width: ${theme.breakpoints.values.lg}px) {
             position: fixed;
             z-index: 10;
-            border-top-right-radius: ${theme.general.borderRadius};
-            border-bottom-right-radius: ${theme.general.borderRadius};
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
         }
 `
 );

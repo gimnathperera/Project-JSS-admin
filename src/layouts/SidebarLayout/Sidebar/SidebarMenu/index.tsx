@@ -4,7 +4,6 @@ import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
 import { styled } from '@mui/material/styles';
 
-
 const MenuWrapper = styled(List)(
   ({ theme }) => `
     margin-bottom: ${theme.spacing(1)};
@@ -27,6 +26,7 @@ const MenuWrapper = styled(List)(
 
 const SubMenuWrapper = styled(List)(
   ({ theme }) => `
+    border-radius:0px;
     &.MuiList-root {
       padding: 0;
 
@@ -148,16 +148,26 @@ const reduceChildRoutes = ({
 }): Array<JSX.Element> => {
   const key = item.name;
 
-  const exactMatch = item.link ? !!matchPath({
-    path: item.link,
-    end: true
-  }, path) : false;
+  const exactMatch = item.link
+    ? !!matchPath(
+        {
+          path: item.link,
+          end: true
+        },
+        path
+      )
+    : false;
 
   if (item.items) {
-    const partialMatch = item.link ? !!matchPath({
-      path: item.link,
-      end: false
-    }, path) : false;
+    const partialMatch = item.link
+      ? !!matchPath(
+          {
+            path: item.link,
+            end: false
+          },
+          path
+        )
+      : false;
 
     ev.push(
       <SidebarMenuItem
@@ -189,11 +199,10 @@ const reduceChildRoutes = ({
   }
 
   return ev;
-}
+};
 
 function SidebarMenu() {
   const location = useLocation();
-
 
   return (
     <>
@@ -201,7 +210,9 @@ function SidebarMenu() {
         <MenuWrapper
           key={section.heading}
           subheader={
-            <ListSubheader component="div" disableSticky>{section.heading}</ListSubheader>
+            <ListSubheader component="div" disableSticky>
+              {section.heading}
+            </ListSubheader>
           }
         >
           {renderSidebarMenuItems({

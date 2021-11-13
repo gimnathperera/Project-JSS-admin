@@ -27,7 +27,7 @@ const menuItems: MenuItems[] = [
     items: [
       {
         name: 'Overview',
-        link: '/dashboards/crypto',
+        link: '/dashboards/overview',
         icon: DesignServicesTwoToneIcon
       }
     ]
@@ -37,7 +37,7 @@ const menuItems: MenuItems[] = [
     items: [
       {
         name: 'Jobs',
-        link: '/components/accordions',
+        link: '/dashboards/jobs',
         icon: BusinessCenterTwoToneIcon
       }
     ]
@@ -48,7 +48,7 @@ const menuItems: MenuItems[] = [
       {
         name: 'Worker Requests',
         icon: WorkTwoToneIcon,
-        link: '/management/transactions'
+        link: '/dashboards/woker-requests'
       },
       {
         name: 'Workers',
@@ -58,7 +58,7 @@ const menuItems: MenuItems[] = [
       {
         name: 'Customers',
         icon: SupervisedUserCircleIcon,
-        link: '/management/profile/settings'
+        link: '/dashboards/profile/settings'
       }
     ]
   },

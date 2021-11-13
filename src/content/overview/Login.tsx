@@ -31,7 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleOnSubmit = (values) => {
-    navigate('/dashboards/crypto');
+    navigate('/dashboards/overview');
   };
   const initialFormValues = {
     email: '',
