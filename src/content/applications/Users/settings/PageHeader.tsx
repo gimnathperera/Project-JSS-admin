@@ -19,7 +19,7 @@ function PageHeader() {
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
           startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={() => navigate('/dashboards/create-customer')}
+          onClick={() => navigate('/app/create-customer')}
         >
           Register a New Customer
         </Button>

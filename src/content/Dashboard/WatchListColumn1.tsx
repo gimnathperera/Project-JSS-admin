@@ -1,19 +1,18 @@
 import { Card, Box, Typography } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import ActiveBackgroundImage from '../../../assets/images/active.svg';
-
-function WatchListColumn2() {
+import CustomersBackgroundImage from '../../assets/images/customers.svg';
+function WatchListColumn1() {
   return (
     <Card
       sx={{
-        backgroundImage: `url(${ActiveBackgroundImage})`,
+        backgroundImage: `url(${CustomersBackgroundImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'auto',
         backgroundPosition: 'center',
         borderRadius: '20px',
-        boxShadow: ' 0px 4px 4px #b9d9d1',
-        backgroundColor: '#E8F3EF'
+        boxShadow: ' 0px 4px 4px #fbcf96',
+        backgroundColor: '#feefdc'
       }}
     >
       <Box sx={{ p: 3 }}>
@@ -22,14 +21,14 @@ function WatchListColumn2() {
             <Typography
               variant="h4"
               noWrap
-              color="#17805B"
+              color="#f9af50"
               sx={{
                 fontSize: '24px',
                 letterSpacing: '0.2px',
                 fontWeight: '600'
               }}
             >
-              Active Workers
+              Customers
             </Typography>
           </Box>
         </Box>
@@ -43,7 +42,7 @@ function WatchListColumn2() {
         >
           <Typography
             variant="h2"
-            color="#17805B"
+            color="#f9af50"
             sx={{
               fontSize: '35px',
               pr: 1,
@@ -52,7 +51,7 @@ function WatchListColumn2() {
               fontWeight: '600'
             }}
           >
-            06
+            10
           </Typography>
         </Box>
         <Box
@@ -68,4 +67,4 @@ function WatchListColumn2() {
   );
 }
 
-export default WatchListColumn2;
+export default WatchListColumn1;

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-
 import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
 import {
   Avatar,
@@ -16,12 +16,10 @@ import {
   Typography
 } from '@mui/material';
 
-import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
 import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -58,7 +56,9 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function HeaderUserbox() {
+const HeaderUserbox = () => {
+  const currentUser = useSelector(({ auth }: RootStateOrAny) => auth.user);
+
   const user = {
     name: 'Catherine Pike',
     avatar: '/static/images/avatars/1.jpg',
@@ -76,15 +76,20 @@ function HeaderUserbox() {
     setOpen(false);
   };
 
+  // const handleUserLogout = () => {
+  //   dispatch(userLogout());
+  //   navigate('/login');
+  // };
+
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={currentUser.name} src={user.avatar} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{currentUser.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {currentUser.type || 'Admin'}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -106,11 +111,11 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+          <Avatar variant="rounded" alt={currentUser.name} src={user.avatar} />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{currentUser.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {user.jobtitle}
+              {currentUser.type || 'Admin'}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -131,6 +136,6 @@ function HeaderUserbox() {
       </Popover>
     </>
   );
-}
+};
 
 export default HeaderUserbox;

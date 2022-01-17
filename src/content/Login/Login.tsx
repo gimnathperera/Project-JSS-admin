@@ -1,15 +1,21 @@
+import { useEffect } from 'react';
+
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import FormHelperText from '@mui/material/FormHelperText';
 import CircularProgress from '@mui/material/CircularProgress';
+
+import { userLogin } from '../../store/actions/auth.actions';
 
 const FormHeaderContainer = styled(Box)(
   ({ theme }) => `
@@ -29,10 +35,24 @@ const FormSubHeaderSection = styled(Box)(
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(
+    ({ auth }: RootStateOrAny) => auth.isAuthenticated
+  );
+  const isLoginError = useSelector(
+    ({ common }: RootStateOrAny) => common.error
+  );
+  const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
+
+  useEffect(() => {
+    isAuthenticated && navigate('/dashboards/overview');
+  }, [isAuthenticated]);
 
   const handleOnSubmit = (values) => {
-    navigate('/dashboards/overview');
+    dispatch(userLogin(values));
   };
+
   const initialFormValues = {
     email: '',
     password: ''
@@ -122,8 +142,14 @@ const Login = () => {
                 value={values.password}
                 variant="outlined"
               />
+              {isLoginError && (
+                <FormHelperText error id="outlined-adornment-password">
+                  Invalid credentials
+                </FormHelperText>
+              )}
+
               <Box sx={{ py: 2 }}>
-                {/* {loading ? (
+                {loading ? (
                   <CircularProgress />
                 ) : (
                   <Button
@@ -133,18 +159,9 @@ const Login = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    Log In
                   </Button>
-                )} */}
-                <Button
-                  color="primary"
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  Log In
-                </Button>
+                )}
               </Box>
               <Typography color="textSecondary" variant="body1" align="center">
                 Don&apos;t have an account?

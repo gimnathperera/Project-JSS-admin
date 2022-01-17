@@ -1,8 +1,6 @@
 import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Tooltip,
   Divider,
   Box,
@@ -17,24 +15,24 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
   Select,
   MenuItem,
   Typography,
   useTheme,
-  CardHeader,
-  Button
+  CardHeader
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import Label from 'src/components/Label';
+
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
-import customerLogo from '../../../../assets/images/customerLogo.png';
+import { deleteWorker } from '../../../store/actions/worker.actions';
 
 interface RecentOrdersTableProps {
   className?: string;
-  cryptoOrders: CryptoOrder[];
+  cryptoOrders?: CryptoOrder[];
+  workers?: any[];
 }
 
 interface Filters {
@@ -43,15 +41,15 @@ interface Filters {
 
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   const map = {
-    1: {
+    3: {
       text: 'Failed',
       color: 'error'
     },
-    2: {
-      text: 'Completed',
+    1: {
+      text: 'Active',
       color: 'success'
     },
-    3: {
+    2: {
       text: 'Pending',
       color: 'warning'
     }
@@ -85,17 +83,11 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
-const SendButton = styled(Button)`
-  border-radius: 100px;
-  width: 92px;
-  height: 35px;
-`;
+const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
+  const dispatch = useDispatch();
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
-    []
-  );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  const [selectedWorkers, setSelectedWorkers] = useState<string[]>([]);
+  const selectedBulkActions = selectedWorkers.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -108,15 +100,15 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       name: 'All'
     },
     {
-      id: 'completed',
-      name: 'Completed'
+      id: 1,
+      name: 'Active'
     },
     {
-      id: 'pending',
+      id: 2,
       name: 'Pending'
     },
     {
-      id: 'failed',
+      id: 3,
       name: 'Failed'
     }
   ];
@@ -137,10 +129,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCryptoOrders(
-      event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
-        : []
+    setSelectedWorkers(
+      event.target.checked ? workers.map((worker) => worker.id) : []
     );
   };
 
@@ -148,13 +138,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId
-      ]);
+    if (!selectedWorkers.includes(cryptoOrderId)) {
+      setSelectedWorkers((prevSelected) => [...prevSelected, cryptoOrderId]);
     } else {
-      setSelectedCryptoOrders((prevSelected) =>
+      setSelectedWorkers((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
       );
     }
@@ -168,24 +155,22 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
-    page,
-    limit
-  );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
-  const theme = useTheme();
-
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
+  const handleDeleteWorker = (id: string | number) => {
+    console.log('>>>', id);
+    try {
+      dispatch(deleteWorker(id));
+    } catch (err) {}
   };
+
+  const filteredWorkers = applyFilters(workers, filters);
+
+  const paginatedWorkers = applyPagination(filteredWorkers, page, limit);
+
+  const selectedSomeWorkers =
+    selectedWorkers.length > 0 && selectedWorkers.length < workers.length;
+
+  const selectedAllCryptoOrders = selectedWorkers.length === workers.length;
+  const theme = useTheme();
 
   return (
     <Card>
@@ -215,7 +200,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               </FormControl>
             </Box>
           }
-          title="Recent Tickets"
+          title="Workers"
         />
       )}
       <Divider />
@@ -227,38 +212,36 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
+                  indeterminate={selectedSomeWorkers}
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell align="center">Customer Details</TableCell>
-              <TableCell align="center">All Jobs</TableCell>
-              <TableCell align="center">Active Jobs</TableCell>
-              <TableCell align="center">Allocated Workers</TableCell>
-              <TableCell align="center">Contact Details</TableCell>
-              <TableCell align="center">Priority</TableCell>
+              <TableCell align="center">Worker Details</TableCell>
+              <TableCell align="center">Employee Number</TableCell>
+              <TableCell align="center">Assign Alias</TableCell>
+              <TableCell align="center">Additional Info</TableCell>
+              <TableCell align="center">Date Of Birth</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Contact Number</TableCell>
+              <TableCell align="center">Certification</TableCell>
+              <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
-              );
+            {paginatedWorkers.map((worker: any) => {
+              const isWorkerSelected = selectedWorkers.includes(worker.id);
+
               return (
-                <TableRow
-                  hover
-                  key={cryptoOrder.id}
-                  selected={isCryptoOrderSelected}
-                >
+                <TableRow hover key={worker.id} selected={isWorkerSelected}>
                   <TableCell padding="checkbox" align="right">
                     <Checkbox
                       color="primary"
-                      checked={isCryptoOrderSelected}
+                      checked={isWorkerSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        handleSelectOneCryptoOrder(event, worker.id)
                       }
-                      value={isCryptoOrderSelected}
+                      value={isWorkerSelected}
                     />
                   </TableCell>
                   <TableCell align="center">
@@ -270,12 +253,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         justifyContent: 'center'
                       }}
                     >
-                      <Avatar
-                        variant="rounded"
-                        alt={user.name}
-                        src={customerLogo}
-                        sx={{ width: 60, height: 40 }}
-                      />
                       <Box>
                         <Typography
                           variant="body1"
@@ -285,7 +262,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           noWrap
                           align="left"
                         >
-                          {cryptoOrder.orderDetails}
+                          {worker.name}
                         </Typography>
                         <Typography
                           variant="body2"
@@ -293,7 +270,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                           noWrap
                           align="left"
                         >
-                          {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                          {worker.email}
                         </Typography>
                       </Box>
                     </Box>
@@ -306,10 +283,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {worker.employee_number}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
@@ -320,7 +294,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderID}
+                      {worker.assign_alias}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
@@ -329,12 +303,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       fontWeight="bold"
                       color="text.primary"
                       gutterBottom
-                      noWrap
                     >
-                      {cryptoOrder.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {worker.additional_info}
                     </Typography>
                   </TableCell>
 
@@ -346,28 +316,64 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
+                      {worker.dob}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                    >
+                      {worker.address}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {worker.contact_number}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {worker.certificate}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {`EXP: ${worker.certificate_expire_date}`}
                     </Typography>
                   </TableCell>
+
                   <TableCell align="center">
-                    {getStatusLabel(cryptoOrder.status)}
+                    {getStatusLabel(worker.status)}
                   </TableCell>
                   <TableCell align="center">
-                    <Tooltip title="Edit Customer" arrow>
+                    <Tooltip title="Delete worker" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
                           },
-                          color: theme.palette.primary.main
+                          color: '#F70000'
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleDeleteWorker(worker.id)}
                       >
-                        <MoreVertIcon fontSize="small" />
+                        <DeleteTwoToneIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -380,7 +386,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={filteredWorkers.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -392,12 +398,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   );
 };
 
-RecentOrdersTable.propTypes = {
+WorkerTable.propTypes = {
   cryptoOrders: PropTypes.array.isRequired
 };
 
-RecentOrdersTable.defaultProps = {
+WorkerTable.defaultProps = {
   cryptoOrders: []
 };
 
-export default RecentOrdersTable;
+export default WorkerTable;

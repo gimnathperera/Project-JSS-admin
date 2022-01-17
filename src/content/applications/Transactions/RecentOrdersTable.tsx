@@ -43,15 +43,15 @@ interface Filters {
 
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   const map = {
-    failed: {
+    1: {
       text: 'Failed',
       color: 'error'
     },
-    completed: {
+    2: {
       text: 'Completed',
       color: 'success'
     },
-    pending: {
+    3: {
       text: 'Pending',
       color: 'warning'
     }

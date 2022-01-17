@@ -1,0 +1,19 @@
+import {
+  FETCH_WORKER_LIST,
+  ADD_WORKER,
+  DELETE_WORKER
+} from '../../constants/common-constant';
+
+export const fetchWorkerList = () => ({
+  type: FETCH_WORKER_LIST
+});
+
+export const createWorker = (payload: any) => ({
+  type: ADD_WORKER,
+  payload: payload
+});
+
+export const deleteWorker = (payload: any) => ({
+  type: DELETE_WORKER,
+  payload: payload
+});

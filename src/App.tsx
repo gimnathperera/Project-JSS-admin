@@ -1,14 +1,18 @@
 import { useRoutes } from 'react-router-dom';
-import routes from './router';
+import { useSelector, RootStateOrAny } from 'react-redux';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-
-import ThemeProvider from './theme/ThemeProvider';
 import { CssBaseline } from '@mui/material';
 
-const App = () => {
+import ThemeProvider from './theme/ThemeProvider';
 
-  const content = useRoutes(routes);
+import routes from './router';
+
+const App = () => {
+  const isAuthenticated = useSelector(
+    ({ auth }: RootStateOrAny) => auth.isAuthenticated
+  );
+  const content = useRoutes(routes(isAuthenticated));
 
   return (
     <ThemeProvider>
@@ -18,5 +22,5 @@ const App = () => {
       </LocalizationProvider>
     </ThemeProvider>
   );
-}
+};
 export default App;

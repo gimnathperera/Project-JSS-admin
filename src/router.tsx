@@ -15,10 +15,10 @@ const Loader = (Component) => (props) =>
   );
 
 // Pages
-const Overview = Loader(lazy(() => import('src/content/overview')));
+const Login = Loader(lazy(() => import('src/content/Login')));
 
 // Dashboards
-const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
+const Dashboard = Loader(lazy(() => import('src/content/Dashboard')));
 
 // Applications
 const Transactions = Loader(
@@ -31,9 +31,7 @@ const UserProfile = Loader(
 const UserSettings = Loader(
   lazy(() => import('src/content/applications/Users/settings'))
 );
-const WorkerCreate = Loader(
-  lazy(() => import('src/content/applications/Workers'))
-);
+const Worker = Loader(lazy(() => import('src/content/applications/Workers')));
 const CustomerCreate = Loader(
   lazy(() => import('src/content/applications/Customers'))
 );
@@ -55,18 +53,18 @@ const StatusMaintenance = Loader(
   lazy(() => import('src/content/pages/Status/Maintenance'))
 );
 
-const routes: PartialRouteObject[] = [
+const routes: any = (isAuthenticated) => [
   {
-    path: '*',
-    element: <BaseLayout />,
+    path: '/',
+    element: !isAuthenticated ? (
+      <BaseLayout />
+    ) : (
+      <Navigate to="/app/dashboard" />
+    ),
     children: [
       {
-        path: '/',
-        element: <Overview />
-      },
-      {
-        path: 'overview',
-        element: <Navigate to="/" replace />
+        path: '/login',
+        element: <Login />
       },
       {
         path: 'status',
@@ -94,26 +92,30 @@ const routes: PartialRouteObject[] = [
         ]
       },
       {
+        path: '/',
+        element: <Navigate to="/login" />
+      },
+      {
         path: '*',
         element: <Status404 />
       }
     ]
   },
   {
-    path: 'dashboards',
-    element: <SidebarLayout />,
+    path: '/app',
+    element: isAuthenticated ? <SidebarLayout /> : <Navigate to="/login" />,
     children: [
       {
         path: '/',
-        element: <Navigate to="/dashboards/overview" replace />
+        element: <Navigate to="/app/dashboard" replace />
       },
       {
-        path: 'overview',
-        element: <Crypto />
+        path: 'dashboard',
+        element: <Dashboard />
       },
       {
-        path: 'create-worker',
-        element: <WorkerCreate />
+        path: 'worker',
+        element: <Worker />
       },
       {
         path: 'create-customer',
@@ -152,5 +154,4 @@ const routes: PartialRouteObject[] = [
     ]
   }
 ];
-
 export default routes;

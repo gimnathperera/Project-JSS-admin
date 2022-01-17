@@ -14,7 +14,7 @@ import WatchListColumn1 from './WatchListColumn1';
 import WatchListColumn2 from './WatchListColumn2';
 import WatchListColumn3 from './WatchListColumn3';
 import WatchListColumn1Chart from './WatchListColumn1Chart';
-import RecentActivity from '../../applications/Users/profile/RecentActivity';
+import RecentActivity from '../applications/Users/profile/RecentActivity';
 
 const WatchListColumn1ChartWrapper = styled(WatchListColumn1Chart)(
   ({ theme }) => `

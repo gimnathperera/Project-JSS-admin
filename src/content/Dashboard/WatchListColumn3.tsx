@@ -1,7 +1,7 @@
 import { Card, Box, Typography } from '@mui/material';
 
 import { styled } from '@mui/material/styles';
-import TodayBackgroundImage from '../../../assets/images/today.svg';
+import TodayBackgroundImage from '../../assets/images/today.svg';
 
 function WatchListColumn3() {
   return (
