@@ -33,6 +33,10 @@ function PageHeader() {
         isOpen={modalOpen}
         handleClose={handleModalClose}
         content={<CreateWorkerForm onSuccess={handleModalClose} />}
+        modalHeader={'Add new worker'}
+        modalDescription={
+          'Fill the forum and press submit button to add a new worker in the system.'
+        }
       />
     </Grid>
   );

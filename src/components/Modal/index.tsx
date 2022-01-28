@@ -1,30 +1,31 @@
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { ReactNode } from 'react';
 
 interface ModalScreenProps {
   isOpen: boolean;
   handleClose(): void;
   content: any;
+  modalHeader: string;
+  modalDescription?: string;
 }
 
-const ModalScreen = ({ isOpen, handleClose, content }: ModalScreenProps) => {
+const ModalScreen = ({
+  isOpen,
+  handleClose,
+  content,
+  modalHeader,
+  modalDescription
+}: ModalScreenProps) => {
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>Add new worker</DialogTitle>
+      <DialogTitle>{modalHeader}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          To subscribe to this website, please enter your email address here. We
-          will send updates occasionally.
-        </DialogContentText>
+        <DialogContentText>{modalDescription}</DialogContentText>
         {content}
       </DialogContent>
-      {/* <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions> */}
     </Dialog>
   );
 };

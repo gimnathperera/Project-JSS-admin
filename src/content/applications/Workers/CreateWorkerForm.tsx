@@ -29,12 +29,13 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     status: String(formData?.status) || '',
     assign_alias: formData?.assign_alias || '',
     additional_info: formData?.additional_info || '',
-    dob: getValidDate(formData.dob) || '',
+    dob: formData ? getValidDate(formData?.dob) : '',
     address: formData?.address || '',
     contact_number: formData?.contact_number || '',
     certificate: formData?.certificate || '',
-    certificate_expire_date:
-      getValidDate(formData.certificate_expire_date) || ''
+    certificate_expire_date: formData
+      ? getValidDate(formData.certificate_expire_date)
+      : ''
   };
 
   const workerRegisterSchema = Yup.object({

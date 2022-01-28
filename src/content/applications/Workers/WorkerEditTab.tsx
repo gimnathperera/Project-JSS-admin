@@ -500,6 +500,10 @@ const WorkerEditTab = ({ _worker }: any) => {
         content={
           <CreateWorkerForm onSuccess={handleModalClose} formData={_worker} />
         }
+        modalHeader={'Update worker'}
+        modalDescription={
+          'Fill the forum and press update button to update the selected worker.'
+        }
       />
     </Grid>
   );
