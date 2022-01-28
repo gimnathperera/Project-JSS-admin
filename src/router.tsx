@@ -1,6 +1,5 @@
 import { Suspense, lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-import { PartialRouteObject } from 'react-router';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
@@ -32,6 +31,9 @@ const UserSettings = Loader(
   lazy(() => import('src/content/applications/Users/settings'))
 );
 const Worker = Loader(lazy(() => import('src/content/applications/Workers')));
+const WorkerDetailed = Loader(
+  lazy(() => import('src/content/applications/Workers/WorkerDetailedPage'))
+);
 const CustomerCreate = Loader(
   lazy(() => import('src/content/applications/Customers'))
 );
@@ -118,6 +120,10 @@ const routes: any = (isAuthenticated) => [
         element: <Worker />
       },
       {
+        path: 'worker/:id',
+        element: <WorkerDetailed />
+      },
+      {
         path: 'create-customer',
         element: <CustomerCreate />
       },
@@ -129,7 +135,6 @@ const routes: any = (isAuthenticated) => [
         path: 'woker-requests',
         element: <Transactions />
       },
-      ,
       {
         path: 'jobs',
         element: <Jobs />

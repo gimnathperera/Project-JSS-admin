@@ -9,32 +9,35 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import MenuItem from '@mui/material/MenuItem';
 
-import { createWorker } from 'src/store/actions/worker.actions';
+import { createWorker, updateWorker } from 'src/store/actions/worker.actions';
+import { getValidDate } from 'src/common/functions';
 
 interface CreateWorkerFormProps {
   onSuccess(): any;
+  formData?: any;
 }
 
-const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
+const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
   const dispatch = useDispatch();
 
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 
   const initialFormValues = {
-    name: '',
-    email: '',
+    name: formData?.name || '',
+    email: formData?.email || '',
     password: '',
-    status: '',
-    assign_alias: '',
-    additional_info: '',
-    dob: '',
-    address: '',
-    contact_number: '',
-    certificate: '',
-    certificate_expire_date: ''
+    status: String(formData?.status) || '',
+    assign_alias: formData?.assign_alias || '',
+    additional_info: formData?.additional_info || '',
+    dob: getValidDate(formData.dob) || '',
+    address: formData?.address || '',
+    contact_number: formData?.contact_number || '',
+    certificate: formData?.certificate || '',
+    certificate_expire_date:
+      getValidDate(formData.certificate_expire_date) || ''
   };
 
-  const userLoginSchema = Yup.object({
+  const workerRegisterSchema = Yup.object({
     name: Yup.string().required('Name is required'),
     email: Yup.string()
       .email('Must be a valid email')
@@ -53,8 +56,37 @@ const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
     )
   });
 
-  const onSubmitWorker = (values) => {
-    dispatch(createWorker(values));
+  const workerUpdateSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string()
+      .email('Must be a valid email')
+      .max(255)
+      .required('Email is required'),
+    status: Yup.string().required('Status is required'),
+    assign_alias: Yup.string().required('Assign Alias is required'),
+    additional_info: Yup.string().required('Additional info is required'),
+    dob: Yup.string().required('Date of birth is required'),
+    address: Yup.string().required('Address is required'),
+    contact_number: Yup.string().required('Contact Number is required'),
+    certificate: Yup.string().required('Certificate is required'),
+    certificate_expire_date: Yup.string().required(
+      'Certificate Exp is required'
+    )
+  });
+
+  const onSubmitWorker = (values: any) => {
+    if (formData) {
+      dispatch(
+        updateWorker(
+          Object.assign(values, {
+            id: formData.id,
+            password: formData.password
+          })
+        )
+      ); //assign id to formData
+    } else {
+      dispatch(createWorker(values));
+    }
     onSuccess();
   };
 
@@ -71,7 +103,9 @@ const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
       <Container maxWidth="sm">
         <Formik
           initialValues={initialFormValues}
-          validationSchema={userLoginSchema}
+          validationSchema={
+            formData ? workerUpdateSchema : workerRegisterSchema
+          }
           onSubmit={(values) => {
             onSubmitWorker(values);
           }}
@@ -105,6 +139,7 @@ const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
                 value={values.email}
                 variant="outlined"
               />
+
               <TextField
                 error={Boolean(touched.password && errors.password)}
                 fullWidth
@@ -117,7 +152,9 @@ const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
                 type="password"
                 value={values.password}
                 variant="outlined"
+                disabled={formData ? true : false}
               />
+
               <TextField
                 error={Boolean(touched.status && errors.status)}
                 fullWidth
@@ -131,9 +168,8 @@ const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
                 value={values.status}
                 variant="outlined"
               >
-                <MenuItem value={1}>Active</MenuItem>
-                <MenuItem value={2}>Pending</MenuItem>
-                <MenuItem value={3}>Failed</MenuItem>
+                <MenuItem value={'1'}>Active</MenuItem>
+                <MenuItem value={'0'}>Inactive</MenuItem>
               </TextField>
 
               <TextField
@@ -253,7 +289,7 @@ const CreateWorkerForm = ({ onSuccess }: CreateWorkerFormProps) => {
                     type="submit"
                     variant="contained"
                   >
-                    SUBMIT
+                    {formData ? 'UPDATE' : 'SUBMIT'}
                   </Button>
                 )}
               </Box>

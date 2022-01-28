@@ -1,4 +1,4 @@
-export type CryptoOrderStatus = 1 | 2 | 3;
+export type CryptoOrderStatus = '1' | '0';
 
 export interface CryptoOrder {
   id: string;

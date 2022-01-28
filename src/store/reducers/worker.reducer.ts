@@ -1,7 +1,11 @@
-import { SET_WORKER_LIST } from '../../constants/common-constant';
+import {
+  SET_WORKER_LIST,
+  SET_CURRENT_WORKER
+} from '../../constants/common-constant';
 
 const INITIAL_STATE = {
-  list: []
+  list: [],
+  currentWorker: {}
 };
 
 const workerReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +14,11 @@ const workerReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         list: action.payload
+      };
+    case SET_CURRENT_WORKER:
+      return {
+        ...state,
+        currentWorker: action.payload
       };
 
     default:

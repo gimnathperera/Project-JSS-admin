@@ -1,4 +1,5 @@
 import { FC, ChangeEvent, useState } from 'react';
+
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -19,14 +20,19 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  Button
 } from '@mui/material';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import Label from 'src/components/Label';
 
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import PersonIcon from '@mui/icons-material/Person';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
 import BulkActions from './BulkActions';
+import { getValidDate } from 'src/common/functions';
 import { deleteWorker } from '../../../store/actions/worker.actions';
 
 interface RecentOrdersTableProps {
@@ -39,52 +45,9 @@ interface Filters {
   status?: CryptoOrderStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
-  const map = {
-    3: {
-      text: 'Failed',
-      color: 'error'
-    },
-    1: {
-      text: 'Active',
-      color: 'success'
-    },
-    2: {
-      text: 'Pending',
-      color: 'warning'
-    }
-  };
-
-  const { text, color }: any = map[cryptoOrderStatus];
-
-  return <Label color={color}>{text}</Label>;
-};
-
-const applyFilters = (
-  cryptoOrders: CryptoOrder[],
-  filters: Filters
-): CryptoOrder[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
-    let matches = true;
-
-    if (filters.status && cryptoOrder.status !== filters.status) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
-
-const applyPagination = (
-  cryptoOrders: CryptoOrder[],
-  page: number,
-  limit: number
-): CryptoOrder[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
-};
-
 const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [selectedWorkers, setSelectedWorkers] = useState<string[]>([]);
   const selectedBulkActions = selectedWorkers.length > 0;
@@ -100,18 +63,49 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
       name: 'All'
     },
     {
-      id: 1,
+      id: '1',
       name: 'Active'
     },
     {
-      id: 2,
-      name: 'Pending'
-    },
-    {
-      id: 3,
-      name: 'Failed'
+      id: '0',
+      name: 'Inactive'
     }
   ];
+
+  const getStatusLabel = (
+    cryptoOrderStatus: CryptoOrderStatus
+  ): JSX.Element => {
+    const map = {
+      '1': {
+        text: 'Active',
+        color: 'success'
+      },
+      '0': {
+        text: 'Inactive',
+        color: 'warning'
+      }
+    };
+
+    const { text, color }: any = map[cryptoOrderStatus];
+
+    return <Label color={color}>{text}</Label>;
+  };
+
+  const applyFilters = (_workers: any, filters: Filters): any => {
+    return _workers.filter((worker) => {
+      let matches = true;
+
+      if (filters.status && worker.status !== Number(filters.status)) {
+        matches = false;
+      }
+
+      return matches;
+    });
+  };
+
+  const applyPagination = (_workers: any, page: number, limit: number): any => {
+    return _workers.slice(page * limit, page * limit + limit);
+  };
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -155,10 +149,9 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const handleDeleteWorker = (id: string | number) => {
-    console.log('>>>', id);
+  const handleDeleteWorker = (worker: any) => {
     try {
-      dispatch(deleteWorker(id));
+      dispatch(deleteWorker(worker));
     } catch (err) {}
   };
 
@@ -171,6 +164,10 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
 
   const selectedAllCryptoOrders = selectedWorkers.length === workers.length;
   const theme = useTheme();
+
+  const handleDetailedClick = (workerId: string) => {
+    navigate(`/app/worker/${workerId}`);
+  };
 
   return (
     <Card>
@@ -254,16 +251,19 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       }}
                     >
                       <Box>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          align="left"
-                        >
-                          {worker.name}
-                        </Typography>
+                        <Button onClick={() => handleDetailedClick(worker.id)}>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            align="left"
+                          >
+                            {worker.name}
+                          </Typography>
+                        </Button>
+
                         <Typography
                           variant="body2"
                           color="text.secondary"
@@ -307,7 +307,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       {worker.additional_info}
                     </Typography>
                   </TableCell>
-
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -316,10 +315,9 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {worker.dob}
+                      {getValidDate(worker.dob)}
                     </Typography>
                   </TableCell>
-
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -330,7 +328,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       {worker.address}
                     </Typography>
                   </TableCell>
-
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -353,27 +350,30 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       {worker.certificate}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {`EXP: ${worker.certificate_expire_date}`}
+                      {`EXP: ${getValidDate(worker.certificate_expire_date)}`}
                     </Typography>
                   </TableCell>
-
                   <TableCell align="center">
                     {getStatusLabel(worker.status)}
                   </TableCell>
                   <TableCell align="center">
-                    <Tooltip title="Delete worker" arrow>
+                    <Tooltip title="Active/Inactive worker" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
                           },
-                          color: '#F70000'
+                          color: worker.status == 0 ? '#008000' : '#F70000'
                         }}
                         color="inherit"
                         size="small"
-                        onClick={() => handleDeleteWorker(worker.id)}
+                        onClick={() => handleDeleteWorker(worker)}
                       >
-                        <DeleteTwoToneIcon />
+                        {worker.status == 0 ? (
+                          <PersonIcon />
+                        ) : (
+                          <PersonOffIcon />
+                        )}
                       </IconButton>
                     </Tooltip>
                   </TableCell>
