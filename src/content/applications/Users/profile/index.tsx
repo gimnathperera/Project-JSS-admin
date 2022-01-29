@@ -5,7 +5,7 @@ import { Grid, Container } from '@mui/material';
 
 import ProfileCover from './ProfileCover';
 
-import EditProfileTab from '../settings/EditProfileTab';
+import EditProfileTab from './EditProfileTab';
 
 function ManagementUserProfile() {
   const user = {

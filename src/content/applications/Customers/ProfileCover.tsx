@@ -11,9 +11,10 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import customerLogo from '../../../assets/images/customerLogo1.png';
-
+import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 
 const Input = styled('input')({
   display: 'none'
@@ -29,8 +30,8 @@ const AvatarWrapper = styled(Card)(
     margin-left: ${theme.spacing(2)};
 
     .MuiAvatar-root {
-      width: 175px;
-      height: 108px;
+      width: ${theme.spacing(16)};
+      height: ${theme.spacing(16)};
     }
 `
 );
@@ -58,36 +59,6 @@ const ButtonUploadWrapper = styled(Box)(
     }
 `
 );
-
-const ColorContainer = styled(Box)`
-  display: flex;
-  margin-top: 1rem;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-`;
-
-const BlueColorShape = styled(Box)`
-  background: #034da1;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 5px;
-  margin-right: 1rem;
-`;
-const YellowColorShape = styled(Box)`
-  background: #f7971c;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 5px;
-  margin-right: 1rem;
-`;
-const RedColorShape = styled(Box)`
-  background: #ff0404;
-  height: 1.5rem;
-  width: 1.5rem;
-  border-radius: 5px;
-  margin-right: 1rem;
-`;
 
 const CardCover = styled(Card)(
   ({ theme }) => `
@@ -126,7 +97,7 @@ const ProfileCover = ({ user }) => {
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={customerLogo} />
+        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
         <ButtonUploadWrapper>
           <Input
             accept="image/*"
@@ -155,15 +126,6 @@ const ProfileCover = ({ user }) => {
           <Button size="small" variant="outlined" color="warning">
             Upload Docs
           </Button>
-        </Box>
-
-        <Box sx={{ pt: 3 }}>
-          <Typography>Set Priority</Typography>
-          <ColorContainer>
-            <BlueColorShape />
-            <YellowColorShape />
-            <RedColorShape />
-          </ColorContainer>
         </Box>
       </Box>
     </>

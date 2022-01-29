@@ -23,6 +23,8 @@ import {
   CardHeader,
   Button
 } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,6 +50,7 @@ interface Filters {
 const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 
   const [selectedWorkers, setSelectedWorkers] = useState<string[]>([]);
   const selectedBulkActions = selectedWorkers.length > 0;
@@ -358,23 +361,27 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                   </TableCell>
                   <TableCell align="center">
                     <Tooltip title="Active/Inactive worker" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: worker.status == 0 ? '#008000' : '#F70000'
-                        }}
-                        color="inherit"
-                        size="small"
-                        onClick={() => handleDeleteWorker(worker)}
-                      >
-                        {worker.status == 0 ? (
-                          <PersonIcon />
-                        ) : (
-                          <PersonOffIcon />
-                        )}
-                      </IconButton>
+                      {loading ? (
+                        <CircularProgress />
+                      ) : (
+                        <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: worker.status == 0 ? '#008000' : '#F70000'
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={() => handleDeleteWorker(worker)}
+                        >
+                          {worker.status == 0 ? (
+                            <PersonIcon />
+                          ) : (
+                            <PersonOffIcon />
+                          )}
+                        </IconButton>
+                      )}
                     </Tooltip>
                   </TableCell>
                 </TableRow>

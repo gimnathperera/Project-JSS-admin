@@ -1,6 +1,5 @@
 import { Card, Box, Typography } from '@mui/material';
 
-import { styled } from '@mui/material/styles';
 import CustomersBackgroundImage from '../../assets/images/customers.svg';
 function WatchListColumn1() {
   return (

@@ -13,13 +13,8 @@ const Loader = (Component) => (props) =>
     </Suspense>
   );
 
-// Pages
 const Login = Loader(lazy(() => import('src/content/Login')));
-
-// Dashboards
 const Dashboard = Loader(lazy(() => import('src/content/Dashboard')));
-
-// Applications
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
@@ -27,21 +22,17 @@ const Jobs = Loader(lazy(() => import('src/content/applications/Jobs')));
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
-const UserSettings = Loader(
-  lazy(() => import('src/content/applications/Users/settings'))
+const Customer = Loader(
+  lazy(() => import('src/content/applications/Customers'))
+);
+const CustomerDetailed = Loader(
+  lazy(() => import('src/content/applications/Customers/CustomerDetailedPage'))
 );
 const Worker = Loader(lazy(() => import('src/content/applications/Workers')));
 const WorkerDetailed = Loader(
   lazy(() => import('src/content/applications/Workers/WorkerDetailedPage'))
 );
-const CustomerCreate = Loader(
-  lazy(() => import('src/content/applications/Customers'))
-);
-const JobCreate = Loader(
-  lazy(() => import('src/content/applications/Jobs/CreateJob'))
-);
 
-// Status
 const Status404 = Loader(
   lazy(() => import('src/content/pages/Status/Status404'))
 );
@@ -123,13 +114,10 @@ const routes: any = (isAuthenticated) => [
         path: 'worker/:id',
         element: <WorkerDetailed />
       },
+
       {
-        path: 'create-customer',
-        element: <CustomerCreate />
-      },
-      {
-        path: 'create-job',
-        element: <JobCreate />
+        path: 'customer/:id',
+        element: <CustomerDetailed />
       },
       {
         path: 'woker-requests',
@@ -149,12 +137,12 @@ const routes: any = (isAuthenticated) => [
           {
             path: 'details',
             element: <UserProfile />
-          },
-          {
-            path: 'settings',
-            element: <UserSettings />
           }
         ]
+      },
+      {
+        path: 'customer',
+        element: <Customer />
       }
     ]
   }

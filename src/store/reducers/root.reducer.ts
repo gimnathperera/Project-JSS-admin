@@ -7,17 +7,19 @@ import { CLEAR_REDUX_STORE } from '../../constants/common-constant';
 import commonReducer from './common.reducer';
 import authReducer from './auth.reducer';
 import workerReducer from './worker.reducer';
+import customerReducer from './customer.reducer';
 
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['common', 'worker']
+  blacklist: ['common', 'worker', 'customer']
 };
 
 const appReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
-  worker: workerReducer
+  worker: workerReducer,
+  customer: customerReducer
 });
 
 const rootReducer = (state: any, action: any) => {

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
 import {
@@ -57,6 +57,8 @@ const UserBoxDescription = styled(Typography)(
 );
 
 const HeaderUserbox = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const currentUser = useSelector(({ auth }: RootStateOrAny) => auth.user);
 
   const user = {
@@ -76,10 +78,10 @@ const HeaderUserbox = () => {
     setOpen(false);
   };
 
-  // const handleUserLogout = () => {
-  //   dispatch(userLogout());
-  //   navigate('/login');
-  // };
+  const handleUserLogout = () => {
+    // dispatch(userLogout());
+    navigate('/login');
+  };
 
   return (
     <>
@@ -128,7 +130,7 @@ const HeaderUserbox = () => {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" fullWidth onClick={handleUserLogout}>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

@@ -58,7 +58,7 @@ const menuItems: MenuItems[] = [
       {
         name: 'Customers',
         icon: SupervisedUserCircleIcon,
-        link: '/app/profile/settings'
+        link: '/app/customer'
       }
     ]
   },

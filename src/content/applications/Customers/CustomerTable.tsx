@@ -1,8 +1,7 @@
 import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
+
 import PropTypes from 'prop-types';
 import {
-  Avatar,
   Tooltip,
   Divider,
   Box,
@@ -17,85 +16,44 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  TextField,
   Select,
   MenuItem,
   Typography,
   useTheme,
+  Avatar,
   CardHeader,
   Button
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 import Label from 'src/components/Label';
+
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import BulkActions from './BulkActions';
-import customerLogo from '../../../../assets/images/customerLogo.png';
 
 interface RecentOrdersTableProps {
   className?: string;
-  cryptoOrders: CryptoOrder[];
+  cryptoOrders?: CryptoOrder[];
+  customers?: any[];
 }
 
 interface Filters {
   status?: CryptoOrderStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
-  const map = {
-    1: {
-      text: 'Failed',
-      color: 'error'
-    },
-    2: {
-      text: 'Completed',
-      color: 'success'
-    },
-    3: {
-      text: 'Pending',
-      color: 'warning'
-    }
-  };
-
-  const { text, color }: any = map[cryptoOrderStatus];
-
-  return <Label color={color}>{text}</Label>;
+const user = {
+  name: 'Catherine Pike',
+  avatar: '/static/images/avatars/1.jpg',
+  jobtitle: 'Project Manager'
 };
 
-const applyFilters = (
-  cryptoOrders: CryptoOrder[],
-  filters: Filters
-): CryptoOrder[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
-    let matches = true;
+const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
+  const navigate = useNavigate();
 
-    if (filters.status && cryptoOrder.status !== filters.status) {
-      matches = false;
-    }
-
-    return matches;
-  });
-};
-
-const applyPagination = (
-  cryptoOrders: CryptoOrder[],
-  page: number,
-  limit: number
-): CryptoOrder[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
-};
-
-const SendButton = styled(Button)`
-  border-radius: 100px;
-  width: 92px;
-  height: 35px;
-`;
-
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
-    []
-  );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
+  const selectedBulkActions = selectedCustomers.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -108,18 +66,51 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       name: 'All'
     },
     {
-      id: 'completed',
-      name: 'Completed'
+      id: '1',
+      name: 'Active'
     },
     {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
+      id: '0',
+      name: 'Inactive'
     }
   ];
+
+  const getStatusLabel = (customerStatus: any): JSX.Element => {
+    const map = {
+      '1': {
+        text: 'Active',
+        color: 'success'
+      },
+      '0': {
+        text: 'Inactive',
+        color: 'warning'
+      }
+    };
+
+    const { text, color }: any = map[customerStatus];
+
+    return <Label color={color}>{text}</Label>;
+  };
+
+  const applyFilters = (_customers: any, filters: Filters): any => {
+    return _customers.filter((customer) => {
+      let matches = true;
+
+      if (filters.status && customer.status !== Number(filters.status)) {
+        matches = false;
+      }
+
+      return matches;
+    });
+  };
+
+  const applyPagination = (
+    _customers: any,
+    page: number,
+    limit: number
+  ): any => {
+    return _customers.slice(page * limit, page * limit + limit);
+  };
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -137,10 +128,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCryptoOrders(
-      event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
-        : []
+    setSelectedCustomers(
+      event.target.checked ? customers.map((worker) => worker.id) : []
     );
   };
 
@@ -148,13 +137,10 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId
-      ]);
+    if (!selectedCustomers.includes(cryptoOrderId)) {
+      setSelectedCustomers((prevSelected) => [...prevSelected, cryptoOrderId]);
     } else {
-      setSelectedCryptoOrders((prevSelected) =>
+      setSelectedCustomers((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
       );
     }
@@ -168,23 +154,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
-    page,
-    limit
-  );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
+  const handleFileDownload = (worker: any) => {
+    try {
+      worker?.legal_doc && window.open(worker?.legal_doc);
+    } catch (err) {}
+  };
+
+  const filteredCustomers = applyFilters(customers, filters);
+
+  const paginatedCustomers = applyPagination(filteredCustomers, page, limit);
+
+  const selectedSomeCustomers =
+    selectedCustomers.length > 0 && selectedCustomers.length < customers.length;
+
+  const selectedAllCryptoOrders = selectedCustomers.length === customers.length;
   const theme = useTheme();
 
-  const user = {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
-    jobtitle: 'Project Manager'
+  const handleDetailedClick = (customerId: string) => {
+    navigate(`/app/customer/${customerId}`);
   };
 
   return (
@@ -215,7 +202,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               </FormControl>
             </Box>
           }
-          title="Recent Tickets"
+          title="Customers"
         />
       )}
       <Divider />
@@ -227,40 +214,47 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
+                  indeterminate={selectedSomeCustomers}
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
+              <TableCell align="center"></TableCell>
               <TableCell align="center">Customer Details</TableCell>
-              <TableCell align="center">All Jobs</TableCell>
-              <TableCell align="center">Active Jobs</TableCell>
-              <TableCell align="center">Allocated Workers</TableCell>
-              <TableCell align="center">Contact Details</TableCell>
-              <TableCell align="center">Priority</TableCell>
+              <TableCell align="center">Contact Name</TableCell>
+              <TableCell align="center">Primary Contact</TableCell>
+              <TableCell align="center">Secondary Contact</TableCell>
+              <TableCell align="center">Additional Info</TableCell>
+              <TableCell align="center">ABN/ACN</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">BR Number</TableCell>
+              <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
-              );
+            {paginatedCustomers.map((customer: any) => {
+              const isWorkerSelected = selectedCustomers.includes(customer.id);
+
               return (
-                <TableRow
-                  hover
-                  key={cryptoOrder.id}
-                  selected={isCryptoOrderSelected}
-                >
+                <TableRow hover key={customer.id} selected={isWorkerSelected}>
                   <TableCell padding="checkbox" align="right">
                     <Checkbox
                       color="primary"
-                      checked={isCryptoOrderSelected}
+                      checked={isWorkerSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        handleSelectOneCryptoOrder(event, customer.id)
                       }
-                      value={isCryptoOrderSelected}
+                      value={isWorkerSelected}
                     />
                   </TableCell>
+                  <TableCell padding="checkbox" align="right">
+                    <Avatar
+                      variant="rounded"
+                      alt={user.name}
+                      src={customer.logo}
+                    />
+                  </TableCell>
+
                   <TableCell align="center">
                     <Box
                       sx={{
@@ -270,34 +264,34 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                         justifyContent: 'center'
                       }}
                     >
-                      <Avatar
-                        variant="rounded"
-                        alt={user.name}
-                        src={customerLogo}
-                        sx={{ width: 60, height: 40 }}
-                      />
                       <Box>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          align="left"
+                        <Button
+                          onClick={() => handleDetailedClick(customer.id)}
                         >
-                          {cryptoOrder.orderDetails}
-                        </Typography>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            align="left"
+                          >
+                            {customer.name}
+                          </Typography>
+                        </Button>
+
                         <Typography
                           variant="body2"
                           color="text.secondary"
                           noWrap
                           align="left"
                         >
-                          {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                          {customer.email}
                         </Typography>
                       </Box>
                     </Box>
                   </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -306,35 +300,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.orderID}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {cryptoOrder.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {customer.contact_name}
                     </Typography>
                   </TableCell>
 
@@ -346,28 +312,95 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {format(cryptoOrder.orderDate, 'MMMM dd yyyy')}
+                      {customer?.primary_contact_number || '-'}
                     </Typography>
                   </TableCell>
+
                   <TableCell align="center">
-                    {getStatusLabel(cryptoOrder.status)}
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {customer?.secondary_contact_number || '-'}
+                    </Typography>
                   </TableCell>
+
                   <TableCell align="center">
-                    <Tooltip title="Edit Customer" arrow>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                    >
+                      {customer.additional_info || '-'}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      ABN: {customer.abn_registration_number || '-'}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      ACN: {customer.acn_registration_number || '-'}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                    >
+                      {customer.address}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {customer.br_number || '-'}
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    {getStatusLabel(customer.status)}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Tooltip title="Download legal doc" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
                           },
-                          color: theme.palette.primary.main
+                          color: '#308D46'
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => handleFileDownload(customer)}
                       >
-                        <MoreVertIcon fontSize="small" />
+                        <SimCardDownloadIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -380,7 +413,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={filteredCustomers.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -392,12 +425,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   );
 };
 
-RecentOrdersTable.propTypes = {
+WorkerTable.propTypes = {
   cryptoOrders: PropTypes.array.isRequired
 };
 
-RecentOrdersTable.defaultProps = {
+WorkerTable.defaultProps = {
   cryptoOrders: []
 };
 
-export default RecentOrdersTable;
+export default WorkerTable;

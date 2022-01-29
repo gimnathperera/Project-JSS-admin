@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import {
   Box,
   Typography,
@@ -11,22 +10,21 @@ import {
   IconButton,
   CardContent,
   Grid,
-  Container,
-  CircularProgress,
   Divider
 } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
-
 import { useNavigate } from 'react-router-dom';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+
 import Modal from 'src/components/Modal';
-import { getValidDate } from 'src/common/functions';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
-import CreateWorkerForm from './CreateWorkerForm';
+import CreateCustomerForm from './CreateCustomerForm';
 
 type Props = {};
 
@@ -100,7 +98,7 @@ const user = {
   followers: '465'
 };
 
-const WorkerEditTab = ({ _worker }: any) => {
+const WorkerEditTab = ({ _customer }: any) => {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
 
@@ -109,7 +107,7 @@ const WorkerEditTab = ({ _worker }: any) => {
   };
 
   const handleBackClick = () => {
-    navigate('/app/worker');
+    navigate('/app/customer');
   };
 
   return (
@@ -132,29 +130,24 @@ const WorkerEditTab = ({ _worker }: any) => {
                 <ArrowBackTwoToneIcon />
               </IconButton>
             </Tooltip>
-
-
-
             <Box>
               <Typography variant="h3" component="h3" gutterBottom>
-                {_worker.name || <Skeleton variant="text" width={210} />}
+                {_customer?.name || <Skeleton variant="text" width={210} />}
               </Typography>
 
               <Typography variant="subtitle2">
-                {_worker.additional_info || (
-                  <Skeleton variant="text" width={210} />
-                )}
+                {_customer?.additional_info || '-'}
               </Typography>
             </Box>
           </Box>
           <CardCover>
-            <CardMedia image={user.coverImg} />
+            <CardMedia image={_customer?.logo} />
             <CardCoverAction>
               <Input accept="image/*" id="change-cover" multiple type="file" />
             </CardCoverAction>
           </CardCover>
           <AvatarWrapper>
-            <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+            <Avatar variant="rounded" alt={user.name} src={_customer?.logo} />
             <ButtonUploadWrapper>
               <Input
                 accept="image/*"
@@ -164,18 +157,16 @@ const WorkerEditTab = ({ _worker }: any) => {
               />
             </ButtonUploadWrapper>
           </AvatarWrapper>
-          
+
           <Box py={2} pl={2} mb={3}>
             <Typography gutterBottom variant="h4">
-              {_worker.email || <Skeleton variant="text" width={210} />}
+              {_customer?.name || <Skeleton variant="text" width={210} />}
             </Typography>
             <Typography variant="subtitle2">
-              {_worker.employee_number || (
-                <Skeleton variant="text" width={100} />
-              )}
+              {_customer?.email || <Skeleton variant="text" width={100} />}
             </Typography>
             <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-              {_worker?.status ? (
+              {_customer?.status ? (
                 <Label color="success">Active</Label>
               ) : (
                 <Label color="warning">Inactive</Label> || (
@@ -183,6 +174,32 @@ const WorkerEditTab = ({ _worker }: any) => {
                 )
               )}
             </Typography>
+
+            <Box
+              display={{ xs: 'block', md: 'flex' }}
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Box>
+                <Button size="small" variant="contained">
+                  Create a new company site
+                </Button>
+                <Button size="small" sx={{ mx: 1 }} variant="outlined">
+                  View company sites
+                </Button>
+                <IconButton color="primary" sx={{ p: 0.5 }}>
+                  <MoreHorizTwoToneIcon />
+                </IconButton>
+              </Box>
+              <Button
+                sx={{ mt: { xs: 2, md: 0 } }}
+                size="small"
+                variant="text"
+                endIcon={<ArrowForwardTwoToneIcon />}
+              >
+                See all {user.followers} connections
+              </Button>
+            </Box>
           </Box>
         </>
       </Grid>
@@ -230,12 +247,7 @@ const WorkerEditTab = ({ _worker }: any) => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Text color="black">
-                        <b>
-                          {' '}
-                          {_worker.name || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </b>
+                        <b> {_customer?.name || '-'}</b>
                       </Text>
                     </Grid>
                     <Grid
@@ -246,17 +258,29 @@ const WorkerEditTab = ({ _worker }: any) => {
                       textAlign={{ sm: 'right' }}
                     >
                       <Box pr={3} pb={2}>
-                        Date of birth:
+                        Email:
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Text color="black">
-                        <b>
-                          {' '}
-                          {_worker.dob || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </b>
+                        <b> {_customer?.email || '-'}</b>
+                      </Text>
+                    </Grid>
+
+                    <Grid
+                      item
+                      xs={12}
+                      sm={4}
+                      md={3}
+                      textAlign={{ sm: 'right' }}
+                    >
+                      <Box pr={3} pb={2}>
+                        Contact Name:
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={8} md={9}>
+                      <Text color="black">
+                        <b> {_customer?.contact_name || '-'}</b>
                       </Text>
                     </Grid>
                     <Grid
@@ -267,17 +291,12 @@ const WorkerEditTab = ({ _worker }: any) => {
                       textAlign={{ sm: 'right' }}
                     >
                       <Box pr={3} pb={2}>
-                        Contact Number:
+                        Primary Contact Number:
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Text color="black">
-                        <b>
-                          {' '}
-                          {_worker.contact_number || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </b>
+                        <b> {_customer?.primary_contact_number || '-'}</b>
                       </Text>
                     </Grid>
                     <Grid
@@ -288,17 +307,12 @@ const WorkerEditTab = ({ _worker }: any) => {
                       textAlign={{ sm: 'right' }}
                     >
                       <Box pr={3} pb={2}>
-                        Email address:
+                        Secondary Contact Number:
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Text color="black">
-                        <b>
-                          {' '}
-                          {_worker.email || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </b>
+                        <b> {_customer?.secondary_contact_number || '-'}</b>
                       </Text>
                     </Grid>
                     <Grid
@@ -314,12 +328,7 @@ const WorkerEditTab = ({ _worker }: any) => {
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Box sx={{ maxWidth: { xs: 'auto', sm: 500 } }}>
-                        <Text color="black">
-                          {' '}
-                          {_worker.address || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </Text>
+                        <Text color="black"> {_customer?.address || '-'}</Text>
                       </Box>
                     </Grid>
                     <Grid
@@ -337,9 +346,7 @@ const WorkerEditTab = ({ _worker }: any) => {
                       <Box sx={{ maxWidth: { xs: 'auto', sm: 600 } }}>
                         <Text color="black">
                           {' '}
-                          {_worker.additional_info || (
-                            <Skeleton variant="text" width={210} />
-                          )}
+                          {_customer?.additional_info || '-'}
                         </Text>
                       </Box>
                     </Grid>
@@ -377,17 +384,12 @@ const WorkerEditTab = ({ _worker }: any) => {
                       textAlign={{ sm: 'right' }}
                     >
                       <Box pr={3} pb={2}>
-                        Employee Number:
+                        BR Number:
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Text color="black">
-                        <b>
-                          {' '}
-                          {_worker.employee_number || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </b>
+                        <b> {_customer?.br_number || '-'}</b>
                       </Text>
                     </Grid>
 
@@ -399,16 +401,14 @@ const WorkerEditTab = ({ _worker }: any) => {
                       textAlign={{ sm: 'right' }}
                     >
                       <Box pr={3} pb={2}>
-                        Assign Alias:
+                        ABN Number:
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
                         <Text color="black">
                           {' '}
-                          {_worker.assign_alias || (
-                            <Skeleton variant="text" width={210} />
-                          )}
+                          {_customer?.abn_registration_number || '-'}
                         </Text>
                       </Box>
                     </Grid>
@@ -421,38 +421,14 @@ const WorkerEditTab = ({ _worker }: any) => {
                       textAlign={{ sm: 'right' }}
                     >
                       <Box pr={3} pb={2}>
-                        Certification:
+                        ACN Number:
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={8} md={9}>
                       <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
                         <Text color="black">
                           {' '}
-                          {_worker.certificate || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </Text>
-                      </Box>
-                    </Grid>
-
-                    <Grid
-                      item
-                      xs={12}
-                      sm={4}
-                      md={3}
-                      textAlign={{ sm: 'right' }}
-                    >
-                      <Box pr={3} pb={2}>
-                        Certification EXP:
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={9}>
-                      <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
-                        <Text color="black">
-                          {' '}
-                          {_worker.certificate_expire_date || (
-                            <Skeleton variant="text" width={210} />
-                          )}
+                          {_customer?.acn_registration_number || '-'}
                         </Text>
                       </Box>
                     </Grid>
@@ -488,7 +464,7 @@ const WorkerEditTab = ({ _worker }: any) => {
                     <Grid item xs={12} sm={8} md={9}>
                       <Label color="success">
                         <DoneTwoToneIcon fontSize="small" />
-                        <b>Active</b>
+                        <b>Active</b>d
                       </Label>
                     </Grid>
                   </Grid>
@@ -502,11 +478,14 @@ const WorkerEditTab = ({ _worker }: any) => {
         isOpen={isEdit}
         handleClose={handleModalClose}
         content={
-          <CreateWorkerForm onSuccess={handleModalClose} formData={_worker} />
+          <CreateCustomerForm
+            onSuccess={handleModalClose}
+            formData={_customer}
+          />
         }
-        modalHeader={'Update worker'}
+        modalHeader={'Update Customer'}
         modalDescription={
-          'Fill the forum and press update button to update the selected worker.'
+          'Fill the forum and press update button to update the selected customer.'
         }
       />
     </Grid>

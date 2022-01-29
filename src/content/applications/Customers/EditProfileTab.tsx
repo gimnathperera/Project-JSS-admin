@@ -26,10 +26,10 @@ const EditProfileTab = () => {
           >
             <Box>
               <Typography variant="h4" gutterBottom>
-                Customer Details
+                Personal Details
               </Typography>
               <Typography variant="subtitle2">
-                Manage informations related to your customer details
+                Manage informations related to your personal details
               </Typography>
             </Box>
             <Button variant="text" startIcon={<EditTwoToneIcon />}>
@@ -42,7 +42,7 @@ const EditProfileTab = () => {
               <Grid container spacing={0}>
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
-                    Company Name:
+                    Full Name:
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
@@ -52,25 +52,13 @@ const EditProfileTab = () => {
                 </Grid>
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
-                    Registration:
+                    Assign Alias:
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      columnGap: '10px'
-                    }}
-                  >
-                    <Text color="black">
-                      <b>VUVX709ET7BY</b>
-                    </Text>
-                    |
-                    <Text color="black">
-                      <b>VUVX709ET7BY</b>
-                    </Text>
-                  </Box>
+                  <Text color="black">
+                    <b>gimnath@gmail.com</b>
+                  </Text>
                 </Grid>
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
@@ -95,7 +83,7 @@ const EditProfileTab = () => {
 
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
-                    Contact Person:
+                    Contact Number:
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
@@ -106,30 +94,18 @@ const EditProfileTab = () => {
 
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
-                    Contact Number:
+                    Emp Number:
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      columnGap: '10px'
-                    }}
-                  >
-                    <Text color="black">
-                      <b>+59578624345</b>
-                    </Text>
-                    |
-                    <Text color="black">
-                      <b>+59578624345</b>
-                    </Text>
-                  </Box>
+                  <Text color="black">
+                    <b>59578624345</b>
+                  </Text>
                 </Grid>
 
                 <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
                   <Box pr={3} pb={2}>
-                    Number of Sites:
+                    Age:
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={8} md={9}>
@@ -156,8 +132,117 @@ const EditProfileTab = () => {
             </Typography>
           </CardContent>
         </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Card>
+          <Box
+            p={3}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box>
+              <Typography variant="h4" gutterBottom>
+                Certification Records
+              </Typography>
+              <Typography variant="subtitle2">
+                Manage certification records details related to your account
+              </Typography>
+            </Box>
+            <Button variant="text" startIcon={<EditTwoToneIcon />}>
+              Edit
+            </Button>
+          </Box>
+          <Divider />
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="subtitle2">
+              <Grid container spacing={0}>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Box pr={3} pb={2}>
+                    Certification:
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                  <Text color="black">
+                    <b>Expiry date</b>
+                  </Text>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Box pr={3} pb={2}>
+                    Certification:
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                  <Text color="black">
+                    <b>Expiry date</b>
+                  </Text>
+                </Grid>
+              </Grid>
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Card>
+          <Box
+            p={3}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box>
+              <Typography variant="h4" gutterBottom>
+                App Login Credentials
+              </Typography>
+              <Typography variant="subtitle2">
+                Manage loging and security information related to your account
+              </Typography>
+            </Box>
+            <Button variant="text" startIcon={<EditTwoToneIcon />}>
+              Edit
+            </Button>
+          </Box>
+          <Divider />
+          <CardContent sx={{ p: 4 }}>
+            <Typography variant="subtitle2">
+              <Grid container spacing={0}>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Box pr={3} pb={2}>
+                    Username:
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                  <Text color="black">
+                    <b>JsonMars-2982</b>
+                  </Text>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Box pr={3} pb={2}>
+                    Password:
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                  <Text color="black">
+                    <b>*********</b>
+                  </Text>
+                </Grid>
+                <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
+                  <Box pr={3} pb={2}>
+                    Account status:
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={8} md={9}>
+                  <Label color="success">
+                    <DoneTwoToneIcon fontSize="small" />
+                    <b>Active</b>
+                  </Label>
+                </Grid>
+              </Grid>
+            </Typography>
+          </CardContent>
+        </Card>
         <Box sx={{ pb: 3, paddingTop: '2rem' }}>
-          <Button variant="contained">Save Customer</Button>
+          <Button variant="contained">Save Worker</Button>
         </Box>
       </Grid>
     </Grid>
