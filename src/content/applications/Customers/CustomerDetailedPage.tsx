@@ -14,7 +14,7 @@ const ManagementUserProfile = () => {
 
   const { id } = useParams();
   const _customer = useSelector(
-    ({ customer }: RootStateOrAny) => customer.currentWorker
+    ({ customer }: RootStateOrAny) => customer.currentCustomer
   );
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 

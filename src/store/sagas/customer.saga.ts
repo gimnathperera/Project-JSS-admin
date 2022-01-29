@@ -126,7 +126,7 @@ export function* updateCustomer({
   }
 }
 
-function* workerSaga() {
+function* customerSaga() {
   yield takeEvery(FETCH_CUSTOMER_LIST, fetchCustomerList);
   yield takeEvery(FETCH_CUSTOMER_BY_ID, fetchCustomerById);
   yield takeEvery(DELETE_CUSTOMER, deleteCustomer);
@@ -134,4 +134,4 @@ function* workerSaga() {
   yield takeEvery(UPDATE_CUSTOMER, updateCustomer);
 }
 
-export default workerSaga;
+export default customerSaga;

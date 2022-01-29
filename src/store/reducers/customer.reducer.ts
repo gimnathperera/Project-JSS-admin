@@ -18,7 +18,7 @@ const customerReducer = (state = INITIAL_STATE, action: any) => {
     case SET_CURRENT_CUSTOMER:
       return {
         ...state,
-        currentWorker: action.payload
+        currentCustomer: action.payload
       };
 
     default:

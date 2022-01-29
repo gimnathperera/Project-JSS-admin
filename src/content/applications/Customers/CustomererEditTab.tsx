@@ -20,11 +20,13 @@ import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
 import Modal from 'src/components/Modal';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 import CreateCustomerForm from './CreateCustomerForm';
+import CompanySiteTable from './CompanySiteTable';
 
 type Props = {};
 
@@ -101,6 +103,9 @@ const user = {
 const WorkerEditTab = ({ _customer }: any) => {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
+  const customerList = useSelector(
+    ({ customer }: RootStateOrAny) => customer.list
+  );
 
   const handleModalClose = () => {
     setIsEdit(false);
@@ -469,6 +474,29 @@ const WorkerEditTab = ({ _customer }: any) => {
                     </Grid>
                   </Grid>
                 </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <Card>
+              <Box
+                p={3}
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <Typography variant="h4" gutterBottom>
+                    Company Sites
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    Manage company sites related to customer
+                  </Typography>
+                </Box>
+              </Box>
+              <Divider />
+              <CardContent>
+                <CompanySiteTable customers={customerList} />
               </CardContent>
             </Card>
           </Grid>
