@@ -21,11 +21,16 @@ import {
   updateCompanySiteApi
 } from '../../apis/company-site.api';
 
-export function* fetchCompanySite(): any {
+export function* fetchCompanySite({
+  payload
+}: {
+  type: typeof FETCH_COMPANY_SITE_LIST;
+  payload: any;
+}): any {
   try {
     yield put({ type: START_LOADING });
 
-    const response = yield call(fetchCompanySiteListApi);
+    const response = yield call(fetchCompanySiteListApi, payload);
 
     yield put({ type: SET_COMPANY_SITE_LIST, payload: response.data.data });
 

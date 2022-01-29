@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -20,7 +20,6 @@ import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
 import Modal from 'src/components/Modal';
 import Text from 'src/components/Text';
@@ -103,9 +102,6 @@ const user = {
 const WorkerEditTab = ({ _customer }: any) => {
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(false);
-  const customerList = useSelector(
-    ({ customer }: RootStateOrAny) => customer.list
-  );
 
   const handleModalClose = () => {
     setIsEdit(false);
@@ -496,7 +492,7 @@ const WorkerEditTab = ({ _customer }: any) => {
               </Box>
               <Divider />
               <CardContent>
-                <CompanySiteTable customers={customerList} />
+                <CompanySiteTable />
               </CardContent>
             </Card>
           </Grid>

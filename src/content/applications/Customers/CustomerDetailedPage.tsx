@@ -8,6 +8,7 @@ import Footer from 'src/components/Footer';
 import CustomererEditTab from './CustomererEditTab';
 
 import { fetchCustomerById } from '../../../store/actions/customer.actions';
+import { fetchCompanySiteList } from '../../../store/actions/company-site.actions';
 
 const ManagementUserProfile = () => {
   const dispatch = useDispatch();
@@ -16,10 +17,12 @@ const ManagementUserProfile = () => {
   const _customer = useSelector(
     ({ customer }: RootStateOrAny) => customer.currentCustomer
   );
+
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 
   useEffect(() => {
     dispatch(fetchCustomerById(id));
+    dispatch(fetchCompanySiteList(id));
   }, []);
 
   return (

@@ -4,7 +4,6 @@ import { store } from '../store/';
 
 axios.defaults.baseURL = BASE_URL;
 const setAutToken = () => {
-  console.log();
   let token: any = store.getState()?.auth.token
     ? `Bearer ${store.getState()?.auth.token}`
     : null;

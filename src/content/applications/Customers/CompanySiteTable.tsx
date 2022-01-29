@@ -1,6 +1,6 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { useSelector, RootStateOrAny } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import {
   Tooltip,
   Divider,
@@ -16,44 +16,19 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
-import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
-import { useNavigate } from 'react-router-dom';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
 import Label from 'src/components/Label';
-import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 
-interface RecentOrdersTableProps {
-  className?: string;
-  cryptoOrders?: CryptoOrder[];
-  customers?: any[];
-}
+interface RecentOrdersTableProps {}
 
-interface Filters {
-  status?: CryptoOrderStatus;
-}
-
-const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
-  const [selectedCustomers, setSelectedCustomers] = useState<string[]>([]);
+const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [filters, setFilters] = useState<Filters>({
-    status: null
-  });
 
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: '1',
-      name: 'Active'
-    },
-    {
-      id: '0',
-      name: 'Inactive'
-    }
-  ];
+  const companySiteList = useSelector(
+    ({ companySite }: RootStateOrAny) => companySite.list
+  );
 
   const getStatusLabel = (customerStatus: any): JSX.Element => {
     const map = {
@@ -72,18 +47,6 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
     return <Label color={color}>{text}</Label>;
   };
 
-  const applyFilters = (_customers: any, filters: Filters): any => {
-    return _customers.filter((customer) => {
-      let matches = true;
-
-      if (filters.status && customer.status !== Number(filters.status)) {
-        matches = false;
-      }
-
-      return matches;
-    });
-  };
-
   const applyPagination = (
     _customers: any,
     page: number,
@@ -100,18 +63,9 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const handleFileDownload = (worker: any) => {
-    try {
-      worker?.legal_doc && window.open(worker?.legal_doc);
-    } catch (err) {}
-  };
-
-  const filteredCustomers = applyFilters(customers, filters);
-
-  const paginatedCustomers = applyPagination(filteredCustomers, page, limit);
+  const paginatedCompanySites = applyPagination(companySiteList, page, limit);
 
   const theme = useTheme();
-
   return (
     <Card>
       <Divider />
@@ -128,11 +82,9 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCustomers.map((customer: any) => {
-              const isWorkerSelected = selectedCustomers.includes(customer.id);
-
+            {paginatedCompanySites.map((site: any) => {
               return (
-                <TableRow hover key={customer.id} selected={isWorkerSelected}>
+                <TableRow hover key={site.id}>
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -141,7 +93,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {customer.contact_name}
+                      {site?.company_id || '-'}
                     </Typography>
                   </TableCell>
 
@@ -153,7 +105,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {customer?.primary_contact_number || '-'}
+                      {site?.name || '-'}
                     </Typography>
                   </TableCell>
 
@@ -165,18 +117,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {customer?.secondary_contact_number || '-'}
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                    >
-                      {customer.additional_info || '-'}
+                      {site?.address || '-'}
                     </Typography>
                   </TableCell>
 
@@ -188,7 +129,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
                       gutterBottom
                       noWrap
                     >
-                      ABN: {customer.abn_registration_number || '-'}
+                      LAT: {site?.latitude || '-'}
                     </Typography>
                     <Typography
                       variant="body1"
@@ -197,24 +138,27 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
                       gutterBottom
                       noWrap
                     >
-                      ACN: {customer.acn_registration_number || '-'}
+                      LONG: {site?.longitude || '-'}
                     </Typography>
                   </TableCell>
 
                   <TableCell align="center">
-                    <Tooltip title="Download legal doc" arrow>
+                    {getStatusLabel(site.status)}
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Tooltip title="Edit company site" arrow>
                       <IconButton
                         sx={{
                           '&:hover': {
                             background: theme.colors.primary.lighter
                           },
-                          color: '#308D46'
+                          color: '#5569FF'
                         }}
                         color="inherit"
                         size="small"
-                        onClick={() => handleFileDownload(customer)}
                       >
-                        <SimCardDownloadIcon />
+                        <EditTwoToneIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -227,7 +171,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCustomers.length}
+          count={companySiteList.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -237,14 +181,6 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = ({ customers }) => {
       </Box>
     </Card>
   );
-};
-
-CompanySiteTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired
-};
-
-CompanySiteTable.defaultProps = {
-  cryptoOrders: []
 };
 
 export default CompanySiteTable;

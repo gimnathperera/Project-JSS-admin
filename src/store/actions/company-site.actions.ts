@@ -6,8 +6,9 @@ import {
   DELETE_COMPANY_SITE
 } from '../../constants/common-constant';
 
-export const fetchCompanySiteList = () => ({
-  type: FETCH_COMPANY_SITE_LIST
+export const fetchCompanySiteList = (payload: any) => ({
+  type: FETCH_COMPANY_SITE_LIST,
+  payload: payload
 });
 
 export const createCompanySite = (payload: any) => ({

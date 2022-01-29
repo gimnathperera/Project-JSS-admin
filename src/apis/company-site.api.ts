@@ -1,8 +1,14 @@
+import axios from 'axios';
 import { request } from '../common/request';
+import { BASE_URL } from '../constants/common-configurations';
 
-export const fetchCompanySiteListApi = async () => {
+export const fetchCompanySiteListApi = async (id: string) => {
   try {
-    const response = await request('GET', `/company-site`);
+    const response = await axios({
+      method: 'GET',
+      url: `${BASE_URL}/company-site`,
+      params: { company_id: id }
+    });
 
     return response;
   } catch (error) {

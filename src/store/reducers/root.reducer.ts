@@ -8,18 +8,20 @@ import commonReducer from './common.reducer';
 import authReducer from './auth.reducer';
 import workerReducer from './worker.reducer';
 import customerReducer from './customer.reducer';
+import companySiteReducer from './company-site.reducer';
 
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['common', 'worker', 'customer']
+  blacklist: ['common', 'worker', 'customer', 'companySite']
 };
 
 const appReducer = combineReducers({
   common: commonReducer,
   auth: authReducer,
   worker: workerReducer,
-  customer: customerReducer
+  customer: customerReducer,
+  companySite: companySiteReducer
 });
 
 const rootReducer = (state: any, action: any) => {
