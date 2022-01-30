@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import {
   Box,
   Typography,
@@ -25,6 +25,7 @@ import Modal from 'src/components/Modal';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 import CreateCustomerForm from './CreateCustomerForm';
+import CreateCompanySiteForm from './CreateCompanySiteForm';
 import CompanySiteTable from './CompanySiteTable';
 
 type Props = {};
@@ -101,15 +102,21 @@ const user = {
 
 const WorkerEditTab = ({ _customer }: any) => {
   const navigate = useNavigate();
-  const [isEdit, setIsEdit] = useState(false);
+  const myRef = useRef(null);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const [isCreateCompanySite, setIsCreateCompanySite] =
+    useState<boolean>(false);
 
   const handleModalClose = () => {
     setIsEdit(false);
+    setIsCreateCompanySite(false);
   };
 
   const handleBackClick = () => {
     navigate('/app/customer');
   };
+
+  const executeScroll = () => myRef.current.scrollIntoView();
 
   return (
     <Grid
@@ -182,24 +189,25 @@ const WorkerEditTab = ({ _customer }: any) => {
               justifyContent="space-between"
             >
               <Box>
-                <Button size="small" variant="contained">
+                <Button
+                  size="small"
+                  variant="contained"
+                  onClick={() => setIsCreateCompanySite(true)}
+                >
                   Create a new company site
                 </Button>
-                <Button size="small" sx={{ mx: 1 }} variant="outlined">
+                <Button
+                  size="small"
+                  sx={{ mx: 1 }}
+                  variant="outlined"
+                  onClick={executeScroll}
+                >
                   View company sites
                 </Button>
                 <IconButton color="primary" sx={{ p: 0.5 }}>
                   <MoreHorizTwoToneIcon />
                 </IconButton>
               </Box>
-              <Button
-                sx={{ mt: { xs: 2, md: 0 } }}
-                size="small"
-                variant="text"
-                endIcon={<ArrowForwardTwoToneIcon />}
-              >
-                See all {user.followers} connections
-              </Button>
             </Box>
           </Box>
         </>
@@ -473,7 +481,7 @@ const WorkerEditTab = ({ _customer }: any) => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} ref={myRef}>
             <Card>
               <Box
                 p={3}
@@ -510,6 +518,20 @@ const WorkerEditTab = ({ _customer }: any) => {
         modalHeader={'Update Customer'}
         modalDescription={
           'Fill the forum and press update button to update the selected customer.'
+        }
+      />
+      <Modal
+        isOpen={isCreateCompanySite}
+        handleClose={handleModalClose}
+        content={
+          <CreateCompanySiteForm
+            onSuccess={handleModalClose}
+            companyID={_customer?.id}
+          />
+        }
+        modalHeader={'Create Company Site'}
+        modalDescription={
+          'Fill the forum and press submit button to create a company site.'
         }
       />
     </Grid>

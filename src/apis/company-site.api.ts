@@ -28,7 +28,7 @@ export const fetchCompanySiteByIdApi = async (id: string) => {
 
 export const createCompanySiteApi = async (payload: any) => {
   try {
-    const response = await request('POST', `/company-site`, payload, true);
+    const response = await request('POST', `/company-site`, payload);
 
     return response;
   } catch (error) {
@@ -36,6 +36,7 @@ export const createCompanySiteApi = async (payload: any) => {
   }
 };
 
+//not using anymore
 export const deleteCompanySiteApi = async (company: any) => {
   try {
     const response = await request('PUT', `/company/${company?.id}`, {
@@ -60,8 +61,7 @@ export const deleteCompanySiteApi = async (company: any) => {
 
 export const updateCompanySiteApi = async ({ id, data }: any) => {
   try {
-    const response = await request('POST', `/company/${id}`, data);
-
+    const response = await request('PUT', `/company-site/${id}`, data);
     return response;
   } catch (error) {
     throw error;

@@ -102,7 +102,7 @@ export function* createCompanySite({
     const newWorker = yield call(createCompanySiteApi, payload);
 
     if (newWorker.data) {
-      yield put({ type: FETCH_COMPANY_SITE_LIST });
+      yield put({ type: FETCH_COMPANY_SITE_LIST, payload: payload.company_id });
     }
 
     yield put({ type: END_LOADING });
@@ -124,8 +124,12 @@ export function* updateCompanySite({
 
     const response = yield call(updateCompanySiteApi, payload);
 
-    yield put({ type: SET_CURRENT_COMPANY_SITE, payload: response.data.data });
-
+    if (response.data) {
+      yield put({
+        type: FETCH_COMPANY_SITE_LIST,
+        payload: payload.data.company_id
+      });
+    }
     yield put({ type: END_LOADING });
   } catch (error) {
     const message = 'Customer add failed';

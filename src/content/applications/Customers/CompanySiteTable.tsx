@@ -1,6 +1,5 @@
 import { FC, ChangeEvent, useState } from 'react';
 import { useSelector, RootStateOrAny } from 'react-redux';
-
 import {
   Tooltip,
   Divider,
@@ -17,14 +16,17 @@ import {
   useTheme
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-
+import Modal from 'src/components/Modal';
 import Label from 'src/components/Label';
+import CreateCompanySiteForm from './CreateCompanySiteForm';
 
 interface RecentOrdersTableProps {}
 
 const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
+  const [selectedSite, setSelectedSite] = useState<any>({});
+  const [isEditCompanySite, setIsEditCompanySite] = useState<boolean>(false);
 
   const companySiteList = useSelector(
     ({ companySite }: RootStateOrAny) => companySite.list
@@ -64,6 +66,14 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
   };
 
   const paginatedCompanySites = applyPagination(companySiteList, page, limit);
+  const handleModalClose = () => {
+    setIsEditCompanySite(false);
+  };
+
+  const onSiteEdit = (site) => {
+    setSelectedSite(site);
+    setIsEditCompanySite(true);
+  };
 
   const theme = useTheme();
   return (
@@ -157,6 +167,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
                         }}
                         color="inherit"
                         size="small"
+                        onClick={() => onSiteEdit(site)}
                       >
                         <EditTwoToneIcon />
                       </IconButton>
@@ -179,6 +190,21 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
+      <Modal
+        isOpen={isEditCompanySite}
+        handleClose={handleModalClose}
+        content={
+          <CreateCompanySiteForm
+            onSuccess={handleModalClose}
+            companyID={selectedSite?.company_id}
+            formData={selectedSite}
+          />
+        }
+        modalHeader={'Create Company Site'}
+        modalDescription={
+          'Fill the forum and press submit button to create a company site.'
+        }
+      />
     </Card>
   );
 };
