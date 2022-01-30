@@ -37,3 +37,11 @@ export const FETCH_COMPANY_SITE_BY_ID = 'FETCH_COMPANY_SITE_BY_ID';
 export const SET_CURRENT_COMPANY_SITE = 'SET_CURRENT_COMPANY_SITE';
 export const DELETE_COMPANY_SITE = 'DELETE_COMPANY_SITE';
 export const UPDATE_COMPANY_SITE = 'UPDATE_COMPANY_SITE';
+
+//company job actions
+export const ADD_JOB = 'ADD_JOB';
+export const FETCH_JOB_LIST = 'FETCH_JOB_LIST';
+export const SET_JOB_LIST = 'SET_JOB_LIST';
+export const FETCH_JOB_BY_ID = 'FETCH_JOB_BY_ID';
+export const SET_CURRENT_JOB = 'SET_CURRENT_JOB';
+export const UPDATE_JOB = 'UPDATE_JOB';

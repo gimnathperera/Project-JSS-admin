@@ -5,6 +5,7 @@ import CommonSaga from './common.saga';
 import WorkerSaga from './worker.saga';
 import CustomererSaga from './customer.saga';
 import CompanySiteSaga from './company-site.saga';
+import JobSaga from './job.saga';
 
 export default function* rootSaga() {
   yield all([
@@ -12,6 +13,7 @@ export default function* rootSaga() {
     CommonSaga(),
     WorkerSaga(),
     CustomererSaga(),
-    CompanySiteSaga()
+    CompanySiteSaga(),
+    JobSaga()
   ]);
 }
