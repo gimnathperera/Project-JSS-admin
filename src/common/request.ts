@@ -1,8 +1,27 @@
-import axios from 'axios';
-import { BASE_URL } from '../constants/common-configurations';
-import { store } from '../store/';
+import axios, { AxiosError, AxiosResponse, AxiosRequestConfig } from 'axios';
 
+import {
+  BASE_URL,
+  HTTP_UNAUTHORIZED
+} from '../constants/common-configurations';
+import { store } from '../store/';
+import { clearLocalStorage } from './functions';
 axios.defaults.baseURL = BASE_URL;
+
+axios.interceptors.response.use(
+  (response: AxiosResponse) => response,
+  (error: AxiosError) => {
+    if (error?.response?.status === HTTP_UNAUTHORIZED) {
+      console.log('HTTP_UNAUTHORIZED');
+      clearLocalStorage();
+      window.location.href = '/login';
+    } else {
+      console.log(error.response?.data);
+    }
+    return Promise.reject(error);
+  }
+);
+
 const setAutToken = () => {
   let token: any = store.getState()?.auth.token
     ? `Bearer ${store.getState()?.auth.token}`
