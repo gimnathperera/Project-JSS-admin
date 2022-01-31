@@ -57,7 +57,7 @@ const CreateCustomerForm = ({
     contact_name: formData?.contact_name || '',
     primary_contact_number: formData?.primary_contact_number || '',
     secondary_contact_number: formData?.secondary_contact_number || '',
-    status: formData?.status || '',
+    status: formData?.status == 1 ? '1' : formData?.status == 0 ? '0' : '',
     additional_info: formData?.additional_info || ''
   };
 

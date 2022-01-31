@@ -26,7 +26,7 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     name: formData?.name || '',
     email: formData?.email || '',
     password: '',
-    status: String(formData?.status) || '',
+    status: formData?.status == 1 ? '1' : formData?.status == 0 ? '0' : '',
     assign_alias: formData?.assign_alias || '',
     additional_info: formData?.additional_info || '',
     dob: formData ? getValidDate(formData?.dob) : '',

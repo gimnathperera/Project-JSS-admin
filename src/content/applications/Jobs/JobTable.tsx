@@ -19,45 +19,43 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader,
-  Button
+  CardHeader
 } from '@mui/material';
-import { CircularProgress } from '@mui/material';
-
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
 import Label from 'src/components/Label';
-
-import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
-import PersonIcon from '@mui/icons-material/Person';
-import PersonOffIcon from '@mui/icons-material/PersonOff';
+import Modal from 'src/components/Modal';
+import UpdateJobForm from './UpdateJobForm';
 import BulkActions from './BulkActions';
-import { getValidDate } from 'src/common/functions';
-import { deleteWorker } from '../../../store/actions/worker.actions';
+import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders?: CryptoOrder[];
-  workers?: any[];
+  jobs?: any[];
 }
 
 interface Filters {
   status?: CryptoOrderStatus;
 }
 
-const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 
-  const [selectedWorkers, setSelectedWorkers] = useState<string[]>([]);
-  const selectedBulkActions = selectedWorkers.length > 0;
+  const [selectedJobs, setSelectedWorkers] = useState<string[]>([]);
+  const selectedBulkActions = selectedJobs.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedJob, setSelectedJob] = useState<any>({});
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
 
   const statusOptions = [
     {
@@ -93,11 +91,11 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     return <Label color={color}>{text}</Label>;
   };
 
-  const applyFilters = (_workers: any, filters: Filters): any => {
-    return _workers.filter((worker) => {
+  const applyFilters = (_jobs: any, filters: Filters): any => {
+    return _jobs.filter((job) => {
       let matches = true;
 
-      if (filters.status && worker.status !== Number(filters.status)) {
+      if (filters.status && job.status !== Number(filters.status)) {
         matches = false;
       }
 
@@ -105,8 +103,8 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     });
   };
 
-  const applyPagination = (_workers: any, page: number, limit: number): any => {
-    return _workers.slice(page * limit, page * limit + limit);
+  const applyPagination = (_jobs: any, page: number, limit: number): any => {
+    return _jobs.slice(page * limit, page * limit + limit);
   };
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -125,16 +123,14 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedWorkers(
-      event.target.checked ? workers.map((worker) => worker.id) : []
-    );
+    setSelectedWorkers(event.target.checked ? jobs.map((job) => job.id) : []);
   };
 
   const handleSelectOneCryptoOrder = (
     event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedWorkers.includes(cryptoOrderId)) {
+    if (!selectedJobs.includes(cryptoOrderId)) {
       setSelectedWorkers((prevSelected) => [...prevSelected, cryptoOrderId]);
     } else {
       setSelectedWorkers((prevSelected) =>
@@ -151,25 +147,20 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const handleDeleteWorker = (worker: any) => {
-    try {
-      dispatch(deleteWorker(worker));
-    } catch (err) {}
+  const handleEditWorker = (job: any) => {
+    setSelectedJob(job);
+    setModalOpen(true);
   };
 
-  const filteredWorkers = applyFilters(workers, filters);
+  const filteredJobs = applyFilters(jobs, filters);
 
-  const paginatedWorkers = applyPagination(filteredWorkers, page, limit);
+  const paginatedJobs = applyPagination(filteredJobs, page, limit);
 
-  const selectedSomeWorkers =
-    selectedWorkers.length > 0 && selectedWorkers.length < workers.length;
+  const selectedSomeJobs =
+    selectedJobs.length > 0 && selectedJobs.length < jobs.length;
 
-  const selectedAllCryptoOrders = selectedWorkers.length === workers.length;
+  const selectedAllCryptoOrders = selectedJobs.length === jobs.length;
   const theme = useTheme();
-
-  const handleDetailedClick = (workerId: string) => {
-    navigate(`/app/worker/${workerId}`);
-  };
 
   return (
     <Card>
@@ -211,34 +202,32 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeWorkers}
+                  indeterminate={selectedSomeJobs}
                   onChange={handleSelectAllCryptoOrders}
                 />
               </TableCell>
-              <TableCell align="center">Worker Details</TableCell>
-              <TableCell align="center">Employee Number</TableCell>
-              <TableCell align="center">Assign Alias</TableCell>
-              <TableCell align="center">Additional Info</TableCell>
-              <TableCell align="center">Date Of Birth</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="center">Contact Number</TableCell>
-              <TableCell align="center">Certification</TableCell>
+              <TableCell align="center">Job Name</TableCell>
+              <TableCell align="center">Job Type</TableCell>
+              <TableCell align="center">Company</TableCell>
+              <TableCell align="center">Company Site</TableCell>
+              <TableCell align="center">Start Date</TableCell>
+              <TableCell align="center">End Date</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedWorkers.map((worker: any) => {
-              const isWorkerSelected = selectedWorkers.includes(worker.id);
+            {paginatedJobs.map((job: any) => {
+              const isWorkerSelected = selectedJobs.includes(job.id);
 
               return (
-                <TableRow hover key={worker.id} selected={isWorkerSelected}>
+                <TableRow hover key={job.id} selected={isWorkerSelected}>
                   <TableCell padding="checkbox" align="right">
                     <Checkbox
                       color="primary"
                       checked={isWorkerSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, worker.id)
+                        handleSelectOneCryptoOrder(event, job.id)
                       }
                       value={isWorkerSelected}
                     />
@@ -253,26 +242,15 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       }}
                     >
                       <Box>
-                        <Button onClick={() => handleDetailedClick(worker.id)}>
-                          <Typography
-                            variant="body1"
-                            fontWeight="bold"
-                            color="text.primary"
-                            gutterBottom
-                            noWrap
-                            align="left"
-                          >
-                            {worker.name}
-                          </Typography>
-                        </Button>
-
                         <Typography
-                          variant="body2"
-                          color="text.secondary"
+                          variant="body1"
+                          fontWeight="bold"
+                          color="text.primary"
+                          gutterBottom
                           noWrap
                           align="left"
                         >
-                          {worker.email}
+                          {job?.name || '-'}
                         </Typography>
                       </Box>
                     </Box>
@@ -285,9 +263,10 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {worker.employee_number}
+                      {job?.job_type || '-'}
                     </Typography>
                   </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -296,9 +275,10 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {worker.assign_alias}
+                      {job?.company || '-'}
                     </Typography>
                   </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -306,30 +286,10 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       color="text.primary"
                       gutterBottom
                     >
-                      {worker.additional_info}
+                      {job?.site || '-'}
                     </Typography>
                   </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {getValidDate(worker.dob)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                    >
-                      {worker.address}
-                    </Typography>
-                  </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -338,9 +298,10 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {worker.contact_number}
+                      {job?.start_date || '-'}
                     </Typography>
                   </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -349,38 +310,28 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       gutterBottom
                       noWrap
                     >
-                      {worker.certificate}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {`EXP: ${getValidDate(worker.certificate_expire_date)}`}
+                      {job?.end_date || '-'}
                     </Typography>
                   </TableCell>
+
                   <TableCell align="center">
-                    {getStatusLabel(worker.status)}
+                    {getStatusLabel(job.status)}
                   </TableCell>
                   <TableCell align="center">
-                    <Tooltip title="Active/Inactive worker" arrow>
-                      {loading ? (
-                        <CircularProgress />
-                      ) : (
-                        <IconButton
-                          sx={{
-                            '&:hover': {
-                              background: theme.colors.primary.lighter
-                            },
-                            color: worker.status == 0 ? '#008000' : '#F70000'
-                          }}
-                          color="inherit"
-                          size="small"
-                          onClick={() => handleDeleteWorker(worker)}
-                        >
-                          {worker.status == 0 ? (
-                            <PersonIcon />
-                          ) : (
-                            <PersonOffIcon />
-                          )}
-                        </IconButton>
-                      )}
+                    <Tooltip title="Edit job" arrow>
+                      <IconButton
+                        sx={{
+                          '&:hover': {
+                            background: theme.colors.primary.lighter
+                          },
+                          color: '#5569FF'
+                        }}
+                        color="inherit"
+                        size="small"
+                        onClick={() => handleEditWorker(job)}
+                      >
+                        <EditTwoToneIcon />
+                      </IconButton>
                     </Tooltip>
                   </TableCell>
                 </TableRow>
@@ -392,7 +343,7 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredWorkers.length}
+          count={filteredJobs.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -400,6 +351,17 @@ const JobTable: FC<RecentOrdersTableProps> = ({ workers }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
+      <Modal
+        isOpen={modalOpen}
+        handleClose={handleModalClose}
+        content={
+          <UpdateJobForm onSuccess={handleModalClose} formData={selectedJob} />
+        }
+        modalHeader={'Update Job'}
+        modalDescription={
+          'Fill the forum and press submit button to update job.'
+        }
+      />
     </Card>
   );
 };

@@ -89,11 +89,10 @@ export function* updateJob({
 }): any {
   try {
     yield put({ type: START_LOADING });
-
     const response = yield call(updateJobApi, payload);
-
-    yield put({ type: SET_CURRENT_JOB, payload: response.data.data });
-
+    if (response.data) {
+      yield put({ type: FETCH_JOB_LIST });
+    }
     yield put({ type: END_LOADING });
   } catch (error) {
     const message = 'Job add failed';

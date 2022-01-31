@@ -4,20 +4,21 @@ import { Box, CircularProgress } from '@mui/material';
 import { Card } from '@mui/material';
 import JobTable from './JobTable';
 
-import { fetchWorkerList } from '../../../store/actions/worker.actions';
+import { fetchJobList } from '../../../store/actions/job.actions';
 
 function RecentOrders() {
   const dispatch = useDispatch();
-  const workerList = useSelector(({ worker }: RootStateOrAny) => worker.list);
+  const jobList = useSelector(({ job }: RootStateOrAny) => job.list);
+
   useEffect(() => {
-    dispatch(fetchWorkerList());
+    dispatch(fetchJobList());
   }, []);
 
   return (
     <>
-      {workerList?.length > 0 ? (
+      {jobList?.length > 0 ? (
         <Card>
-          <JobTable workers={workerList} />
+          <JobTable jobs={jobList} />
         </Card>
       ) : (
         <Box

@@ -32,7 +32,7 @@ export const createJobApi = async (payload: any) => {
 
 export const updateJobApi = async ({ id, data }: any) => {
   try {
-    const response = await request('POST', `/job/${id}`, data);
+    const response = await request('PUT', `/job/${id}`, data);
 
     return response;
   } catch (error) {

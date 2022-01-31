@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Typography, Button, Grid } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import Modal from 'src/components/Modal';
-import CreateWorkerForm from './CreateWorkerForm';
+import CreateJobForm from './CreateJobForm';
 
 function PageHeader() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -32,10 +32,10 @@ function PageHeader() {
       <Modal
         isOpen={modalOpen}
         handleClose={handleModalClose}
-        content={<CreateWorkerForm onSuccess={handleModalClose} />}
-        modalHeader={'Add new worker'}
+        content={<CreateJobForm onSuccess={handleModalClose} />}
+        modalHeader={'Add New Job'}
         modalDescription={
-          'Fill the forum and press submit button to add a new worker in the system.'
+          'Fill the forum and press submit button to add a new job in the system.'
         }
       />
     </Grid>
