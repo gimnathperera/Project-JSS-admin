@@ -20,6 +20,7 @@ import { styled } from '@mui/material/styles';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
+import { userLogout } from 'src/store/actions/common.actions';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -79,7 +80,7 @@ const HeaderUserbox = () => {
   };
 
   const handleUserLogout = () => {
-    // dispatch(userLogout());
+    dispatch(userLogout());
     navigate('/login');
   };
 

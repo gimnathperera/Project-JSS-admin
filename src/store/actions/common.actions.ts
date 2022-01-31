@@ -20,7 +20,7 @@ export const setErrorMessage = (payload) => {
   };
 };
 
-export const clearReduxStore = () => {
+export const userLogout = () => {
   return {
     type: CLEAR_REDUX_STORE
   };

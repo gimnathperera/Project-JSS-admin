@@ -29,6 +29,7 @@ const appReducer = combineReducers({
 const rootReducer = (state: any, action: any) => {
   if (action.type === CLEAR_REDUX_STORE) {
     state = undefined;
+    storage.removeItem('persist:root');
   }
 
   return appReducer(state, action);
