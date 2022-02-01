@@ -87,10 +87,14 @@ const CardCoverAction = styled(Box)(
     `
 );
 
+const CoverPhoto = styled(CardMedia)`
+  background-size: contain;
+`;
+
 const user = {
   savedCards: 7,
   name: 'Catherine Pike',
-  coverImg: '/static/images/placeholders/covers/5.jpg',
+  coverImg: '/static/images/placeholders/covers/banner.svg',
   avatar: '/static/images/avatars/4.jpg',
   description:
     "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
@@ -148,7 +152,7 @@ const WorkerEditTab = ({ _customer }: any) => {
             </Box>
           </Box>
           <CardCover>
-            <CardMedia image={_customer?.logo} />
+            <CoverPhoto image={user?.coverImg} />
             <CardCoverAction>
               <Input accept="image/*" id="change-cover" multiple type="file" />
             </CardCoverAction>

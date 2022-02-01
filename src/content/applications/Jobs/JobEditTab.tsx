@@ -90,11 +90,14 @@ const HeaderContaienr = styled(Box)({
   display: 'flex',
   alignItems: 'center'
 });
+const CoverPhoto = styled(CardMedia)`
+  background-size: contain;
+`;
 
 const user = {
   savedCards: 7,
   name: 'Catherine Pike',
-  coverImg: '/static/images/placeholders/covers/5.jpg',
+  coverImg: '/static/images/placeholders/covers/banner.svg',
   avatar: '/static/images/avatars/4.jpg',
   description:
     "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
@@ -147,22 +150,11 @@ const JobEditTab = ({ _job }: any) => {
             </HeaderContaienr>
           </Box>
           <CardCover>
-            <CardMedia image={_job?.logo} />
+            <CoverPhoto image={user?.coverImg} />
             <CardCoverAction>
               <Input accept="image/*" id="change-cover" multiple type="file" />
             </CardCoverAction>
           </CardCover>
-          <AvatarWrapper>
-            <Avatar variant="rounded" alt={user.name} src={_job?.logo} />
-            <ButtonUploadWrapper>
-              <Input
-                accept="image/*"
-                id="icon-button-file"
-                name="icon-button-file"
-                type="file"
-              />
-            </ButtonUploadWrapper>
-          </AvatarWrapper>
 
           <Box py={2} pl={2} mb={3}>
             <Typography gutterBottom variant="h4">

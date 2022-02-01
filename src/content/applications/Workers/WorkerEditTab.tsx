@@ -74,7 +74,6 @@ const ButtonUploadWrapper = styled(Box)(
 const CardCover = styled(Card)(
   ({ theme }) => `
         position: relative;
-    
         .MuiCardMedia-root {
           height: ${theme.spacing(26)};
         }
@@ -88,11 +87,15 @@ const CardCoverAction = styled(Box)(
     `
 );
 
+const CoverPhoto = styled(CardMedia)`
+  background-size: contain;
+`;
+
 const user = {
   savedCards: 7,
   name: 'Catherine Pike',
-  coverImg: '/static/images/placeholders/covers/5.jpg',
-  avatar: '/static/images/avatars/4.jpg',
+  coverImg: '/static/images/placeholders/covers/banner.svg',
+  avatar: '/static/images/avatars/profpic.png',
   description:
     "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage",
   jobtitle: 'Web Developer',
@@ -133,8 +136,6 @@ const WorkerEditTab = ({ _worker }: any) => {
               </IconButton>
             </Tooltip>
 
-
-
             <Box>
               <Typography variant="h3" component="h3" gutterBottom>
                 {_worker.name || <Skeleton variant="text" width={210} />}
@@ -148,7 +149,7 @@ const WorkerEditTab = ({ _worker }: any) => {
             </Box>
           </Box>
           <CardCover>
-            <CardMedia image={user.coverImg} />
+            <CoverPhoto image={user.coverImg} />
             <CardCoverAction>
               <Input accept="image/*" id="change-cover" multiple type="file" />
             </CardCoverAction>
@@ -164,7 +165,7 @@ const WorkerEditTab = ({ _worker }: any) => {
               />
             </ButtonUploadWrapper>
           </AvatarWrapper>
-          
+
           <Box py={2} pl={2} mb={3}>
             <Typography gutterBottom variant="h4">
               {_worker.email || <Skeleton variant="text" width={210} />}

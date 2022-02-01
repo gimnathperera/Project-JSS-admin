@@ -95,7 +95,6 @@ const CreateCompanySiteForm = ({
   return (
     <Box
       sx={{
-        backgroundColor: 'background.default',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
