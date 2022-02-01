@@ -148,7 +148,7 @@ const Login = () => {
                 </FormHelperText>
               )}
 
-              <Box sx={{ py: 2 }}>
+              <Box sx={{ py: 2, display: 'flex', justifyContent: 'center' }}>
                 {loading ? (
                   <CircularProgress />
                 ) : (
