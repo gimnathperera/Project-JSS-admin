@@ -55,3 +55,13 @@ export const fetchJobWorkerListApi = async (id: string) => {
     throw error;
   }
 };
+
+export const createJobWorkersApi = async (payload: any) => {
+  try {
+    const response = await request('POST', `/job-worker`, payload);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

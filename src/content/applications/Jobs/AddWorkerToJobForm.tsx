@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { Formik, Form, FieldArray, Field } from 'formik';
 import * as Yup from 'yup';
@@ -7,16 +7,14 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import MenuItem from '@mui/material/MenuItem';
 import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-import {
-  createCompanySite,
-  updateCompanySite
-} from 'src/store/actions/company-site.actions';
+import { createJobWorkers } from 'src/store/actions/job.actions';
+import { fetchWorkerList } from 'src/store/actions/worker.actions';
 
 interface AddWorkerToJobFormProps {
   onSuccess(): any;
@@ -28,8 +26,14 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
   const [workerCount, setWorkerCount] = useState<number>(1);
 
+  const workerList = useSelector(({ worker }: RootStateOrAny) => worker.list);
+
+  useEffect(() => {
+    dispatch(fetchWorkerList());
+  }, []);
+
   const initialFormValues = {
-    workers: [
+    job_workers: [
       {
         worker_id: '',
         start_time: '',
@@ -39,7 +43,7 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
   };
 
   const assignWorkerSchema = Yup.object({
-    workers: Yup.array().of(
+    job_workers: Yup.array().of(
       Yup.object().shape({
         worker_id: Yup.string().required('Worker required'),
         start_time: Yup.string().required('Start time required'),
@@ -48,27 +52,13 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
     )
   });
 
-  const onSubmitWorker = (values: any) => {
-    console.log('>>===>> >>===>> values', values);
-
-    // if (formData) {
-    //   const payLoad = {
-    //     id: formData.id,
-    //     data: Object.assign(values, {
-    //       company_id: jobID
-    //     })
-    //   };
-    //   dispatch(updateCompanySite(payLoad));
-    // } else {
-    //   dispatch(
-    //     createCompanySite(
-    //       Object.assign(values, {
-    //         company_id: jobID
-    //       })
-    //     )
-    //   );
-    // }
-    // onSuccess();
+  const onSubmitWorker = ({ job_workers }: any) => {
+    const payLoad = {
+      job_id: jobID,
+      job_workers
+    };
+    dispatch(createJobWorkers(payLoad));
+    onSuccess();
   };
 
   const increaseWorkerCount = () => {
@@ -80,6 +70,15 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
     setWorkerCount((count) => count - 1);
   };
 
+  const renderWorkerList = () => {
+    return (
+      workerList &&
+      workerList?.map((worker) => (
+        <MenuItem value={worker.id}>{worker?.name}</MenuItem>
+      ))
+    );
+  };
+
   const renderMoreWorker = (
     errors: any,
     handleBlur: any,
@@ -88,7 +87,7 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
     values: any
   ): JSX.Element => (
     <FieldArray
-      name="workers"
+      name="job_workers"
       render={(helpers) => (
         <>
           {Array.from({ length: workerCount }, (item, index) => (
@@ -105,44 +104,49 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                     ❌
                   </IconButton>
                 </Box>
+
                 <TextField
                   error={Boolean(
-                    touched?.workers &&
-                      touched?.workers[index]?.worker_id &&
-                      errors?.workers &&
-                      errors?.workers[index]?.worker_id
+                    touched?.job_workers &&
+                      touched?.job_workers[index]?.worker_id &&
+                      errors?.job_workers &&
+                      errors?.job_workers[index]?.worker_id
                   )}
                   fullWidth
                   helperText={
-                    touched?.workers &&
-                    touched?.workers[index]?.worker_id &&
-                    errors?.workers &&
-                    errors?.workers[index]?.worker_id
+                    touched?.job_workers &&
+                    touched?.job_workers[index]?.worker_id &&
+                    errors?.job_workers &&
+                    errors?.job_workers[index]?.worker_id
                   }
+                  select
                   label="Worker"
                   margin="normal"
-                  name={`workers.${index}.worker_id`}
+                  name={`job_workers.${index}.worker_id`}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   type="text"
                   variant="outlined"
-                />
+                >
+                  {renderWorkerList()}
+                </TextField>
+
                 <Box
                   display="flex"
                   sx={{ justifyContent: 'space-between', paddingTop: '10px' }}
                 >
                   <TextField
                     error={Boolean(
-                      touched?.workers &&
-                        touched?.workers[index]?.start_time &&
-                        errors?.workers &&
-                        errors?.workers[index]?.start_time
+                      touched?.job_workers &&
+                        touched?.job_workers[index]?.start_time &&
+                        errors?.job_workers &&
+                        errors?.job_workers[index]?.start_time
                     )}
                     helperText={
-                      touched?.workers &&
-                      touched?.workers[index]?.start_time &&
-                      errors?.workers &&
-                      errors?.workers[index]?.start_time
+                      touched?.job_workers &&
+                      touched?.job_workers[index]?.start_time &&
+                      errors?.job_workers &&
+                      errors?.job_workers[index]?.start_time
                     }
                     label="Start Time"
                     type="time"
@@ -153,20 +157,20 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                       shrink: true
                     }}
                     sx={{ width: '45%' }}
-                    name={`workers.${index}.start_time`}
+                    name={`job_workers.${index}.start_time`}
                   />
                   <TextField
                     error={Boolean(
-                      touched?.workers &&
-                        touched?.workers[index]?.end_time &&
-                        errors?.workers &&
-                        errors?.workers[index]?.end_time
+                      touched?.job_workers &&
+                        touched?.job_workers[index]?.end_time &&
+                        errors?.job_workers &&
+                        errors?.job_workers[index]?.end_time
                     )}
                     helperText={
-                      touched?.workers &&
-                      touched?.workers[index]?.end_time &&
-                      errors?.workers &&
-                      errors?.workers[index]?.end_time
+                      touched?.job_workers &&
+                      touched?.job_workers[index]?.end_time &&
+                      errors?.job_workers &&
+                      errors?.job_workers[index]?.end_time
                     }
                     label="End Time"
                     type="time"
@@ -177,7 +181,7 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                       shrink: true
                     }}
                     sx={{ width: '45%' }}
-                    name={`workers.${index}.end_time`}
+                    name={`job_workers.${index}.end_time`}
                   />
                 </Box>
               </CardContent>
@@ -224,7 +228,7 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                   values
                 )}
 
-                <Box sx={{ py: 2 }}>
+                <Box sx={{ py: 2, display: 'flex', justifyContent: 'center' }}>
                   {loading ? (
                     <CircularProgress />
                   ) : (
@@ -235,7 +239,7 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                       type="submit"
                       variant="contained"
                     >
-                      {'ASSIGN'}
+                      {'ADD WORKER'}
                     </Button>
                   )}
                 </Box>

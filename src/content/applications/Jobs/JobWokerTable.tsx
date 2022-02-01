@@ -90,7 +90,6 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
               <TableCell align="center">Certification Exp</TableCell>
               <TableCell align="center">Time Duration</TableCell>
               <TableCell align="center">Status</TableCell>
-              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -180,24 +179,6 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
                   <TableCell align="center">
                     {getStatusLabel(site?.status)}
                   </TableCell>
-
-                  <TableCell align="center">
-                    <Tooltip title="Edit company site" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': {
-                            background: theme.colors.primary.lighter
-                          },
-                          color: '#5569FF'
-                        }}
-                        color="inherit"
-                        size="small"
-                        onClick={() => onSiteEdit(site)}
-                      >
-                        <EditTwoToneIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
                 </TableRow>
               );
             })}
@@ -215,21 +196,6 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
-      {/* <Modal
-        isOpen={isEditCompanySite}
-        handleClose={handleModalClose}
-        content={
-          <CreateCompanySiteForm
-            onSuccess={handleModalClose}
-            companyID={selectedSite?.company_id}
-            formData={selectedSite}
-          />
-        }
-        modalHeader={'Create Company Site'}
-        modalDescription={
-          'Fill the forum and press submit button to create a company site.'
-        }
-      /> */}
     </Card>
   );
 };

@@ -12,14 +12,16 @@ import {
   ADD_JOB,
   UPDATE_JOB,
   FETCH_JOB_WOKER_LIST,
-  SET_JOB_WOKER_LIST
+  SET_JOB_WOKER_LIST,
+  ADD_JOB_WORKER
 } from '../../constants/common-constant';
 import {
   fetchJobListApi,
   fetchJobByIdApi,
   createJobApi,
   updateJobApi,
-  fetchJobWorkerListApi
+  fetchJobWorkerListApi,
+  createJobWorkersApi
 } from '../../apis/job.api';
 
 export function* fetchJobList(): any {
@@ -136,12 +138,36 @@ export function* fetchJobWorkerList({
   }
 }
 
+export function* createJobWorkers({
+  payload
+}: {
+  type: typeof ADD_JOB;
+  payload: any;
+}): any {
+  try {
+    yield put({ type: START_LOADING });
+
+    const newWorker = yield call(createJobWorkersApi, payload);
+
+    if (newWorker.data) {
+      yield put({ type: FETCH_JOB_WOKER_LIST, payload: payload?.job_id });
+    }
+
+    yield put({ type: END_LOADING });
+  } catch (error) {
+    const message = 'Worker add failed';
+    yield put({ type: SET_ERROR_MESSAGE, payload: message });
+    yield put({ type: END_LOADING });
+  }
+}
+
 function* jobSaga() {
   yield takeEvery(FETCH_JOB_LIST, fetchJobList);
   yield takeEvery(FETCH_JOB_BY_ID, fetchJobById);
   yield takeEvery(ADD_JOB, createJob);
   yield takeEvery(UPDATE_JOB, updateJob);
   yield takeEvery(FETCH_JOB_WOKER_LIST, fetchJobWorkerList);
+  yield takeEvery(ADD_JOB_WORKER, createJobWorkers);
 }
 
 export default jobSaga;

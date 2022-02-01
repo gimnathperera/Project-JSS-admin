@@ -49,3 +49,4 @@ export const UPDATE_JOB = 'UPDATE_JOB';
 //company job-worker actions
 export const FETCH_JOB_WOKER_LIST = 'FETCH_JOB_WOKER_LIST';
 export const SET_JOB_WOKER_LIST = 'SET_JOB_WOKER_LIST';
+export const ADD_JOB_WORKER = 'ADD_JOB_WORKER';
