@@ -10,7 +10,7 @@ function DashboardCrypto() {
   return (
     <>
       <Helmet>
-        <title>Crypto Dashboard</title>
+        <title>JSS Group - Admin</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />

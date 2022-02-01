@@ -68,12 +68,12 @@ const menuItems: MenuItems[] = [
       {
         name: 'Reports',
         icon: AssessmentTwoToneIcon,
-        link: '/components/modals'
+        link: '/app/report'
       },
       {
         name: 'Inventory',
         icon: BuildTwoToneIcon,
-        link: '/components/buttons'
+        link: '/app/inventory'
       }
     ]
   }

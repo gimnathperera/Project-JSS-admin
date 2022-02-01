@@ -26,7 +26,7 @@ const PageHeader = () => {
           Welcome, {currentUser?.name}!
         </Typography>
         <Typography variant="subtitle2">
-          Today is a good day to start trading crypto assets!
+          JSS Group Facility Services!
         </Typography>
       </Grid>
     </Grid>

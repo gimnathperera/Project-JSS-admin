@@ -123,11 +123,6 @@ const routes: any = (isAuthenticated) => [
         path: 'customer/:id',
         element: <CustomerDetailed />
       },
-
-      {
-        path: 'woker-requests',
-        element: <Transactions />
-      },
       {
         path: 'job',
         element: <Jobs />
@@ -141,7 +136,8 @@ const routes: any = (isAuthenticated) => [
         children: [
           {
             path: '/',
-            element: <Navigate to="details" replace />
+            // element: <Navigate to="details" replace />  untill the funcionlity is implemented
+            element: <StatusComingSoon />
           },
           {
             path: 'details',
@@ -152,6 +148,21 @@ const routes: any = (isAuthenticated) => [
       {
         path: 'customer',
         element: <Customer />
+      },
+      {
+        path: 'woker-requests',
+        // element: <Transactions /> untill the funcionlity is implemented
+        element: <StatusComingSoon />
+      },
+      {
+        path: 'report',
+        // element: <Transactions /> untill the funcionlity is implemented
+        element: <StatusComingSoon />
+      },
+      {
+        path: 'inventory',
+        // element: <Transactions /> untill the funcionlity is implemented
+        element: <StatusComingSoon />
       }
     ]
   }
