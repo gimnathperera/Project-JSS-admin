@@ -1,5 +1,4 @@
 import { FC, ChangeEvent, useState } from 'react';
-
 import {
   Tooltip,
   Divider,
@@ -19,8 +18,10 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  Button
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import { useSelector, RootStateOrAny } from 'react-redux';
 
@@ -41,6 +42,8 @@ interface Filters {
 }
 
 const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
+  const theme = useTheme();
+  const navigate = useNavigate();
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 
   const [selectedJobs, setSelectedWorkers] = useState<string[]>([]);
@@ -160,7 +163,10 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
     selectedJobs.length > 0 && selectedJobs.length < jobs.length;
 
   const selectedAllCryptoOrders = selectedJobs.length === jobs.length;
-  const theme = useTheme();
+
+  const handleDetailedClick = (jobId: string) => {
+    navigate(`/app/job/${jobId}`);
+  };
 
   return (
     <Card>
@@ -242,16 +248,18 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
                       }}
                     >
                       <Box>
-                        <Typography
-                          variant="body1"
-                          fontWeight="bold"
-                          color="text.primary"
-                          gutterBottom
-                          noWrap
-                          align="left"
-                        >
-                          {job?.name || '-'}
-                        </Typography>
+                        <Button onClick={() => handleDetailedClick(job?.id)}>
+                          <Typography
+                            variant="body1"
+                            fontWeight="bold"
+                            color="text.primary"
+                            gutterBottom
+                            noWrap
+                            align="left"
+                          >
+                            {job?.name || '-'}
+                          </Typography>
+                        </Button>
                       </Box>
                     </Box>
                   </TableCell>

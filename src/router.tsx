@@ -19,6 +19,10 @@ const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
 const Jobs = Loader(lazy(() => import('src/content/applications/Jobs')));
+const JobDetailed = Loader(
+  lazy(() => import('src/content/applications/Jobs/JobDetailedPage'))
+);
+
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -119,13 +123,18 @@ const routes: any = (isAuthenticated) => [
         path: 'customer/:id',
         element: <CustomerDetailed />
       },
+
       {
         path: 'woker-requests',
         element: <Transactions />
       },
       {
-        path: 'jobs',
+        path: 'job',
         element: <Jobs />
+      },
+      {
+        path: 'job/:id',
+        element: <JobDetailed />
       },
       {
         path: 'profile',

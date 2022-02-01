@@ -37,7 +37,7 @@ const menuItems: MenuItems[] = [
     items: [
       {
         name: 'Jobs',
-        link: '/app/jobs',
+        link: '/app/job',
         icon: BusinessCenterTwoToneIcon
       }
     ]

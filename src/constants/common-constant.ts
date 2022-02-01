@@ -45,3 +45,7 @@ export const SET_JOB_LIST = 'SET_JOB_LIST';
 export const FETCH_JOB_BY_ID = 'FETCH_JOB_BY_ID';
 export const SET_CURRENT_JOB = 'SET_CURRENT_JOB';
 export const UPDATE_JOB = 'UPDATE_JOB';
+
+//company job-worker actions
+export const FETCH_JOB_WOKER_LIST = 'FETCH_JOB_WOKER_LIST';
+export const SET_JOB_WOKER_LIST = 'SET_JOB_WOKER_LIST';

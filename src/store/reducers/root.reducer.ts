@@ -10,11 +10,12 @@ import workerReducer from './worker.reducer';
 import customerReducer from './customer.reducer';
 import companySiteReducer from './company-site.reducer';
 import jobReducer from './job.reducer';
+import jobWorkerReducer from './job-worker.reducer';
 
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  blacklist: ['common', 'worker', 'customer', 'companySite', 'job']
+  blacklist: ['common', 'worker', 'customer', 'companySite', 'job', 'jobWorker']
 };
 
 const appReducer = combineReducers({
@@ -23,7 +24,8 @@ const appReducer = combineReducers({
   worker: workerReducer,
   customer: customerReducer,
   companySite: companySiteReducer,
-  job: jobReducer
+  job: jobReducer,
+  jobWorker: jobWorkerReducer
 });
 
 const rootReducer = (state: any, action: any) => {

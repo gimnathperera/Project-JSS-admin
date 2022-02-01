@@ -19,7 +19,6 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
 
 import Modal from 'src/components/Modal';
 import Text from 'src/components/Text';
@@ -174,12 +173,12 @@ const WorkerEditTab = ({ _customer }: any) => {
               {_customer?.email || <Skeleton variant="text" width={100} />}
             </Typography>
             <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-              {_customer?.status ? (
+              {_customer?.status == 1 ? (
                 <Label color="success">Active</Label>
+              ) : _customer?.status == 0 ? (
+                <Label color="warning">Inactive</Label>
               ) : (
-                <Label color="warning">Inactive</Label> || (
-                  <Skeleton variant="text" width={60} />
-                )
+                <Skeleton variant="text" width={60} />
               )}
             </Typography>
 

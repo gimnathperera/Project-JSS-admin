@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Box, Container, CircularProgress } from '@mui/material';
 
 import Footer from 'src/components/Footer';
-import CustomererEditTab from './CustomererEditTab';
+import CustomerEditTab from './CustomerEditTab';
 
 import { fetchCustomerById } from '../../../store/actions/customer.actions';
 import { fetchCompanySiteList } from '../../../store/actions/company-site.actions';
@@ -47,7 +47,7 @@ const ManagementUserProfile = () => {
             <CircularProgress size={64} disableShrink thickness={3} />
           </Box>
         ) : (
-          <CustomererEditTab _customer={_customer} />
+          <CustomerEditTab _customer={_customer} />
         )}
       </Container>
 

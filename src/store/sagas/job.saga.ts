@@ -10,13 +10,16 @@ import {
   FETCH_JOB_BY_ID,
   SET_CURRENT_JOB,
   ADD_JOB,
-  UPDATE_JOB
+  UPDATE_JOB,
+  FETCH_JOB_WOKER_LIST,
+  SET_JOB_WOKER_LIST
 } from '../../constants/common-constant';
 import {
   fetchJobListApi,
   fetchJobByIdApi,
   createJobApi,
-  updateJobApi
+  updateJobApi,
+  fetchJobWorkerListApi
 } from '../../apis/job.api';
 
 export function* fetchJobList(): any {
@@ -90,7 +93,9 @@ export function* updateJob({
   try {
     yield put({ type: START_LOADING });
     const response = yield call(updateJobApi, payload);
-    if (response.data) {
+    if (response?.data) {
+      yield put({ type: FETCH_JOB_BY_ID, payload: response?.data?.data.id });
+
       yield put({ type: FETCH_JOB_LIST });
     }
     yield put({ type: END_LOADING });
@@ -101,11 +106,42 @@ export function* updateJob({
   }
 }
 
+export function* fetchJobWorkerList({
+  payload
+}: {
+  type: typeof FETCH_JOB_WOKER_LIST;
+  payload: any;
+}): any {
+  try {
+    yield put({ type: START_LOADING });
+
+    const response = yield call(fetchJobWorkerListApi, payload);
+    if (response?.data) {
+      yield put({
+        type: SET_JOB_WOKER_LIST,
+        payload: response?.data?.data?.job_workers
+      });
+    } else {
+      yield put({
+        type: SET_JOB_WOKER_LIST,
+        payload: []
+      });
+    }
+
+    yield put({ type: END_LOADING });
+  } catch (error) {
+    yield put({ type: END_LOADING });
+    const message = 'Something went wrong. Please try again';
+    yield put({ type: SET_ERROR_MESSAGE, payload: message });
+  }
+}
+
 function* jobSaga() {
   yield takeEvery(FETCH_JOB_LIST, fetchJobList);
   yield takeEvery(FETCH_JOB_BY_ID, fetchJobById);
   yield takeEvery(ADD_JOB, createJob);
   yield takeEvery(UPDATE_JOB, updateJob);
+  yield takeEvery(FETCH_JOB_WOKER_LIST, fetchJobWorkerList);
 }
 
 export default jobSaga;
