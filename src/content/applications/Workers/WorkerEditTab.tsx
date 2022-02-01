@@ -45,7 +45,7 @@ const AvatarWrapper = styled(Card)(
         .MuiAvatar-root {
           width: ${theme.spacing(16)};
           height: ${theme.spacing(16)};
-        }
+        }  
     `
 );
 const ButtonUploadWrapper = styled(Box)(
@@ -155,7 +155,7 @@ const WorkerEditTab = ({ _worker }: any) => {
             </CardCoverAction>
           </CardCover>
           <AvatarWrapper>
-            <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+            <Avatar variant="rounded" alt={user?.name} src={user?.avatar} />
             <ButtonUploadWrapper>
               <Input
                 accept="image/*"

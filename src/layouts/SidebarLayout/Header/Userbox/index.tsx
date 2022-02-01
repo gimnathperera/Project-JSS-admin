@@ -21,6 +21,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import { userLogout } from 'src/store/actions/common.actions';
+import { stringAvatar } from 'src/common/functions';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -87,12 +88,12 @@ const HeaderUserbox = () => {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt={currentUser.name} src={user.avatar} />
+        <Avatar variant="rounded" {...stringAvatar(currentUser?.name)} />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{currentUser.name}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{currentUser?.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {currentUser.type || 'Admin'}
+              {currentUser?.type || 'Admin'}
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -114,7 +115,7 @@ const HeaderUserbox = () => {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt={currentUser.name} src={user.avatar} />
+          <Avatar variant="rounded" {...stringAvatar(currentUser?.name)} />
           <UserBoxText>
             <UserBoxLabel variant="body1">{currentUser.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
@@ -124,7 +125,7 @@ const HeaderUserbox = () => {
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
-          <ListItem button to="/app/profile/details" component={NavLink}>
+          <ListItem button to="#" component={NavLink}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary="My Profile" />
           </ListItem>

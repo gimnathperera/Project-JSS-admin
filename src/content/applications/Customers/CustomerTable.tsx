@@ -24,11 +24,10 @@ import {
   CardHeader,
   Button
 } from '@mui/material';
-import { useSelector, RootStateOrAny } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import Label from 'src/components/Label';
-
+import { styled } from '@mui/material/styles';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import BulkActions from './BulkActions';
@@ -39,15 +38,15 @@ interface RecentOrdersTableProps {
   customers?: any[];
 }
 
+const LogoImage = styled(Avatar)`
+  .css-1pqm26d-MuiAvatar-img {
+    object-fit: contain;
+  }
+`;
+
 interface Filters {
   status?: CryptoOrderStatus;
 }
-
-const user = {
-  name: 'Catherine Pike',
-  avatar: '/static/images/avatars/1.jpg',
-  jobtitle: 'Project Manager'
-};
 
 const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
   const navigate = useNavigate();
@@ -233,25 +232,25 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
           </TableHead>
           <TableBody>
             {paginatedCustomers.map((customer: any) => {
-              const isWorkerSelected = selectedCustomers.includes(customer.id);
+              const isWorkerSelected = selectedCustomers.includes(customer?.id);
 
               return (
-                <TableRow hover key={customer.id} selected={isWorkerSelected}>
+                <TableRow hover key={customer?.id} selected={isWorkerSelected}>
                   <TableCell padding="checkbox" align="right">
                     <Checkbox
                       color="primary"
                       checked={isWorkerSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, customer.id)
+                        handleSelectOneCryptoOrder(event, customer?.id)
                       }
                       value={isWorkerSelected}
                     />
                   </TableCell>
                   <TableCell padding="checkbox" align="right">
-                    <Avatar
+                    <LogoImage
                       variant="rounded"
-                      alt={user.name}
-                      src={customer.logo}
+                      alt={'logo'}
+                      src={customer?.logo}
                     />
                   </TableCell>
 

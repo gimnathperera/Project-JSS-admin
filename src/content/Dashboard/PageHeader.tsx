@@ -1,14 +1,15 @@
 import { Typography, Avatar, Grid } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
-function PageHeader() {
-
-  const user =
-  {
-    name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg'
-  };
+const PageHeader = () => {
   const theme = useTheme();
+  const currentUser = useSelector(({ auth }: RootStateOrAny) => auth.user);
+
+  const user = {
+    name: 'Catherine Pike',
+    avatar: '/static/images/avatars/6.png'
+  };
 
   return (
     <Grid container alignItems="center">
@@ -22,7 +23,7 @@ function PageHeader() {
       </Grid>
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Welcome, {user.name}!
+          Welcome, {currentUser?.name}!
         </Typography>
         <Typography variant="subtitle2">
           Today is a good day to start trading crypto assets!
@@ -30,6 +31,6 @@ function PageHeader() {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default PageHeader;
