@@ -25,7 +25,7 @@ const ManagementUserProfile = () => {
   return (
     <>
       <Helmet>
-        <title>User Details - Management</title>
+        <title>Worker Details - Management</title>
       </Helmet>
 
       <Container sx={{ mt: 3 }} maxWidth="lg">
