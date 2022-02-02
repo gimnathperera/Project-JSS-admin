@@ -103,7 +103,7 @@ export function* createWorker({
     yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker add failed';
+    const message = 'Worker adding failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
@@ -128,7 +128,7 @@ export function* updateWorker({
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker add failed';
+    const message = 'Worker adding failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
