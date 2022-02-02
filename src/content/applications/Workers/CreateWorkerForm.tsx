@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { createWorker, updateWorker } from 'src/store/actions/worker.actions';
 import { getValidDate } from 'src/common/functions';
+import { MOBILE_REGEX } from 'src/constants/common-configurations';
 
 interface CreateWorkerFormProps {
   onSuccess(): any;
@@ -50,7 +51,9 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     additional_info: Yup.string().required('Additional info is required'),
     dob: Yup.string().required('Date of birth is required'),
     address: Yup.string().required('Address is required'),
-    contact_number: Yup.string().required('Contact Number is required'),
+    contact_number: Yup.string()
+      .matches(MOBILE_REGEX, 'Invalid phone number')
+      .required('Contact number required'),
     certificate: Yup.string().required('Certificate is required'),
     certificate_expire_date: Yup.string().required(
       'Certificate Exp is required'
@@ -68,7 +71,9 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     additional_info: Yup.string().required('Additional info is required'),
     dob: Yup.string().required('Date of birth is required'),
     address: Yup.string().required('Address is required'),
-    contact_number: Yup.string().required('Contact Number is required'),
+    contact_number: Yup.string()
+      .matches(MOBILE_REGEX, 'Invalid phone number')
+      .required('Contact number required'),
     certificate: Yup.string().required('Certificate is required'),
     certificate_expire_date: Yup.string().required(
       'Certificate Exp is required'
