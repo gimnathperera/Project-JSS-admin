@@ -21,7 +21,7 @@ function Footer() {
         >
           <Box>
             <Typography variant="subtitle1">
-              &copy; 2021 - JSS Group Admin Dashboard
+              &copy; 2022 - JSS Group Admin Dashboard
             </Typography>
           </Box>
         </Box>
