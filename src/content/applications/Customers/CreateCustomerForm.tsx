@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
@@ -9,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import MenuItem from '@mui/material/MenuItem';
 import { styled } from '@mui/material/styles';
-import { Avatar } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 
@@ -17,7 +15,7 @@ import {
   createCustomer,
   updateCustomer
 } from 'src/store/actions/customer.actions';
-
+import { MOBILE_REGEX } from 'src/constants/common-configurations';
 interface CreateCustomerFormProps {
   onSuccess(): any;
   formData?: any;
@@ -77,9 +75,13 @@ const CreateCustomerForm = ({
       .matches(/^[0-9]{9}$/, 'Must be exactly 9 digits'),
     status: Yup.string().required('Status is required'),
     contact_name: Yup.string().required('Contact name is required'),
-    primary_contact_number: Yup.string().required(
-      'Primary contact number is required'
-    ),
+    primary_contact_number: Yup.string()
+      .matches(MOBILE_REGEX, 'Invalid phone number')
+      .required('Primary contact number required'),
+    secondary_contact_number: Yup.string()
+      .matches(MOBILE_REGEX, 'Invalid phone number')
+      .required('Secondary contact number required'),
+
     additional_info: Yup.string().required('Additional info is required')
   });
 
@@ -99,9 +101,9 @@ const CreateCustomerForm = ({
       .matches(/^[0-9]{9}$/, 'Must be exactly 9 digits'),
     status: Yup.string().required('Status is required'),
     contact_name: Yup.string().required('Contact name is required'),
-    primary_contact_number: Yup.string().required(
-      'Primary contact number is required'
-    ),
+    primary_contact_number: Yup.string()
+      .matches(MOBILE_REGEX, 'Invalid phone number')
+      .required('Primary contact number required'),
     additional_info: Yup.string().required('Additional info is required')
   });
 
