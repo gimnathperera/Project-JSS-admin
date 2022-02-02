@@ -119,8 +119,12 @@ export function* updateWorker({
     yield put({ type: START_LOADING });
 
     const response = yield call(updateWokerApi, payload);
+    if (response?.data) {
+      yield put({ type: SET_CURRENT_WORKER, payload: response.data.data });
 
-    yield put({ type: SET_CURRENT_WORKER, payload: response.data.data });
+      const message = 'Worker successfully updated';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
+    }
 
     yield put({ type: END_LOADING });
   } catch (error) {
