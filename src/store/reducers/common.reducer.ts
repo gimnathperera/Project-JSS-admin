@@ -3,6 +3,10 @@ import {
   END_LOADING,
   SET_SUCCESS_MESSAGE,
   SET_ERROR_MESSAGE,
+  SUCCESS_OPEN,
+  SUCCESS_CLOSE,
+  ERROR_OPEN,
+  ERROR_CLOSE
 } from '../../constants/common-constant';
 
 const INITIAL_STATE = {
@@ -10,7 +14,7 @@ const INITIAL_STATE = {
   success: false,
   successMessage: null,
   error: false,
-  errorMessage: null,
+  errorMessage: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,28 +22,48 @@ export default (state = INITIAL_STATE, action) => {
     case START_LOADING:
       return {
         ...state,
-        loading: true,
+        loading: true
       };
     case END_LOADING:
       return {
         ...state,
-        loading: false,
+        loading: false
       };
 
     case SET_SUCCESS_MESSAGE:
       return {
         ...state,
         success: true,
-        successMessage: action.payload,
+        successMessage: action.payload
       };
 
     case SET_ERROR_MESSAGE:
       return {
         ...state,
         error: true,
-        errorMessage: action.payload,
+        errorMessage: action.payload
+      };
+    case SUCCESS_OPEN:
+      return {
+        ...state,
+        success: true
       };
 
+    case SUCCESS_CLOSE:
+      return {
+        ...state,
+        success: false
+      };
+    case ERROR_OPEN:
+      return {
+        ...state,
+        error: true
+      };
+    case ERROR_CLOSE:
+      return {
+        ...state,
+        error: false
+      };
     default:
       return state;
   }

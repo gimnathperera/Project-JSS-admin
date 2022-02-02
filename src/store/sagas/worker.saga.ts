@@ -11,7 +11,8 @@ import {
   SET_CURRENT_WORKER,
   DELETE_WORKER,
   ADD_WORKER,
-  UPDATE_WORKER
+  UPDATE_WORKER,
+  SET_SUCCESS_MESSAGE
 } from '../../constants/common-constant';
 import {
   fetchWorkerListApi,
@@ -71,12 +72,14 @@ export function* deleteWorker({
 
     const result = yield call(deleteWorkerApi, payload);
     if (result.data) {
+      const message = 'Worker status changed successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
       yield put({ type: FETCH_WORKER_LIST });
     }
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker delete failed';
+    const message = 'Worker status changing failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
@@ -96,7 +99,8 @@ export function* createWorker({
     if (newWorker.data) {
       yield put({ type: FETCH_WORKER_LIST });
     }
-
+    const message = 'Worker successfully added';
+    yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   } catch (error) {
     const message = 'Worker add failed';

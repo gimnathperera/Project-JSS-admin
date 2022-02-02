@@ -11,7 +11,8 @@ import {
   SET_CURRENT_COMPANY_SITE,
   DELETE_COMPANY_SITE,
   ADD_COMPANY_SITE,
-  UPDATE_COMPANY_SITE
+  UPDATE_COMPANY_SITE,
+  SET_SUCCESS_MESSAGE
 } from '../../constants/common-constant';
 import {
   fetchCompanySiteListApi,
@@ -103,11 +104,13 @@ export function* createCompanySite({
 
     if (newWorker.data) {
       yield put({ type: FETCH_COMPANY_SITE_LIST, payload: payload.company_id });
+      const message = 'Company site added successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
     }
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker add failed';
+    const message = 'Company site adding failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
@@ -129,10 +132,13 @@ export function* updateCompanySite({
         type: FETCH_COMPANY_SITE_LIST,
         payload: payload.data.company_id
       });
+
+      const message = 'Company site updated successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
     }
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Customer add failed';
+    const message = 'Company site updating failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }

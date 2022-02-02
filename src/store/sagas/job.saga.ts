@@ -13,7 +13,8 @@ import {
   UPDATE_JOB,
   FETCH_JOB_WOKER_LIST,
   SET_JOB_WOKER_LIST,
-  ADD_JOB_WORKER
+  ADD_JOB_WORKER,
+  SET_SUCCESS_MESSAGE
 } from '../../constants/common-constant';
 import {
   fetchJobListApi,
@@ -75,12 +76,14 @@ export function* createJob({
     const newWorker = yield call(createJobApi, payload);
 
     if (newWorker.data) {
+      const message = 'Job added successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
       yield put({ type: FETCH_JOB_LIST });
     }
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker add failed';
+    const message = 'Job adding failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
@@ -96,13 +99,15 @@ export function* updateJob({
     yield put({ type: START_LOADING });
     const response = yield call(updateJobApi, payload);
     if (response?.data) {
+      const message = 'Job updated successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
       yield put({ type: FETCH_JOB_BY_ID, payload: response?.data?.data.id });
 
       yield put({ type: FETCH_JOB_LIST });
     }
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Job add failed';
+    const message = 'Job updaing failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
@@ -150,12 +155,14 @@ export function* createJobWorkers({
     const newWorker = yield call(createJobWorkersApi, payload);
 
     if (newWorker.data) {
+      const message = 'Worker assigned successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
       yield put({ type: FETCH_JOB_WOKER_LIST, payload: payload?.job_id });
     }
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker add failed';
+    const message = error?.response?.data?.msg || 'Worker assigning failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }

@@ -119,7 +119,7 @@ const HeaderUserbox = () => {
           <UserBoxText>
             <UserBoxLabel variant="body1">{currentUser.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              {currentUser.type || 'Admin'}
+              {currentUser?.type || 'Admin'}
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

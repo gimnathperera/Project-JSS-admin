@@ -3,8 +3,18 @@ import {
   SET_ERROR_MESSAGE,
   CLEAR_REDUX_STORE,
   SET_LOADING,
-  UNSET_LOADING
+  UNSET_LOADING,
+  SUCCESS_OPEN,
+  SUCCESS_CLOSE,
+  ERROR_OPEN,
+  ERROR_CLOSE
 } from './../../constants/common-constant';
+
+export function successOpen() {
+  return {
+    type: SUCCESS_OPEN
+  };
+}
 
 export const setSuccessMessage = (payload) => {
   return {
@@ -13,12 +23,30 @@ export const setSuccessMessage = (payload) => {
   };
 };
 
+export function successClose() {
+  return {
+    type: SUCCESS_CLOSE
+  };
+}
+
+export function errorOpen() {
+  return {
+    type: ERROR_OPEN
+  };
+}
+
 export const setErrorMessage = (payload) => {
   return {
     type: SET_ERROR_MESSAGE,
     payload
   };
 };
+
+export function errorClose() {
+  return {
+    type: ERROR_CLOSE
+  };
+}
 
 export const userLogout = () => {
   return {

@@ -2,6 +2,10 @@
 export const START_LOADING = 'START_LOADING';
 export const END_LOADING = 'END_LOADING';
 export const SET_LOADING = 'SET_LOADING';
+export const SUCCESS_OPEN = 'SUCCESS_OPEN';
+export const SUCCESS_CLOSE = 'SUCCESS_CLOSE';
+export const ERROR_OPEN = 'ERROR_OPEN';
+export const ERROR_CLOSE = 'ERROR_CLOSE';
 export const UNSET_LOADING = 'UNSET_LOADING';
 export const SET_SUCCESS_MESSAGE = 'SET_SUCCESS_MESSAGE';
 export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';

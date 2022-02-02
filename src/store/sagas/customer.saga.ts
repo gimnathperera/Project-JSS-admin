@@ -11,7 +11,8 @@ import {
   SET_CURRENT_CUSTOMER,
   DELETE_CUSTOMER,
   ADD_CUSTOMER,
-  UPDATE_CUSTOMER
+  UPDATE_CUSTOMER,
+  SET_SUCCESS_MESSAGE
 } from '../../constants/common-constant';
 import {
   fetchCustomerListApi,
@@ -94,12 +95,14 @@ export function* createCustomer({
     const newWorker = yield call(createCustomerApi, payload);
 
     if (newWorker.data) {
+      const message = 'Customer created successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
       yield put({ type: FETCH_CUSTOMER_LIST });
     }
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Worker add failed';
+    const message = 'Customer adding failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }
@@ -115,12 +118,15 @@ export function* updateCustomer({
     yield put({ type: START_LOADING });
 
     const response = yield call(updateCustomerApi, payload);
-
-    yield put({ type: SET_CURRENT_CUSTOMER, payload: response.data.data });
+    if (response?.data) {
+      yield put({ type: SET_CURRENT_CUSTOMER, payload: response.data.data });
+      const message = 'Customer updated successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
+    }
 
     yield put({ type: END_LOADING });
   } catch (error) {
-    const message = 'Customer add failed';
+    const message = 'Customer updating failed';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
     yield put({ type: END_LOADING });
   }

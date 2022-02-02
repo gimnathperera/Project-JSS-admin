@@ -137,16 +137,12 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                 >
                   <TextField
                     error={Boolean(
-                      touched?.job_workers &&
-                        touched?.job_workers[index]?.start_time &&
-                        errors?.job_workers &&
-                        errors?.job_workers[index]?.start_time
+                      touched?.job_workers?.[index]?.start_time &&
+                        errors?.job_workers?.[index]?.start_time
                     )}
                     helperText={
-                      touched?.job_workers &&
-                      touched?.job_workers[index]?.start_time &&
-                      errors?.job_workers &&
-                      errors?.job_workers[index]?.start_time
+                      touched?.job_workers?.[index]?.start_time &&
+                      errors?.job_workers?.[index]?.start_time
                     }
                     label="Start Time"
                     type="time"
@@ -161,16 +157,12 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
                   />
                   <TextField
                     error={Boolean(
-                      touched?.job_workers &&
-                        touched?.job_workers[index]?.end_time &&
-                        errors?.job_workers &&
-                        errors?.job_workers[index]?.end_time
+                      touched?.job_workers?.[index]?.end_time &&
+                        errors?.job_workers?.[index]?.end_time
                     )}
                     helperText={
-                      touched?.job_workers &&
-                      touched?.job_workers[index]?.end_time &&
-                      errors?.job_workers &&
-                      errors?.job_workers[index]?.end_time
+                      touched?.job_workers?.[index]?.end_time &&
+                      errors?.job_workers?.[index]?.end_time
                     }
                     label="End Time"
                     type="time"
