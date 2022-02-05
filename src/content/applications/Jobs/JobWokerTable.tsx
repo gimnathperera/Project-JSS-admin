@@ -4,16 +4,15 @@ import {
   Divider,
   Box,
   Card,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   useTheme,
-  Tooltip,
   Typography,
   TablePagination,
-  IconButton
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
@@ -79,7 +78,7 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
   return (
     <Card>
       <Divider />
-      <>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -184,7 +183,7 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
             })}
           </TableBody>
         </Table>
-      </>
+      </TableContainer>
       <Box p={2}>
         <TablePagination
           component="div"

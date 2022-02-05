@@ -6,6 +6,7 @@ import {
   Box,
   Card,
   IconButton,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
@@ -79,7 +80,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
   return (
     <Card>
       <Divider />
-      <>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -178,7 +179,7 @@ const CompanySiteTable: FC<RecentOrdersTableProps> = () => {
             })}
           </TableBody>
         </Table>
-      </>
+      </TableContainer>
       <Box p={2}>
         <TablePagination
           component="div"

@@ -10,6 +10,7 @@ import {
   Card,
   Checkbox,
   IconButton,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
@@ -205,7 +206,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
         />
       )}
       <Divider />
-      <>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -408,7 +409,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
             })}
           </TableBody>
         </Table>
-      </>
+      </TableContainer>
       <Box p={2}>
         <TablePagination
           component="div"

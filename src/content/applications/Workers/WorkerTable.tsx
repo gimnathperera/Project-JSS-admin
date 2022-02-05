@@ -21,6 +21,7 @@ import {
   Typography,
   useTheme,
   CardHeader,
+  TableContainer,
   Button
 } from '@mui/material';
 import { CircularProgress } from '@mui/material';
@@ -204,7 +205,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
         />
       )}
       <Divider />
-      <>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -389,7 +390,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
             })}
           </TableBody>
         </Table>
-      </>
+      </TableContainer>
       <Box p={2}>
         <TablePagination
           component="div"

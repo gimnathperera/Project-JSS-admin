@@ -8,6 +8,7 @@ import {
   Card,
   Checkbox,
   IconButton,
+  TableContainer,
   Table,
   TableBody,
   TableCell,
@@ -200,7 +201,7 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
         />
       )}
       <Divider />
-      <>
+      <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
@@ -347,7 +348,7 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
             })}
           </TableBody>
         </Table>
-      </>
+      </TableContainer>
       <Box p={2}>
         <TablePagination
           component="div"
