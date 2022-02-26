@@ -12,6 +12,7 @@ import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import moment from 'moment';
 
 import { createJobWorkers } from 'src/store/actions/job.actions';
 import { fetchWorkerList } from 'src/store/actions/worker.actions';
@@ -19,9 +20,16 @@ import { fetchWorkerList } from 'src/store/actions/worker.actions';
 interface AddWorkerToJobFormProps {
   onSuccess(): any;
   jobID: string;
+  startDate: string;
+  endDate: string;
 }
 
-const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
+const AddWorkerToJobForm = ({
+  onSuccess,
+  jobID,
+  startDate,
+  endDate
+}: AddWorkerToJobFormProps) => {
   const dispatch = useDispatch();
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
   const [workerCount, setWorkerCount] = useState<number>(1);
@@ -37,17 +45,20 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
       {
         worker_id: '',
         start_time: '',
-        end_time: ''
+        end_time: '',
+        start_date: startDate,
+        end_date: endDate
       }
     ]
   };
-
   const assignWorkerSchema = Yup.object({
     job_workers: Yup.array().of(
       Yup.object().shape({
         worker_id: Yup.string().required('Worker required'),
         start_time: Yup.string().required('Start time required'),
-        end_time: Yup.string().required('End time required')
+        end_time: Yup.string().required('End time required'),
+        start_date: Yup.string().required('Start date required'),
+        end_date: Yup.string().required('End date required')
       })
     )
   });
@@ -57,6 +68,7 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
       job_id: jobID,
       job_workers
     };
+
     dispatch(createJobWorkers(payLoad));
     onSuccess();
   };
@@ -79,118 +91,184 @@ const AddWorkerToJobForm = ({ onSuccess, jobID }: AddWorkerToJobFormProps) => {
     );
   };
 
+  console.log('>>>>x', startDate);
   const renderMoreWorker = (
     errors: any,
     handleBlur: any,
     handleChange: any,
     touched: any,
     values: any
-  ): JSX.Element => (
-    <FieldArray
-      name="job_workers"
-      render={(helpers) => (
-        <>
-          {Array.from({ length: workerCount }, (item, index) => (
-            <Card key={index} sx={{ margin: '15px 0px' }}>
-              <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography
-                    variant="h4"
-                    sx={{ display: 'flex', alignItems: 'center' }}
+  ): JSX.Element => {
+    console.log(values);
+    return (
+      <FieldArray
+        name="job_workers"
+        render={(helpers) => (
+          <>
+            {Array.from({ length: workerCount }, (item, index) => (
+              <Card key={index} sx={{ margin: '15px 0px' }}>
+                <CardContent>
+                  <Box
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
                   >
-                    Worker #{index + 1}
-                  </Typography>
-                  <IconButton onClick={removeWorker} size="small">
-                    ❌
-                  </IconButton>
-                </Box>
+                    <Typography
+                      variant="h4"
+                      sx={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      Worker #{index + 1}
+                    </Typography>
+                    <IconButton onClick={removeWorker} size="small">
+                      ❌
+                    </IconButton>
+                  </Box>
 
-                <TextField
-                  error={Boolean(
-                    touched?.job_workers &&
+                  <TextField
+                    error={Boolean(
+                      touched?.job_workers &&
+                        touched?.job_workers[index]?.worker_id &&
+                        errors?.job_workers &&
+                        errors?.job_workers[index]?.worker_id
+                    )}
+                    fullWidth
+                    helperText={
+                      touched?.job_workers &&
                       touched?.job_workers[index]?.worker_id &&
                       errors?.job_workers &&
                       errors?.job_workers[index]?.worker_id
-                  )}
-                  fullWidth
-                  helperText={
-                    touched?.job_workers &&
-                    touched?.job_workers[index]?.worker_id &&
-                    errors?.job_workers &&
-                    errors?.job_workers[index]?.worker_id
-                  }
-                  select
-                  label="Worker"
-                  margin="normal"
-                  name={`job_workers.${index}.worker_id`}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  type="text"
-                  variant="outlined"
-                >
-                  {renderWorkerList()}
-                </TextField>
+                    }
+                    select
+                    label="Worker"
+                    margin="normal"
+                    name={`job_workers.${index}.worker_id`}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    type="text"
+                    variant="outlined"
+                  >
+                    {renderWorkerList()}
+                  </TextField>
 
-                <Box
-                  display="flex"
-                  sx={{ justifyContent: 'space-between', paddingTop: '10px' }}
-                >
-                  <TextField
-                    error={Boolean(
-                      touched?.job_workers?.[index]?.start_time &&
+                  <Box
+                    display="flex"
+                    sx={{
+                      justifyContent: 'space-between',
+                      paddingTop: '10px',
+                      columnGap: '10px'
+                    }}
+                  >
+                    <TextField
+                      error={Boolean(
+                        touched?.job_workers?.[index]?.start_date &&
+                          errors?.job_workers?.[index]?.start_date
+                      )}
+                      helperText={
+                        touched?.job_workers?.[index]?.start_date &&
+                        errors?.job_workers?.[index]?.start_date
+                      }
+                      label="Start Date"
+                      type="date"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      sx={{ width: '50%' }}
+                      name={`job_workers.${index}.start_date`}
+                      inputProps={{
+                        min: startDate,
+                        max: endDate
+                      }}
+                      value={values?.job_workers[index]?.start_date}
+                    />
+
+                    <TextField
+                      error={Boolean(
+                        touched?.job_workers?.[index]?.start_time &&
+                          errors?.job_workers?.[index]?.start_time
+                      )}
+                      helperText={
+                        touched?.job_workers?.[index]?.start_time &&
                         errors?.job_workers?.[index]?.start_time
-                    )}
-                    helperText={
-                      touched?.job_workers?.[index]?.start_time &&
-                      errors?.job_workers?.[index]?.start_time
-                    }
-                    label="Start Time"
-                    type="time"
-                    defaultValue="00:00"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    InputLabelProps={{
-                      shrink: true
+                      }
+                      label="Start Time"
+                      type="time"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      sx={{ width: '50%' }}
+                      name={`job_workers.${index}.start_time`}
+                    />
+                  </Box>
+                  <Box
+                    display="flex"
+                    sx={{
+                      justifyContent: 'space-between',
+                      paddingTop: '10px',
+                      columnGap: '10px'
                     }}
-                    sx={{ width: '45%' }}
-                    name={`job_workers.${index}.start_time`}
-                  />
-                  <TextField
-                    error={Boolean(
-                      touched?.job_workers?.[index]?.end_time &&
+                  >
+                    <TextField
+                      error={Boolean(
+                        touched?.job_workers?.[index]?.end_date &&
+                          errors?.job_workers?.[index]?.end_date
+                      )}
+                      helperText={
+                        touched?.job_workers?.[index]?.end_date &&
+                        errors?.job_workers?.[index]?.end_date
+                      }
+                      label="End Date"
+                      type="date"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      sx={{ width: '50%' }}
+                      name={`job_workers.${index}.end_date`}
+                      inputProps={{
+                        min: startDate,
+                        max: endDate
+                      }}
+                      value={values?.job_workers[index]?.end_date}
+                    />
+                    <TextField
+                      error={Boolean(
+                        touched?.job_workers?.[index]?.end_time &&
+                          errors?.job_workers?.[index]?.end_time
+                      )}
+                      helperText={
+                        touched?.job_workers?.[index]?.end_time &&
                         errors?.job_workers?.[index]?.end_time
-                    )}
-                    helperText={
-                      touched?.job_workers?.[index]?.end_time &&
-                      errors?.job_workers?.[index]?.end_time
-                    }
-                    label="End Time"
-                    type="time"
-                    defaultValue="00:00"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    InputLabelProps={{
-                      shrink: true
-                    }}
-                    sx={{ width: '45%' }}
-                    name={`job_workers.${index}.end_time`}
-                  />
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
+                      }
+                      label="End Time"
+                      type="time"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      sx={{ width: '50%' }}
+                      name={`job_workers.${index}.end_time`}
+                    />
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
 
-          <Button
-            onClick={increaseWorkerCount}
-            color="primary"
-            variant="outlined"
-          >
-            Add more
-          </Button>
-        </>
-      )}
-    />
-  );
+            <Button
+              onClick={increaseWorkerCount}
+              color="primary"
+              variant="outlined"
+            >
+              Add more
+            </Button>
+          </>
+        )}
+      />
+    );
+  };
 
   return (
     <Box

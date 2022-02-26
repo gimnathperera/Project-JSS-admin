@@ -4,7 +4,6 @@ import {
   Typography,
   Card,
   Tooltip,
-  Avatar,
   CardMedia,
   Button,
   IconButton,
@@ -18,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import { formatDate } from 'src/common/functions';
 
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
@@ -397,7 +397,12 @@ const JobEditTab = ({ _job }: any) => {
         isOpen={isAddWorker}
         handleClose={handleModalClose}
         content={
-          <AddWorkerToJobForm onSuccess={handleModalClose} jobID={_job?.id} />
+          <AddWorkerToJobForm
+            onSuccess={handleModalClose}
+            jobID={_job?.id}
+            startDate={formatDate(_job?.start_date)}
+            endDate={formatDate(_job?.end_date)}
+          />
         }
         modalHeader={'Assign Workers'}
         modalDescription={

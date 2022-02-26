@@ -12,12 +12,13 @@ import {
   TableRow,
   useTheme,
   Typography,
-  TablePagination,
+  TablePagination
 } from '@mui/material';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
 import Modal from 'src/components/Modal';
 import Label from 'src/components/Label';
+import moment from 'moment';
 
 interface RecentOrdersTableProps {}
 
@@ -88,6 +89,7 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
               <TableCell align="center">Assign Alias</TableCell>
               <TableCell align="center">Certification Exp</TableCell>
               <TableCell align="center">Time Duration</TableCell>
+              <TableCell align="center">Working Dates</TableCell>
               <TableCell align="center">Status</TableCell>
             </TableRow>
           </TableHead>
@@ -172,6 +174,26 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
                       noWrap
                     >
                       {site?.end_time || '-'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {moment(site?.start_date).format('YYYY-MM-DD') || '-'}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {moment(site?.end_date).format('YYYY-MM-DD') || '-'}
                     </Typography>
                   </TableCell>
 

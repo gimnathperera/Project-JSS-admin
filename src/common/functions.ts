@@ -36,3 +36,9 @@ export const stringAvatar = (name: string) => {
     children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
   };
 };
+
+export const formatDate = (date: string) => {
+  let _date = date?.replaceAll('-', '/');
+
+  return moment(_date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+};

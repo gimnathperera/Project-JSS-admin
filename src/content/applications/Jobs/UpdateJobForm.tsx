@@ -122,7 +122,7 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 type="text"
                 value={values.name}
                 variant="outlined"
-                disabled
+                
               />
               <TextField
                 error={Boolean(touched.type_id && errors.type_id)}
@@ -136,7 +136,6 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 onChange={handleChange}
                 value={values.type_id}
                 variant="outlined"
-                disabled
               >
                 <MenuItem value={'1'}>Full time</MenuItem>
                 <MenuItem value={'2'}>Part time</MenuItem>
@@ -172,7 +171,6 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 }}
                 value={values.company_id}
                 variant="outlined"
-                disabled
               >
                 {renderCompanyList()}
               </TextField>
@@ -189,7 +187,6 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 onChange={handleChange}
                 value={values.site_id}
                 variant="outlined"
-                disabled
               >
                 {renderCompanySiteList()}
               </TextField>
@@ -209,7 +206,6 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 InputLabelProps={{
                   shrink: true
                 }}
-                disabled
               />
               <TextField
                 error={Boolean(touched.end_date && errors.end_date)}
@@ -226,7 +222,6 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 InputLabelProps={{
                   shrink: true
                 }}
-                disabled
               />
               <Box sx={{ py: 2, display: 'flex', justifyContent: 'center' }}>
                 {loading ? (
