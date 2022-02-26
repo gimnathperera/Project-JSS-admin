@@ -1,7 +1,7 @@
 import { Card, Box, Typography } from '@mui/material';
 
 import CustomersBackgroundImage from '../../assets/images/customers.svg';
-function WatchListColumn1() {
+function WatchListColumn1({ count }) {
   return (
     <Card
       sx={{
@@ -50,7 +50,7 @@ function WatchListColumn1() {
               fontWeight: '600'
             }}
           >
-            10
+            {count || '-'}
           </Typography>
         </Box>
         <Box

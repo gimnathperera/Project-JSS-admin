@@ -65,3 +65,13 @@ export const createJobWorkersApi = async (payload: any) => {
     throw error;
   }
 };
+
+export const fetchDashboardDataApi = async () => {
+  try {
+    const response = await request('GET', `/dashboard`);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -3,7 +3,7 @@ import { Card, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import TodayBackgroundImage from '../../assets/images/today.svg';
 
-function WatchListColumn3() {
+function WatchListColumn3({ count }) {
   return (
     <Card
       sx={{
@@ -52,7 +52,7 @@ function WatchListColumn3() {
               fontWeight: '600'
             }}
           >
-            27
+            {count || '-'}
           </Typography>
         </Box>
         <Box

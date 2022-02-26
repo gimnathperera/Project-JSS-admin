@@ -22,7 +22,12 @@ const AvatarPrimary = styled(Avatar)(
 `
 );
 
-function RecentActivity() {
+function RecentActivity({
+  totalJobs,
+  completedJobs,
+  registeredEmployees,
+  newEmployees
+}) {
   const theme = useTheme();
 
   return (
@@ -43,7 +48,9 @@ function RecentActivity() {
 
           <Box pt={2} display="flex">
             <Box sx={{ width: '100%', textAlign: 'center' }}>
-              <Typography variant="h2">485</Typography>
+              <Typography variant="h2">
+                {totalJobs == null ? '-' : totalJobs}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -64,7 +71,9 @@ function RecentActivity() {
 
           <Box pt={2} display="flex">
             <Box sx={{ width: '100%', textAlign: 'center' }}>
-              <Typography variant="h2">64</Typography>
+              <Typography variant="h2">
+                {completedJobs == null ? '-' : completedJobs}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -85,7 +94,7 @@ function RecentActivity() {
 
           <Box pt={2} display="flex">
             <Box sx={{ width: '100%', textAlign: 'center' }}>
-              <Typography variant="h2">654</Typography>
+              <Typography variant="h2">{registeredEmployees || '-'}</Typography>
             </Box>
           </Box>
         </Box>
@@ -101,12 +110,12 @@ function RecentActivity() {
             color="#9FA2B4"
             sx={{ fontSize: '16px', textAlign: 'center', fontWeight: '600' }}
           >
-            New
+            New Employees
           </Typography>
 
           <Box pt={2} display="flex">
             <Box sx={{ width: '100%', textAlign: 'center' }}>
-              <Typography variant="h2">64</Typography>
+              <Typography variant="h2">{newEmployees || '-'}</Typography>
             </Box>
           </Box>
         </Box>

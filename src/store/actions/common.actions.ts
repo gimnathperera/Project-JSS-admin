@@ -7,7 +7,8 @@ import {
   SUCCESS_OPEN,
   SUCCESS_CLOSE,
   ERROR_OPEN,
-  ERROR_CLOSE
+  ERROR_CLOSE,
+  FETCH_DASHBOARD_DATA
 } from './../../constants/common-constant';
 
 export function successOpen() {
@@ -53,6 +54,10 @@ export const userLogout = () => {
     type: CLEAR_REDUX_STORE
   };
 };
+
+export const fetchDashboardData = () => ({
+  type: FETCH_DASHBOARD_DATA
+});
 
 export function startLoading() {
   return {
