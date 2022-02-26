@@ -1,8 +1,12 @@
-import { SET_JOB_WOKER_LIST } from '../../constants/common-constant';
+import {
+  SET_JOB_WOKER_LIST,
+  SET_AVAILABLE_WORKER_LIST
+} from '../../constants/common-constant';
 
 const INITIAL_STATE = {
   list: [],
-  currentJobWorker: {}
+  currentJobWorker: {},
+  availableList: []
 };
 
 const jobWorkerReducer = (state = INITIAL_STATE, action: any) => {
@@ -11,6 +15,11 @@ const jobWorkerReducer = (state = INITIAL_STATE, action: any) => {
       return {
         ...state,
         list: action.payload
+      };
+    case SET_AVAILABLE_WORKER_LIST:
+      return {
+        ...state,
+        availableList: action.payload
       };
 
     default:

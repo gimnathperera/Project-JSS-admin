@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import moment from 'moment';
 
 import { createJobWorkers } from 'src/store/actions/job.actions';
-import { fetchWorkerList } from 'src/store/actions/worker.actions';
+import { fetchAvailableWorkerList } from 'src/store/actions/worker.actions';
 
 interface AddWorkerToJobFormProps {
   onSuccess(): any;
@@ -34,10 +34,12 @@ const AddWorkerToJobForm = ({
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
   const [workerCount, setWorkerCount] = useState<number>(1);
 
-  const workerList = useSelector(({ worker }: RootStateOrAny) => worker.list);
+  const workerList = useSelector(
+    ({ jobWorker }: RootStateOrAny) => jobWorker.availableList
+  );
 
   useEffect(() => {
-    dispatch(fetchWorkerList());
+    dispatch(fetchAvailableWorkerList(jobID));
   }, []);
 
   const initialFormValues = {
@@ -91,7 +93,6 @@ const AddWorkerToJobForm = ({
     );
   };
 
-  console.log('>>>>x', startDate);
   const renderMoreWorker = (
     errors: any,
     handleBlur: any,

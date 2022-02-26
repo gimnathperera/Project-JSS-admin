@@ -4,6 +4,8 @@ import _ from 'lodash';
 import {
   FETCH_WORKER_LIST,
   FETCH_WORKER_BY_ID,
+  FETCH_AVAILABLE_WORKER_LIST,
+  SET_AVAILABLE_WORKER_LIST,
   START_LOADING,
   END_LOADING,
   SET_ERROR_MESSAGE,
@@ -19,7 +21,8 @@ import {
   fetchWorkerByIdApi,
   createWokerApi,
   deleteWorkerApi,
-  updateWokerApi
+  updateWokerApi,
+  fetchAvailableWorkerListApi
 } from '../../apis/worker.api';
 
 export function* fetchWorkerList(): any {
@@ -29,6 +32,25 @@ export function* fetchWorkerList(): any {
     const response = yield call(fetchWorkerListApi);
 
     yield put({ type: SET_WORKER_LIST, payload: response.data.data });
+
+    yield put({ type: END_LOADING });
+  } catch (error) {
+    yield put({ type: END_LOADING });
+    const message = 'Something went wrong. Please try again';
+    yield put({ type: SET_ERROR_MESSAGE, payload: message });
+  }
+}
+export function* fetchAvailableWorkerList({
+  payload
+}: {
+  type: typeof FETCH_AVAILABLE_WORKER_LIST;
+  payload: any;
+}): any {
+  try {
+    yield put({ type: START_LOADING });
+
+    const response = yield call(fetchAvailableWorkerListApi, payload);
+    yield put({ type: SET_AVAILABLE_WORKER_LIST, payload: response.data.data });
 
     yield put({ type: END_LOADING });
   } catch (error) {
@@ -136,6 +158,7 @@ export function* updateWorker({
 
 function* workerSaga() {
   yield takeEvery(FETCH_WORKER_LIST, fetchWorkerList);
+  yield takeEvery(FETCH_AVAILABLE_WORKER_LIST, fetchAvailableWorkerList);
   yield takeEvery(FETCH_WORKER_BY_ID, fetchWorkerById);
   yield takeEvery(DELETE_WORKER, deleteWorker);
   yield takeEvery(ADD_WORKER, createWorker);

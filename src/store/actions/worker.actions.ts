@@ -1,5 +1,6 @@
 import {
   FETCH_WORKER_LIST,
+  FETCH_AVAILABLE_WORKER_LIST,
   FETCH_WORKER_BY_ID,
   ADD_WORKER,
   DELETE_WORKER,
@@ -8,6 +9,11 @@ import {
 
 export const fetchWorkerList = () => ({
   type: FETCH_WORKER_LIST
+});
+
+export const fetchAvailableWorkerList = (payload: any) => ({
+  type: FETCH_AVAILABLE_WORKER_LIST,
+  payload: payload
 });
 
 export const createWorker = (payload: any) => ({
