@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import { Formik, Form, FieldArray, Field } from 'formik';
+import { Formik, Form, FieldArray } from 'formik';
 import * as Yup from 'yup';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,7 +12,7 @@ import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import moment from 'moment';
+import _ from 'lodash';
 
 import { createJobWorkers } from 'src/store/actions/job.actions';
 import { fetchAvailableWorkerList } from 'src/store/actions/worker.actions';
@@ -33,26 +33,35 @@ const AddWorkerToJobForm = ({
   const dispatch = useDispatch();
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
   const [workerCount, setWorkerCount] = useState<number>(1);
-
   const workerList = useSelector(
     ({ jobWorker }: RootStateOrAny) => jobWorker.availableList
   );
-
+  const existingWorkers = useSelector(
+    ({ jobWorker }: RootStateOrAny) => jobWorker.list
+  );
   useEffect(() => {
     dispatch(fetchAvailableWorkerList(jobID));
   }, []);
 
+  useEffect(() => {
+    existingWorkers.length > 0 && setWorkerCount(existingWorkers.length);
+  }, [existingWorkers]);
+
   const initialFormValues = {
-    job_workers: [
-      {
-        worker_id: '',
-        start_time: '',
-        end_time: '',
-        start_date: startDate,
-        end_date: endDate
-      }
-    ]
+    job_workers:
+      existingWorkers?.length > 0
+        ? existingWorkers
+        : [
+            {
+              worker_id: '',
+              start_time: '',
+              end_time: '',
+              start_date: startDate,
+              end_date: endDate
+            }
+          ]
   };
+
   const assignWorkerSchema = Yup.object({
     job_workers: Yup.array().of(
       Yup.object().shape({
@@ -88,7 +97,9 @@ const AddWorkerToJobForm = ({
     return (
       workerList &&
       workerList?.map((worker) => (
-        <MenuItem value={worker.id}>{worker?.name}</MenuItem>
+        <MenuItem value={worker.id} key={worker.id}>
+          {worker?.name}
+        </MenuItem>
       ))
     );
   };
@@ -100,7 +111,7 @@ const AddWorkerToJobForm = ({
     touched: any,
     values: any
   ): JSX.Element => {
-    console.log(values);
+    console.log('>>Values>>', values);
     return (
       <FieldArray
         name="job_workers"
@@ -145,6 +156,7 @@ const AddWorkerToJobForm = ({
                     onChange={handleChange}
                     type="text"
                     variant="outlined"
+                    value={values?.job_workers[index]?.worker_id}
                   >
                     {renderWorkerList()}
                   </TextField>
@@ -200,6 +212,7 @@ const AddWorkerToJobForm = ({
                       }}
                       sx={{ width: '50%' }}
                       name={`job_workers.${index}.start_time`}
+                      value={values?.job_workers[index]?.start_time}
                     />
                   </Box>
                   <Box
@@ -252,6 +265,7 @@ const AddWorkerToJobForm = ({
                       }}
                       sx={{ width: '50%' }}
                       name={`job_workers.${index}.end_time`}
+                      value={values?.job_workers[index]?.end_time}
                     />
                   </Box>
                 </CardContent>
@@ -287,6 +301,7 @@ const AddWorkerToJobForm = ({
           onSubmit={(values) => {
             onSubmitWorker(values);
           }}
+          enableReinitialize
         >
           {({ errors, handleBlur, handleChange, touched, values }) => {
             return (
