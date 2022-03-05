@@ -55,7 +55,8 @@ export function* fetchAvailableWorkerList({
     yield put({ type: END_LOADING });
   } catch (error) {
     yield put({ type: END_LOADING });
-    const message = 'Something went wrong. Please try again';
+    const message =
+      error?.response?.data?.msg || 'Something went wrong. Please try again';
     yield put({ type: SET_ERROR_MESSAGE, payload: message });
   }
 }

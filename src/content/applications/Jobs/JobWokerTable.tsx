@@ -75,7 +75,6 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
     setIsEditCompanySite(true);
   };
 
-  const theme = useTheme();
   return (
     <Card>
       <Divider />
@@ -184,7 +183,7 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
                       gutterBottom
                       noWrap
                     >
-                      {moment(site?.start_date).format('YYYY-MM-DD') || '-'}
+                      {site?.start_date || '-'}
                     </Typography>
                     <Typography
                       variant="body1"
@@ -193,7 +192,7 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
                       gutterBottom
                       noWrap
                     >
-                      {moment(site?.end_date).format('YYYY-MM-DD') || '-'}
+                      {site?.end_date || '-'}
                     </Typography>
                   </TableCell>
 

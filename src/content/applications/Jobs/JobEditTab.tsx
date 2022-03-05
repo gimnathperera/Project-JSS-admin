@@ -400,8 +400,8 @@ const JobEditTab = ({ _job }: any) => {
           <AddWorkerToJobForm
             onSuccess={handleModalClose}
             jobID={_job?.id}
-            startDate={formatDate(_job?.start_date)}
-            endDate={formatDate(_job?.end_date)}
+            startDate={_job?.start_date}
+            endDate={_job?.end_date}
           />
         }
         modalHeader={'Assign Workers'}

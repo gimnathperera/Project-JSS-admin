@@ -61,7 +61,7 @@ const AddWorkerToJobForm = ({
             }
           ]
   };
-
+  console.log(startDate, endDate);
   const assignWorkerSchema = Yup.object({
     job_workers: Yup.array().of(
       Yup.object().shape({
