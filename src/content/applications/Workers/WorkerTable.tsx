@@ -209,14 +209,14 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
+              {/* <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
                   indeterminate={selectedSomeWorkers}
                   onChange={handleSelectAllCryptoOrders}
                 />
-              </TableCell>
+              </TableCell> */}
               <TableCell align="center">Worker Details</TableCell>
               <TableCell align="center">Employee Number</TableCell>
               <TableCell align="center">Assign Alias</TableCell>
@@ -235,7 +235,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
 
               return (
                 <TableRow hover key={worker.id} selected={isWorkerSelected}>
-                  <TableCell padding="checkbox" align="right">
+                  {/* <TableCell padding="checkbox" align="right">
                     <Checkbox
                       color="primary"
                       checked={isWorkerSelected}
@@ -244,7 +244,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       }
                       value={isWorkerSelected}
                     />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align="center">
                     <Box
                       sx={{

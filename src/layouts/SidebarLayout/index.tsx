@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { useSelector, useDispatch, RootStateOrAny } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { styled } from '@mui/material/styles';

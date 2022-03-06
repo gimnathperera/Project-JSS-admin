@@ -211,14 +211,14 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
-                <Checkbox
+                {/* <Checkbox
                   color="primary"
                   checked={selectedAllCryptoOrders}
                   indeterminate={selectedSomeCustomers}
                   onChange={handleSelectAllCryptoOrders}
-                />
+                /> */}
               </TableCell>
-              <TableCell align="center"></TableCell>
+              <TableCell align="center">#</TableCell>
               <TableCell align="center">Customer Details</TableCell>
               <TableCell align="center">Contact Name</TableCell>
               <TableCell align="center">Primary Contact</TableCell>
@@ -238,14 +238,14 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
               return (
                 <TableRow hover key={customer?.id} selected={isWorkerSelected}>
                   <TableCell padding="checkbox" align="right">
-                    <Checkbox
+                    {/* <Checkbox
                       color="primary"
                       checked={isWorkerSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
                         handleSelectOneCryptoOrder(event, customer?.id)
                       }
                       value={isWorkerSelected}
-                    />
+                    /> */}
                   </TableCell>
                   <TableCell padding="checkbox" align="right">
                     <LogoImage
