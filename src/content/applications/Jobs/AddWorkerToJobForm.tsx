@@ -32,7 +32,6 @@ const AddWorkerToJobForm = ({
 }: AddWorkerToJobFormProps) => {
   const dispatch = useDispatch();
   const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
-  const [workerCount, setWorkerCount] = useState<number>(1);
   const workerList = useSelector(
     ({ jobWorker }: RootStateOrAny) => jobWorker.availableList
   );
@@ -42,10 +41,6 @@ const AddWorkerToJobForm = ({
   useEffect(() => {
     dispatch(fetchAvailableWorkerList(jobID));
   }, []);
-
-  useEffect(() => {
-    existingWorkers.length > 0 && setWorkerCount(existingWorkers.length);
-  }, [existingWorkers]);
 
   const initialFormValues = {
     job_workers:
@@ -61,7 +56,6 @@ const AddWorkerToJobForm = ({
             }
           ]
   };
-  console.log(startDate, endDate);
   const assignWorkerSchema = Yup.object({
     job_workers: Yup.array().of(
       Yup.object().shape({
@@ -84,15 +78,6 @@ const AddWorkerToJobForm = ({
     onSuccess();
   };
 
-  const increaseWorkerCount = () => {
-    setWorkerCount((count) => count + 1);
-  };
-
-  const removeWorker = () => {
-    if (workerCount == 1) return;
-    setWorkerCount((count) => count - 1);
-  };
-
   const renderWorkerList = () => {
     return (
       workerList &&
@@ -111,174 +96,196 @@ const AddWorkerToJobForm = ({
     touched: any,
     values: any
   ): JSX.Element => {
-    console.log('>>Values>>', values);
     return (
       <FieldArray
         name="job_workers"
         render={(helpers) => (
           <>
-            {Array.from({ length: workerCount }, (item, index) => (
-              <Card key={index} sx={{ margin: '15px 0px' }}>
-                <CardContent>
-                  <Box
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}
-                  >
-                    <Typography
-                      variant="h4"
-                      sx={{ display: 'flex', alignItems: 'center' }}
+            {Array.from(
+              { length: values.job_workers.length },
+              (item, index) => (
+                <>
+                  <Card key={index} sx={{ margin: '15px 0px' }}>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <Typography
+                          variant="h4"
+                          sx={{ display: 'flex', alignItems: 'center' }}
+                        >
+                          Worker #{index + 1}
+                        </Typography>
+                        <IconButton
+                          onClick={() => {
+                            values.job_workers.length > 1 &&
+                              helpers.remove(index);
+                          }}
+                          size="small"
+                        >
+                          ❌
+                        </IconButton>
+                      </Box>
+
+                      <TextField
+                        error={Boolean(
+                          touched?.job_workers &&
+                            touched?.job_workers[index]?.worker_id &&
+                            errors?.job_workers &&
+                            errors?.job_workers[index]?.worker_id
+                        )}
+                        fullWidth
+                        helperText={
+                          touched?.job_workers &&
+                          touched?.job_workers[index]?.worker_id &&
+                          errors?.job_workers &&
+                          errors?.job_workers[index]?.worker_id
+                        }
+                        select
+                        label="Worker"
+                        margin="normal"
+                        name={`job_workers.${index}.worker_id`}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        type="text"
+                        variant="outlined"
+                        value={values?.job_workers[index]?.worker_id}
+                      >
+                        {renderWorkerList()}
+                      </TextField>
+
+                      <Box
+                        display="flex"
+                        sx={{
+                          justifyContent: 'space-between',
+                          paddingTop: '10px',
+                          columnGap: '10px'
+                        }}
+                      >
+                        <TextField
+                          error={Boolean(
+                            touched?.job_workers?.[index]?.start_date &&
+                              errors?.job_workers?.[index]?.start_date
+                          )}
+                          helperText={
+                            touched?.job_workers?.[index]?.start_date &&
+                            errors?.job_workers?.[index]?.start_date
+                          }
+                          label="Start Date"
+                          type="date"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
+                          sx={{ width: '50%' }}
+                          name={`job_workers.${index}.start_date`}
+                          inputProps={{
+                            min: startDate,
+                            max: endDate
+                          }}
+                          value={values?.job_workers[index]?.start_date}
+                        />
+
+                        <TextField
+                          error={Boolean(
+                            touched?.job_workers?.[index]?.start_time &&
+                              errors?.job_workers?.[index]?.start_time
+                          )}
+                          helperText={
+                            touched?.job_workers?.[index]?.start_time &&
+                            errors?.job_workers?.[index]?.start_time
+                          }
+                          label="Start Time"
+                          type="time"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
+                          sx={{ width: '50%' }}
+                          name={`job_workers.${index}.start_time`}
+                          value={values?.job_workers[index]?.start_time}
+                        />
+                      </Box>
+                      <Box
+                        display="flex"
+                        sx={{
+                          justifyContent: 'space-between',
+                          paddingTop: '10px',
+                          columnGap: '10px'
+                        }}
+                      >
+                        <TextField
+                          error={Boolean(
+                            touched?.job_workers?.[index]?.end_date &&
+                              errors?.job_workers?.[index]?.end_date
+                          )}
+                          helperText={
+                            touched?.job_workers?.[index]?.end_date &&
+                            errors?.job_workers?.[index]?.end_date
+                          }
+                          label="End Date"
+                          type="date"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
+                          sx={{ width: '50%' }}
+                          name={`job_workers.${index}.end_date`}
+                          inputProps={{
+                            min: startDate,
+                            max: endDate
+                          }}
+                          value={values?.job_workers[index]?.end_date}
+                        />
+                        <TextField
+                          error={Boolean(
+                            touched?.job_workers?.[index]?.end_time &&
+                              errors?.job_workers?.[index]?.end_time
+                          )}
+                          helperText={
+                            touched?.job_workers?.[index]?.end_time &&
+                            errors?.job_workers?.[index]?.end_time
+                          }
+                          label="End Time"
+                          type="time"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          InputLabelProps={{
+                            shrink: true
+                          }}
+                          sx={{ width: '50%' }}
+                          name={`job_workers.${index}.end_time`}
+                          value={values?.job_workers[index]?.end_time}
+                        />
+                      </Box>
+                    </CardContent>
+                  </Card>
+                  <Box display="flex">
+                    <Button
+                      onClick={() =>
+                        helpers.insert(index, {
+                          worker_id: '',
+                          start_time: '',
+                          end_time: '',
+                          start_date: startDate,
+                          end_date: endDate
+                        })
+                      }
+                      color="primary"
+                      variant="outlined"
                     >
-                      Worker #{index + 1}
-                    </Typography>
-                    <IconButton onClick={removeWorker} size="small">
-                      ❌
-                    </IconButton>
+                      Add more
+                    </Button>
                   </Box>
-
-                  <TextField
-                    error={Boolean(
-                      touched?.job_workers &&
-                        touched?.job_workers[index]?.worker_id &&
-                        errors?.job_workers &&
-                        errors?.job_workers[index]?.worker_id
-                    )}
-                    fullWidth
-                    helperText={
-                      touched?.job_workers &&
-                      touched?.job_workers[index]?.worker_id &&
-                      errors?.job_workers &&
-                      errors?.job_workers[index]?.worker_id
-                    }
-                    select
-                    label="Worker"
-                    margin="normal"
-                    name={`job_workers.${index}.worker_id`}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    type="text"
-                    variant="outlined"
-                    value={values?.job_workers[index]?.worker_id}
-                  >
-                    {renderWorkerList()}
-                  </TextField>
-
-                  <Box
-                    display="flex"
-                    sx={{
-                      justifyContent: 'space-between',
-                      paddingTop: '10px',
-                      columnGap: '10px'
-                    }}
-                  >
-                    <TextField
-                      error={Boolean(
-                        touched?.job_workers?.[index]?.start_date &&
-                          errors?.job_workers?.[index]?.start_date
-                      )}
-                      helperText={
-                        touched?.job_workers?.[index]?.start_date &&
-                        errors?.job_workers?.[index]?.start_date
-                      }
-                      label="Start Date"
-                      type="date"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      sx={{ width: '50%' }}
-                      name={`job_workers.${index}.start_date`}
-                      inputProps={{
-                        min: startDate,
-                        max: endDate
-                      }}
-                      value={values?.job_workers[index]?.start_date}
-                    />
-
-                    <TextField
-                      error={Boolean(
-                        touched?.job_workers?.[index]?.start_time &&
-                          errors?.job_workers?.[index]?.start_time
-                      )}
-                      helperText={
-                        touched?.job_workers?.[index]?.start_time &&
-                        errors?.job_workers?.[index]?.start_time
-                      }
-                      label="Start Time"
-                      type="time"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      sx={{ width: '50%' }}
-                      name={`job_workers.${index}.start_time`}
-                      value={values?.job_workers[index]?.start_time}
-                    />
-                  </Box>
-                  <Box
-                    display="flex"
-                    sx={{
-                      justifyContent: 'space-between',
-                      paddingTop: '10px',
-                      columnGap: '10px'
-                    }}
-                  >
-                    <TextField
-                      error={Boolean(
-                        touched?.job_workers?.[index]?.end_date &&
-                          errors?.job_workers?.[index]?.end_date
-                      )}
-                      helperText={
-                        touched?.job_workers?.[index]?.end_date &&
-                        errors?.job_workers?.[index]?.end_date
-                      }
-                      label="End Date"
-                      type="date"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      sx={{ width: '50%' }}
-                      name={`job_workers.${index}.end_date`}
-                      inputProps={{
-                        min: startDate,
-                        max: endDate
-                      }}
-                      value={values?.job_workers[index]?.end_date}
-                    />
-                    <TextField
-                      error={Boolean(
-                        touched?.job_workers?.[index]?.end_time &&
-                          errors?.job_workers?.[index]?.end_time
-                      )}
-                      helperText={
-                        touched?.job_workers?.[index]?.end_time &&
-                        errors?.job_workers?.[index]?.end_time
-                      }
-                      label="End Time"
-                      type="time"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      InputLabelProps={{
-                        shrink: true
-                      }}
-                      sx={{ width: '50%' }}
-                      name={`job_workers.${index}.end_time`}
-                      value={values?.job_workers[index]?.end_time}
-                    />
-                  </Box>
-                </CardContent>
-              </Card>
-            ))}
-
-            <Button
-              onClick={increaseWorkerCount}
-              color="primary"
-              variant="outlined"
-            >
-              Add more
-            </Button>
+                </>
+              )
+            )}
           </>
         )}
       />
