@@ -1,7 +1,9 @@
 import moment from 'moment';
+import { DATE_FORMAT } from 'src/constants/common-configurations';
+
 export const getValidDate = (date: string) => {
   let formattedDate = date.split('.').reverse().join('.');
-  return moment(formattedDate).format('YYYY-MM-DD');
+  return moment(formattedDate).format(DATE_FORMAT);
 };
 
 export const clearLocalStorage = () => {
@@ -40,7 +42,7 @@ export const stringAvatar = (name: string) => {
 export const formatDate = (date: string) => {
   let _date = date?.replaceAll('-', '/');
 
-  return moment(_date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+  return moment(_date, 'DD/MM/YYYY').format(DATE_FORMAT);
 };
 
 export const convertTimeValue = (timeString: string) => {

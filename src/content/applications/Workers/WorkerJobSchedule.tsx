@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { fetchLatestJobsByWorker } from '../../../store/actions/job.actions';
 import { convertTimeValue, getWorkingHours } from 'src/common/functions';
+import { DATE_FORMAT } from 'src/constants/common-configurations';
 
 interface JobScheduleProps {
   workerId: string | number;
@@ -117,7 +118,7 @@ const WorkerJobSchedule = ({ workerId }: JobScheduleProps) => {
     dispatch(
       fetchLatestJobsByWorker({
         workerId,
-        jobDate: moment().format('YYYY-MM-DD')
+        jobDate: moment().format(DATE_FORMAT)
       })
     );
   }, []);
@@ -140,7 +141,7 @@ const WorkerJobSchedule = ({ workerId }: JobScheduleProps) => {
                     <Typography sx={style.jobTxt}>
                       Date:{' '}
                       <span style={style.jobSubText}>
-                        {moment().format('YYYY-MM-DD')}
+                        {moment().format(DATE_FORMAT)}
                       </span>
                     </Typography>
                     <Typography sx={style.jobTxt}>
