@@ -75,3 +75,15 @@ export const fetchDashboardDataApi = async () => {
     throw error;
   }
 };
+
+export const fetchLatestJobsByWorkerApi = async ({ workerId, jobDate }) => {
+  try {
+    const response = await request(
+      'GET',
+      `/worker-job?worker_id=${workerId}&date=${jobDate}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -45,7 +45,6 @@ interface Filters {
 const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const loading = useSelector(({ common }: RootStateOrAny) => common.loading);
 
   const [selectedJobs, setSelectedWorkers] = useState<string[]>([]);
   const selectedBulkActions = selectedJobs.length > 0;
@@ -124,25 +123,6 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
     }));
   };
 
-  const handleSelectAllCryptoOrders = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedWorkers(event.target.checked ? jobs.map((job) => job.id) : []);
-  };
-
-  const handleSelectOneCryptoOrder = (
-    event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
-  ): void => {
-    if (!selectedJobs.includes(cryptoOrderId)) {
-      setSelectedWorkers((prevSelected) => [...prevSelected, cryptoOrderId]);
-    } else {
-      setSelectedWorkers((prevSelected) =>
-        prevSelected.filter((id) => id !== cryptoOrderId)
-      );
-    }
-  };
-
   const handlePageChange = (event: any, newPage: number): void => {
     setPage(newPage);
   };
@@ -159,11 +139,6 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
   const filteredJobs = applyFilters(jobs, filters);
 
   const paginatedJobs = applyPagination(filteredJobs, page, limit);
-
-  const selectedSomeJobs =
-    selectedJobs.length > 0 && selectedJobs.length < jobs.length;
-
-  const selectedAllCryptoOrders = selectedJobs.length === jobs.length;
 
   const handleDetailedClick = (jobId: string) => {
     navigate(`/app/job/${jobId}`);

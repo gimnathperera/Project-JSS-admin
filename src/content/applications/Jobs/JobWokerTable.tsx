@@ -10,23 +10,17 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  useTheme,
   Typography,
   TablePagination
 } from '@mui/material';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 
-import Modal from 'src/components/Modal';
 import Label from 'src/components/Label';
-import moment from 'moment';
 
 interface RecentOrdersTableProps {}
 
 const JobWokerTable: FC<RecentOrdersTableProps> = () => {
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [selectedSite, setSelectedSite] = useState<any>({});
-  const [isEditCompanySite, setIsEditCompanySite] = useState<boolean>(false);
 
   const jobWorkerList = useSelector(
     ({ jobWorker }: RootStateOrAny) => jobWorker.list
@@ -65,15 +59,6 @@ const JobWokerTable: FC<RecentOrdersTableProps> = () => {
     setLimit(parseInt(event.target.value));
   };
   const paginatedJobWorkers = applyPagination(jobWorkerList, page, limit);
-
-  const handleModalClose = () => {
-    setIsEditCompanySite(false);
-  };
-
-  const onSiteEdit = (site: any) => {
-    setSelectedSite(site);
-    setIsEditCompanySite(true);
-  };
 
   return (
     <Card>

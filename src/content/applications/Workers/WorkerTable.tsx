@@ -8,7 +8,6 @@ import {
   FormControl,
   InputLabel,
   Card,
-  Checkbox,
   IconButton,
   Table,
   TableBody,
@@ -25,18 +24,20 @@ import {
   Button
 } from '@mui/material';
 import { CircularProgress } from '@mui/material';
-
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import SendIcon from '@mui/icons-material/Send';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import Label from 'src/components/Label';
-
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import BulkActions from './BulkActions';
 import { getValidDate } from 'src/common/functions';
 import { deleteWorker } from '../../../store/actions/worker.actions';
+import Modal from 'src/components/Modal';
+import WorkerJobSchedule from './WorkerJobSchedule';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -60,6 +61,9 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+
+  const [workerId, setWorkerId] = useState(null);
+  const [jobModalOpen, setJobModalOpen] = useState<boolean>(false);
 
   const statusOptions = [
     {
@@ -124,27 +128,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     }));
   };
 
-  const handleSelectAllCryptoOrders = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedWorkers(
-      event.target.checked ? workers.map((worker) => worker.id) : []
-    );
-  };
-
-  const handleSelectOneCryptoOrder = (
-    event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
-  ): void => {
-    if (!selectedWorkers.includes(cryptoOrderId)) {
-      setSelectedWorkers((prevSelected) => [...prevSelected, cryptoOrderId]);
-    } else {
-      setSelectedWorkers((prevSelected) =>
-        prevSelected.filter((id) => id !== cryptoOrderId)
-      );
-    }
-  };
-
   const handlePageChange = (event: any, newPage: number): void => {
     setPage(newPage);
   };
@@ -163,14 +146,18 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
 
   const paginatedWorkers = applyPagination(filteredWorkers, page, limit);
 
-  const selectedSomeWorkers =
-    selectedWorkers.length > 0 && selectedWorkers.length < workers.length;
-
-  const selectedAllCryptoOrders = selectedWorkers.length === workers.length;
   const theme = useTheme();
 
   const handleDetailedClick = (workerId: string) => {
     navigate(`/app/worker/${workerId}`);
+  };
+
+  const handleViewJobAllocations = (workerId: any) => {
+    setWorkerId(workerId);
+    setJobModalOpen(true);
+  };
+  const handleJobModalClose = () => {
+    setJobModalOpen(false);
   };
 
   return (
@@ -209,22 +196,14 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
         <Table>
           <TableHead>
             <TableRow>
-              {/* <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeWorkers}
-                  onChange={handleSelectAllCryptoOrders}
-                />
-              </TableCell> */}
               <TableCell align="center">Worker Details</TableCell>
               <TableCell align="center">Employee Number</TableCell>
+              <TableCell align="center">Job Allocation</TableCell>
               <TableCell align="center">Assign Alias</TableCell>
-              <TableCell align="center">Additional Info</TableCell>
-              <TableCell align="center">Date Of Birth</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="center">Contact Number</TableCell>
               <TableCell align="center">Certification</TableCell>
+              <TableCell align="center">Send Messages</TableCell>
+              <TableCell align="center">Send to "To Do List"</TableCell>
+              <TableCell align="center">Send to "Notifications"</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
@@ -235,16 +214,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
 
               return (
                 <TableRow hover key={worker.id} selected={isWorkerSelected}>
-                  {/* <TableCell padding="checkbox" align="right">
-                    <Checkbox
-                      color="primary"
-                      checked={isWorkerSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, worker.id)
-                      }
-                      value={isWorkerSelected}
-                    />
-                  </TableCell> */}
                   <TableCell align="center">
                     <Box
                       sx={{
@@ -254,7 +223,15 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                         justifyContent: 'center'
                       }}
                     >
-                      <Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          columnGap: '15px',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                      >
                         <Button onClick={() => handleDetailedClick(worker.id)}>
                           <Typography
                             variant="body1"
@@ -276,9 +253,18 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                         >
                           {worker.email}
                         </Typography>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          noWrap
+                          align="left"
+                        >
+                          {worker.contact_number}
+                        </Typography>
                       </Box>
                     </Box>
                   </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -298,51 +284,29 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       gutterBottom
                       noWrap
                     >
+                      <Button
+                        color="info"
+                        variant="contained"
+                        endIcon={<VisibilityIcon />}
+                        onClick={() => handleViewJobAllocations(worker?.id)}
+                      >
+                        View
+                      </Button>
+                    </Typography>
+                  </TableCell>
+
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
                       {worker.assign_alias}
                     </Typography>
                   </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                    >
-                      {worker.additional_info}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {getValidDate(worker.dob)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                    >
-                      {worker.address}
-                    </Typography>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {worker.contact_number}
-                    </Typography>
-                  </TableCell>
+
                   <TableCell align="center">
                     <Typography
                       variant="body1"
@@ -356,6 +320,43 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                     <Typography variant="body2" color="text.secondary" noWrap>
                       {`EXP: ${getValidDate(worker.certificate_expire_date)}`}
                     </Typography>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: '#024DA1' }}
+                      endIcon={<SendIcon />}
+                    >
+                      Send
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      sx={{
+                        backgroundColor: '#F7981C',
+                        '&:hover': {
+                          background: '#f9ae4d'
+                        }
+                      }}
+                      variant="contained"
+                      endIcon={<SendIcon />}
+                    >
+                      Send
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      sx={{
+                        backgroundColor: '#EC193A',
+                        '&:hover': {
+                          background: '#ee314e'
+                        }
+                      }}
+                      endIcon={<SendIcon />}
+                      variant="contained"
+                    >
+                      Send
+                    </Button>
                   </TableCell>
                   <TableCell align="center">
                     {getStatusLabel(worker.status)}
@@ -402,6 +403,15 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
           rowsPerPageOptions={[5, 10, 25, 30]}
         />
       </Box>
+      <Modal
+        isOpen={jobModalOpen}
+        handleClose={handleJobModalClose}
+        content={<WorkerJobSchedule workerId={workerId} />}
+        modalHeader={'Job Allocations'}
+        modalDescription={
+          'The view contains details of the job allocations today available'
+        }
+      />
     </Card>
   );
 };

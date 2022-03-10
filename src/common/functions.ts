@@ -42,3 +42,27 @@ export const formatDate = (date: string) => {
 
   return moment(_date, 'DD/MM/YYYY').format('YYYY-MM-DD');
 };
+
+export const convertTimeValue = (timeString: string) => {
+  const timeString12hr = new Date(
+    '1970-01-01T' + timeString + 'Z'
+  ).toLocaleTimeString('en-US', {
+    timeZone: 'UTC',
+    hour12: true,
+    hour: 'numeric',
+    minute: 'numeric'
+  });
+  return timeString12hr;
+};
+
+export const getWorkingHours = (_startTime, _endTime) => {
+  let startTime = moment(_startTime, 'HH:mm:ss');
+  let endTime = moment(_endTime, 'HH:mm:ss');
+
+  // calculate total duration
+  let duration: any = moment.duration(endTime.diff(startTime));
+  // duration in hours
+  let hours = parseInt(duration.asHours());
+
+  return hours;
+};
