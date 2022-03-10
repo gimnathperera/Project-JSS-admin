@@ -46,7 +46,7 @@ export const SET_CURRENT_COMPANY_SITE = 'SET_CURRENT_COMPANY_SITE';
 export const DELETE_COMPANY_SITE = 'DELETE_COMPANY_SITE';
 export const UPDATE_COMPANY_SITE = 'UPDATE_COMPANY_SITE';
 
-//company job actions
+//job actions
 export const ADD_JOB = 'ADD_JOB';
 export const FETCH_JOB_LIST = 'FETCH_JOB_LIST';
 export const SET_JOB_LIST = 'SET_JOB_LIST';
@@ -54,9 +54,12 @@ export const FETCH_JOB_BY_ID = 'FETCH_JOB_BY_ID';
 export const SET_CURRENT_JOB = 'SET_CURRENT_JOB';
 export const UPDATE_JOB = 'UPDATE_JOB';
 
-//company job-worker actions
+//job-worker actions
 export const FETCH_JOB_WOKER_LIST = 'FETCH_JOB_WOKER_LIST';
 export const SET_JOB_WOKER_LIST = 'SET_JOB_WOKER_LIST';
 export const ADD_JOB_WORKER = 'ADD_JOB_WORKER';
 export const FETCH_LATEST_JOBS_BY_WORKER = 'FETCH_LATEST_JOBS_BY_WORKER';
 export const SET_LATEST_JOBS_BY_WORKER = 'SET_LATEST_JOBS_BY_WORKER';
+
+// message actions
+export const SEND_MESSAGE = 'SEND_MESSAGE';

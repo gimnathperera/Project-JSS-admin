@@ -1,5 +1,4 @@
 import { FC, ChangeEvent, useState } from 'react';
-
 import PropTypes from 'prop-types';
 import {
   Tooltip,
@@ -38,6 +37,7 @@ import { getValidDate } from 'src/common/functions';
 import { deleteWorker } from '../../../store/actions/worker.actions';
 import Modal from 'src/components/Modal';
 import WorkerJobSchedule from './WorkerJobSchedule';
+import Message from 'src/components/Message';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -63,7 +63,9 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   });
 
   const [workerId, setWorkerId] = useState(null);
+  // Modals
   const [jobModalOpen, setJobModalOpen] = useState<boolean>(false);
+  const [messageModalOpen, setMessageModalOpen] = useState<boolean>(false);
 
   const statusOptions = [
     {
@@ -152,12 +154,23 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     navigate(`/app/worker/${workerId}`);
   };
 
+  //  Modal actions
   const handleViewJobAllocations = (workerId: any) => {
     setWorkerId(workerId);
     setJobModalOpen(true);
   };
+
   const handleJobModalClose = () => {
     setJobModalOpen(false);
+  };
+
+  const handleMessageModal = (workerId: any) => {
+    setWorkerId(workerId);
+    setMessageModalOpen(true);
+  };
+
+  const handleMessageModalClose = () => {
+    setMessageModalOpen(false);
   };
 
   return (
@@ -326,6 +339,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       variant="contained"
                       sx={{ backgroundColor: '#024DA1' }}
                       endIcon={<SendIcon />}
+                      onClick={() => handleMessageModal(worker?.id)}
                     >
                       Send
                     </Button>
@@ -411,6 +425,13 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
         modalDescription={
           'The view contains details of the job allocations today available'
         }
+      />
+      <Modal
+        isOpen={messageModalOpen}
+        handleClose={handleMessageModalClose}
+        content={<Message workerId={workerId} messageType={'MESSAGE'} />}
+        modalHeader={'Send Message'}
+        modalDescription={'Send message to the worker'}
       />
     </Card>
   );
