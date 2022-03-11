@@ -8,11 +8,16 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
-import { sendMessage } from 'src/store/actions/msg.action';
+import {
+  sendMessage,
+  sendNotification,
+  sendToDo
+} from 'src/store/actions/msg.action';
+type MessageType = 'MESSAGE' | 'TODO' | 'NOTIFICATION';
 
 interface JobScheduleProps {
   workerId: string | number;
-  messageType: 'MESSAGE' | 'TODO' | 'NOTIFICATION';
+  messageType: MessageType;
 }
 const style: any = {
   jobCard: {
@@ -79,9 +84,17 @@ const WorkerJobSchedule = ({ workerId, messageType }: JobScheduleProps) => {
       setError('Message is required*');
     } else {
       setError('');
-      dispatch(sendMessage({ user_id: workerId, message }));
+      decideSubmitFunction();
       setMessage('');
     }
+  };
+
+  const decideSubmitFunction = () => {
+    messageType == 'MESSAGE'
+      ? dispatch(sendMessage({ user_id: workerId, message }))
+      : messageType == 'NOTIFICATION'
+      ? dispatch(sendNotification({ user_id: workerId, message }))
+      : dispatch(sendToDo({ worker_id: workerId, message }));
   };
 
   return (
@@ -106,7 +119,11 @@ const WorkerJobSchedule = ({ workerId, messageType }: JobScheduleProps) => {
             onClick={handleMessageSend}
             endIcon={<SendIcon />}
           >
-            Send Message
+            {messageType == 'MESSAGE'
+              ? 'Send Message'
+              : messageType === 'NOTIFICATION'
+              ? 'Send Notification'
+              : 'Send To Do'}
           </Button>
           {loading && <CircularProgress size={24} sx={style.buttonSpinner} />}
         </Box>

@@ -63,3 +63,5 @@ export const SET_LATEST_JOBS_BY_WORKER = 'SET_LATEST_JOBS_BY_WORKER';
 
 // message actions
 export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const SEND_NOTIFICATION = 'SEND_NOTIFICATION';
+export const SEND_TO_DO = 'SEND_TO_DO';

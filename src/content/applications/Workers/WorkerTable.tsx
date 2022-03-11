@@ -49,6 +49,8 @@ interface Filters {
   status?: CryptoOrderStatus;
 }
 
+type MessageType = 'MESSAGE' | 'TODO' | 'NOTIFICATION';
+
 const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,6 +67,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const [workerId, setWorkerId] = useState(null);
   // Modals
   const [jobModalOpen, setJobModalOpen] = useState<boolean>(false);
+  const [messageType, setMessageType] = useState<MessageType>('MESSAGE');
   const [messageModalOpen, setMessageModalOpen] = useState<boolean>(false);
 
   const statusOptions = [
@@ -164,8 +167,29 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     setJobModalOpen(false);
   };
 
-  const handleMessageModal = (workerId: any) => {
+  const getModalHeader = (messageType: MessageType) => {
+    if (messageType === 'MESSAGE') {
+      return 'Send Message';
+    } else if (messageType === 'NOTIFICATION') {
+      return 'Send Notification';
+    } else {
+      return 'Send To Do';
+    }
+  };
+
+  const getModalDescription = (messageType: MessageType) => {
+    if (messageType === 'MESSAGE') {
+      return 'Send message to the worker';
+    } else if (messageType === 'NOTIFICATION') {
+      return 'Send notification to the worker';
+    } else {
+      return 'Send to do to the worker';
+    }
+  };
+
+  const handleMessageModal = (workerId: any, _messageType: MessageType) => {
     setWorkerId(workerId);
+    setMessageType(_messageType);
     setMessageModalOpen(true);
   };
 
@@ -339,7 +363,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       variant="contained"
                       sx={{ backgroundColor: '#024DA1' }}
                       endIcon={<SendIcon />}
-                      onClick={() => handleMessageModal(worker?.id)}
+                      onClick={() => handleMessageModal(worker?.id, 'MESSAGE')}
                     >
                       Send
                     </Button>
@@ -354,6 +378,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       }}
                       variant="contained"
                       endIcon={<SendIcon />}
+                      onClick={() => handleMessageModal(worker?.id, 'TODO')}
                     >
                       Send
                     </Button>
@@ -366,8 +391,11 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                           background: '#ee314e'
                         }
                       }}
-                      endIcon={<SendIcon />}
                       variant="contained"
+                      endIcon={<SendIcon />}
+                      onClick={() =>
+                        handleMessageModal(worker?.id, 'NOTIFICATION')
+                      }
                     >
                       Send
                     </Button>
@@ -429,9 +457,9 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
       <Modal
         isOpen={messageModalOpen}
         handleClose={handleMessageModalClose}
-        content={<Message workerId={workerId} messageType={'MESSAGE'} />}
-        modalHeader={'Send Message'}
-        modalDescription={'Send message to the worker'}
+        content={<Message workerId={workerId} messageType={messageType} />}
+        modalHeader={getModalHeader(messageType)}
+        modalDescription={getModalDescription(messageType)}
       />
     </Card>
   );

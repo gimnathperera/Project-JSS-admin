@@ -9,3 +9,21 @@ export const sendMessageApi = async (payload: any) => {
     throw error;
   }
 };
+export const sendToDoApi = async (payload: any) => {
+  try {
+    const response = await request('POST', `/to-do-list`, payload);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export const sendNotificationApi = async (payload: any) => {
+  try {
+    const response = await request('POST', `/notice`, payload);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
