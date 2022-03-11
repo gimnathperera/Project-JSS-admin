@@ -27,6 +27,7 @@ import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SendIcon from '@mui/icons-material/Send';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 
 import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
@@ -38,6 +39,7 @@ import { deleteWorker } from '../../../store/actions/worker.actions';
 import Modal from 'src/components/Modal';
 import WorkerJobSchedule from './WorkerJobSchedule';
 import Message from 'src/components/Message';
+import Incoming from 'src/components/Incoming';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -69,6 +71,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
   const [jobModalOpen, setJobModalOpen] = useState<boolean>(false);
   const [messageType, setMessageType] = useState<MessageType>('MESSAGE');
   const [messageModalOpen, setMessageModalOpen] = useState<boolean>(false);
+  const [incomingModalOpen, setIncomingModalOpen] = useState<boolean>(false);
 
   const statusOptions = [
     {
@@ -197,6 +200,15 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
     setMessageModalOpen(false);
   };
 
+  const handleIncomingModal = (workerId: any) => {
+    setWorkerId(workerId);
+    setIncomingModalOpen(true);
+  };
+
+  const handleIncomingModalClose = () => {
+    setIncomingModalOpen(false);
+  };
+
   return (
     <Card>
       {selectedBulkActions && (
@@ -238,9 +250,10 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
               <TableCell align="center">Job Allocation</TableCell>
               <TableCell align="center">Assign Alias</TableCell>
               <TableCell align="center">Certification</TableCell>
-              <TableCell align="center">Send Messages</TableCell>
-              <TableCell align="center">Send to "To Do List"</TableCell>
+              {/* <TableCell align="center">Send Messages</TableCell>
+              <TableCell align="center">Send to "To Do List"</TableCell> */}
               <TableCell align="center">Send to "Notifications"</TableCell>
+              <TableCell align="center">Incoming</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
@@ -358,7 +371,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       {`EXP: ${getValidDate(worker.certificate_expire_date)}`}
                     </Typography>
                   </TableCell>
-                  <TableCell align="center">
+                  {/* <TableCell align="center">
                     <Button
                       variant="contained"
                       sx={{ backgroundColor: '#024DA1' }}
@@ -382,7 +395,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                     >
                       Send
                     </Button>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align="center">
                     <Button
                       sx={{
@@ -398,6 +411,16 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                       }
                     >
                       Send
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      color="success"
+                      variant="contained"
+                      endIcon={<LocalPostOfficeIcon />}
+                      onClick={() => handleIncomingModal(worker?.id)}
+                    >
+                      Messages
                     </Button>
                   </TableCell>
                   <TableCell align="center">
@@ -460,6 +483,14 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
         content={<Message workerId={workerId} messageType={messageType} />}
         modalHeader={getModalHeader(messageType)}
         modalDescription={getModalDescription(messageType)}
+      />
+
+      <Modal
+        isOpen={incomingModalOpen}
+        handleClose={handleIncomingModalClose}
+        content={<Incoming workerId={workerId} />}
+        modalHeader={'Incoming Messages'}
+        modalDescription={'All incoming messages of the user displayed here'}
       />
     </Card>
   );
