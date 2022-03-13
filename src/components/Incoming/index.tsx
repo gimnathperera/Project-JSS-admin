@@ -21,7 +21,6 @@ const style: any = {
     display: 'flex',
     minWidth: '300px',
     maxWidth: '400px',
-    textAlign: 'justify',
     flexDirection: 'column',
     margin: 2,
     '@media (max-width: 1440px)': {
@@ -60,7 +59,6 @@ const style: any = {
   },
   bubble: {
     display: 'flex',
-    justifyContent: 'center',
     alignItems: 'center'
   }
 };
@@ -92,7 +90,7 @@ const Incoming = ({ workerId }: JobScheduleProps) => {
                     <AccountCircleIcon />
                   </Avatar>
                   <Paper sx={style.jobCard} key={index}>
-                    <Typography sx={style.jobTxt}>{msg.task}</Typography>
+                    <Typography sx={style.jobTxt}>{msg.message}</Typography>
                   </Paper>
                 </Box>
               ))}
