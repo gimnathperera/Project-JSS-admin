@@ -15,9 +15,7 @@ const Loader = (Component: any) => (props: any) =>
 
 const Login = Loader(lazy(() => import('src/content/Login')));
 const Dashboard = Loader(lazy(() => import('src/content/Dashboard')));
-const Transactions = Loader(
-  lazy(() => import('src/content/applications/Transactions'))
-);
+const Reports = Loader(lazy(() => import('src/content/applications/Reports')));
 const Jobs = Loader(lazy(() => import('src/content/applications/Jobs')));
 const JobDetailed = Loader(
   lazy(() => import('src/content/applications/Jobs/JobDetailedPage'))
@@ -157,7 +155,7 @@ const routes: any = (isAuthenticated) => [
       {
         path: 'report',
         // element: <Transactions /> untill the funcionlity is implemented
-        element: <StatusComingSoon />
+        element: <Reports />
       },
       {
         path: 'inventory',

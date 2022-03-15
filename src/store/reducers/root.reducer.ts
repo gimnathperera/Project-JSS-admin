@@ -14,6 +14,7 @@ import jobWorkerReducer from './job-worker.reducer';
 import dashboardReducer from './dashboard.reducer';
 import dailyJobReducer from './daily-job.reducer';
 import msgReducer from './msg.reducer';
+import reportReducer from './report.reducer';
 
 const rootPersistConfig = {
   key: 'root',
@@ -27,7 +28,8 @@ const rootPersistConfig = {
     'jobWorker',
     'dashboard',
     'dailyJob',
-    'msg'
+    'msg',
+    'report'
   ]
 };
 
@@ -41,7 +43,8 @@ const appReducer = combineReducers({
   jobWorker: jobWorkerReducer,
   dashboard: dashboardReducer,
   dailyJob: dailyJobReducer,
-  msg: msgReducer
+  msg: msgReducer,
+  report: reportReducer
 });
 
 const rootReducer = (state: any, action: any) => {
