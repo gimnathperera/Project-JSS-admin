@@ -1,5 +1,10 @@
 import moment from 'moment';
-import { DATE_FORMAT } from 'src/constants/common-configurations';
+import * as geolib from 'geolib';
+
+import {
+  DATE_FORMAT,
+  DISTANCE_VARIABLE
+} from 'src/constants/common-configurations';
 
 export const getValidDate = (date: string) => {
   let formattedDate = date.split('.').reverse().join('.');
@@ -67,4 +72,16 @@ export const getWorkingHours = (_startTime, _endTime) => {
   let hours = parseInt(duration.asHours());
 
   return hours;
+};
+
+export const isLocationVerified = (
+  assignedLocation: any,
+  actualLocation: any
+): Boolean => {
+  const result = geolib.isPointWithinRadius(
+    assignedLocation,
+    actualLocation,
+    DISTANCE_VARIABLE
+  );
+  return result;
 };

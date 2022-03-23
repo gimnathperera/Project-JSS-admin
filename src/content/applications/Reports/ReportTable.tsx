@@ -18,16 +18,18 @@ import {
   MenuItem,
   Typography,
   useTheme,
-  CardHeader,
-  Button
+  CardHeader
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
 import Label from 'src/components/Label';
 import { CryptoOrderStatus } from 'src/models/crypto_order';
-import { getWorkingHours, convertTimeValue } from 'src/common/functions';
+import {
+  getWorkingHours,
+  convertTimeValue,
+  isLocationVerified
+} from 'src/common/functions';
 import moment from 'moment';
 
 interface ReportTableProps {
@@ -64,25 +66,6 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
       name: 'Inactive'
     }
   ];
-
-  const getStatusLabel = (
-    cryptoOrderStatus: CryptoOrderStatus
-  ): JSX.Element => {
-    const map = {
-      '1': {
-        text: 'Active',
-        color: 'success'
-      },
-      '0': {
-        text: 'Inactive',
-        color: 'warning'
-      }
-    };
-
-    const { text, color }: any = map[cryptoOrderStatus];
-
-    return <Label color={color}>{text}</Label>;
-  };
 
   const applyFilters = (_jobs: any, filters: Filters): any => {
     return _jobs.filter((job) => {
@@ -129,6 +112,14 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
     // navigate(`/app/job/${jobId}`);
   };
 
+  const getStatusLabel = (isVerified: Boolean): JSX.Element => {
+    return (
+      <Label color={isVerified ? 'success' : 'error'}>
+        {isVerified ? 'With In Distance Range' : 'Not With In Distance Range'}
+      </Label>
+    );
+  };
+
   return (
     <Card>
       {!selectedBulkActions && (
@@ -165,7 +156,8 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
               <TableCell align="center">Job Name</TableCell>
               <TableCell align="center">Assigned Start / End</TableCell>
               <TableCell align="center">Actual Start / End</TableCell>
-              <TableCell align="center">Geo Location</TableCell>
+              <TableCell align="center">Site Location</TableCell>
+              <TableCell align="center">Geo Location Verification</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
@@ -173,6 +165,15 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
             {paginatedReports.map((report: any) => {
               console.log('>>===>> >>===>> report', report);
               const isReportSelected = selectedJobs.includes(report.id);
+              const assignedLocation = {
+                latitude: report?.site_latitude,
+                longitude: report?.site_longitude
+              };
+
+              const actualLocation = {
+                latitude: report?.worker_shift_start_latitude,
+                longitude: report?.worker_shift_start_longitude
+              };
 
               return (
                 <TableRow hover key={report.id} selected={isReportSelected}>
@@ -207,6 +208,7 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
                       color="text.primary"
                       gutterBottom
                       noWrap
+                      sx={{ textTransform: 'capitalize' }}
                     >
                       {report?.worker_name || '-'}
                     </Typography>
@@ -248,8 +250,36 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
                       - {convertTimeValue(report?.worker_shift_end_time) || '-'}
                     </Typography>
                   </TableCell>
-
-                  <TableCell align="center">-</TableCell>
+                  <TableCell align="center">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {`LAT: ${assignedLocation.latitude}` || '-'}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {`LONG: ${assignedLocation.longitude}` || '-'}
+                    </Typography>
+                  </TableCell>
+                  <Tooltip
+                    title={`Actual Location; Lat: ${report?.worker_shift_start_latitude} & Long: ${report?.worker_shift_start_longitude}`}
+                    arrow
+                  >
+                    <TableCell align="center">
+                      {getStatusLabel(
+                        isLocationVerified(assignedLocation, actualLocation)
+                      )}
+                    </TableCell>
+                  </Tooltip>
                   <TableCell align="center">
                     <Tooltip title="View detail report" arrow>
                       <IconButton
