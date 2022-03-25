@@ -4,7 +4,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import JobLayout from './ReportLayout';
+import ReportLayout from './ReportLayout';
 
 function ReportList() {
   return (
@@ -24,7 +24,7 @@ function ReportList() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <JobLayout />
+            <ReportLayout />
           </Grid>
         </Grid>
       </Container>

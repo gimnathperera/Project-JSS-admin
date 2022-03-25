@@ -68,6 +68,7 @@ export const getWorkingHours = (_startTime, _endTime) => {
 
   // calculate total duration
   let duration: any = moment.duration(endTime.diff(startTime));
+  console.log('>>===>> >>===>> duration', duration);
   // duration in hours
   let hours = parseInt(duration.asHours());
 

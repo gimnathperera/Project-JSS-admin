@@ -1,10 +1,9 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState, useEffect } from 'react';
 import {
   Tooltip,
   Divider,
   Box,
   FormControl,
-  InputLabel,
   Card,
   IconButton,
   TableContainer,
@@ -14,14 +13,18 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Select,
-  MenuItem,
   Typography,
   useTheme,
-  CardHeader
+  CardHeader,
+  TextField
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
+import CachedIcon from '@mui/icons-material/Cached';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+import Papa from 'papaparse';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 
 import Label from 'src/components/Label';
 import { CryptoOrderStatus } from 'src/models/crypto_order';
@@ -31,7 +34,8 @@ import {
   isLocationVerified
 } from 'src/common/functions';
 import moment from 'moment';
-
+import { DATE_FORMAT } from 'src/constants/common-configurations';
+import { resetCSV } from 'src/store/actions/common.actions';
 interface ReportTableProps {
   reports?: any[];
 }
@@ -42,39 +46,42 @@ interface Filters {
 
 const ReportTable: FC<ReportTableProps> = ({ reports }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isDownload = useSelector(
+    ({ common }: RootStateOrAny) => common.isDownload
+  );
 
   const [selectedJobs, setSelectedWorkers] = useState<string[]>([]);
   const selectedBulkActions = selectedJobs.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [filters, setFilters] = useState<Filters>({
-    status: null
-  });
+  const [newSearch, setNewSearch] = useState<string>('');
+  const [dateFilter, setDateFilter] = useState<string>(null);
 
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: '1',
-      name: 'Active'
-    },
-    {
-      id: '0',
-      name: 'Inactive'
+  useEffect(() => {
+    if (isDownload && paginatedReports.length > 0) {
+      downloadCSV({
+        filename: `jss_worker_report_${new Date().toJSON().slice(0, 10)}.csv`,
+        data: paginatedReports,
+        columns: Object.keys(paginatedReports[0])
+      });
     }
-  ];
+    dispatch(resetCSV());
+  }, [isDownload]);
 
-  const applyFilters = (_jobs: any, filters: Filters): any => {
-    return _jobs.filter((job) => {
-      let matches = true;
+  const applyFilters = (_reports: any, newSearch: string): any => {
+    return _reports.filter((report: any) => {
+      let matches = false;
 
-      if (filters.status && job.status !== Number(filters.status)) {
+      if (report.worker_name.toLowerCase().includes(newSearch.toLowerCase())) {
+        matches = true;
+      }
+      if (
+        dateFilter &&
+        dateFilter !== moment(report?.created_at).format(DATE_FORMAT)
+      ) {
         matches = false;
       }
-
       return matches;
     });
   };
@@ -83,17 +90,12 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
     return _jobs.slice(page * limit, page * limit + limit);
   };
 
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    let value = null;
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
+    setNewSearch(e.target.value);
+  };
 
-    if (e.target.value !== 'all') {
-      value = e.target.value;
-    }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value
-    }));
+  const handleDateChange = (e: string): void => {
+    setDateFilter(moment(e).format(DATE_FORMAT));
   };
 
   const handlePageChange = (event: any, newPage: number): void => {
@@ -104,13 +106,9 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredReports = applyFilters(reports, filters);
+  const filteredReports = applyFilters(reports, newSearch);
 
   const paginatedReports = applyPagination(filteredReports, page, limit);
-
-  const handleDetailedClick = (jobId: string) => {
-    // navigate(`/app/job/${jobId}`);
-  };
 
   const getStatusLabel = (isVerified: Boolean): JSX.Element => {
     return (
@@ -120,27 +118,72 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
     );
   };
 
+  const downloadCSV = (args: any) => {
+    let filename = args.filename || 'export.csv';
+    let columns = args.columns || null;
+
+    let csv = Papa.unparse({ data: args.data, fields: columns });
+    if (csv == null) return;
+
+    var blob = new Blob([csv]);
+    if ((window.navigator as any).msSaveOrOpenBlob)
+      (window.navigator as any).msSaveBlob(blob, args.filename);
+    else {
+      var a = window.document.createElement('a');
+      a.href = window.URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+
   return (
     <Card>
       {!selectedBulkActions && (
         <CardHeader
           action={
-            <Box width={150}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                columnGap: 2
+              }}
+            >
               <FormControl fullWidth variant="outlined">
-                <InputLabel>Status</InputLabel>
-                <Select
-                  value={filters.status || 'all'}
-                  onChange={handleStatusChange}
-                  label="Status"
-                  autoWidth
-                >
-                  {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
-                      {statusOption.name}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <TextField
+                  id="outlined-basic"
+                  label="Search By Worker"
+                  variant="outlined"
+                  onChange={handleSearch}
+                  value={newSearch}
+                />
               </FormControl>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Search By Date"
+                  value={dateFilter}
+                  onChange={(newValue) => {
+                    handleDateChange(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+              <Tooltip title="Refresh filters" arrow>
+                <IconButton
+                  sx={{
+                    '&:hover': {
+                      background: theme.colors.primary.lighter
+                    },
+                    color: '#5569FF'
+                  }}
+                  color="inherit"
+                  size="small"
+                  onClick={() => window.location.reload()}
+                >
+                  <CachedIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
           }
           title="Completed Jobs"
@@ -163,7 +206,6 @@ const ReportTable: FC<ReportTableProps> = ({ reports }) => {
           </TableHead>
           <TableBody>
             {paginatedReports.map((report: any) => {
-              console.log('>>===>> >>===>> report', report);
               const isReportSelected = selectedJobs.includes(report.id);
               const assignedLocation = {
                 latitude: report?.site_latitude,

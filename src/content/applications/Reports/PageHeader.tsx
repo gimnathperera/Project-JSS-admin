@@ -1,7 +1,15 @@
 import { Typography, Button, Grid } from '@mui/material';
-import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
+import { useDispatch } from 'react-redux';
+
+import { downloadCSV } from '../../../store/actions/common.actions';
 
 function PageHeader() {
+  const dispatch = useDispatch();
+
+  const handleDownloadCSV = () => {
+    dispatch(downloadCSV());
+  };
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
@@ -14,9 +22,10 @@ function PageHeader() {
         <Button
           sx={{ mt: { xs: 2, md: 0 } }}
           variant="contained"
-          startIcon={<LocalPrintshopIcon fontSize="small" />}
+          startIcon={<SimCardDownloadIcon fontSize="small" />}
+          onClick={handleDownloadCSV}
         >
-          Print Report
+          Download as CSV
         </Button>
       </Grid>
     </Grid>

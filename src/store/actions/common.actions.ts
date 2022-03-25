@@ -8,7 +8,9 @@ import {
   SUCCESS_CLOSE,
   ERROR_OPEN,
   ERROR_CLOSE,
-  FETCH_DASHBOARD_DATA
+  FETCH_DASHBOARD_DATA,
+  DOWNLOAD_REPORT_CSV,
+  RESET_REPORT_CSV
 } from './../../constants/common-constant';
 
 export function successOpen() {
@@ -68,5 +70,17 @@ export function startLoading() {
 export function endLoading() {
   return {
     type: UNSET_LOADING
+  };
+}
+
+export function downloadCSV() {
+  return {
+    type: DOWNLOAD_REPORT_CSV
+  };
+}
+
+export function resetCSV() {
+  return {
+    type: RESET_REPORT_CSV
   };
 }

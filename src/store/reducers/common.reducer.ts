@@ -6,7 +6,9 @@ import {
   SUCCESS_OPEN,
   SUCCESS_CLOSE,
   ERROR_OPEN,
-  ERROR_CLOSE
+  ERROR_CLOSE,
+  DOWNLOAD_REPORT_CSV,
+  RESET_REPORT_CSV
 } from '../../constants/common-constant';
 
 const INITIAL_STATE = {
@@ -14,7 +16,8 @@ const INITIAL_STATE = {
   success: false,
   successMessage: null,
   error: false,
-  errorMessage: null
+  errorMessage: null,
+  isDownload: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -63,6 +66,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         error: false
+      };
+    case DOWNLOAD_REPORT_CSV:
+      return {
+        ...state,
+        isDownload: true
+      };
+    case RESET_REPORT_CSV:
+      return {
+        ...state,
+        isDownload: false
       };
     default:
       return state;
