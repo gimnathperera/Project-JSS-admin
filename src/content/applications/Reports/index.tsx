@@ -10,7 +10,7 @@ function ReportList() {
   return (
     <>
       <Helmet>
-        <title>All Jobs</title>
+        <title>All Reports</title>
       </Helmet>
       <PageTitleWrapper maxWidth="xl">
         <PageHeader />
