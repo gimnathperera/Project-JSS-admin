@@ -46,11 +46,6 @@ const menuItems: MenuItems[] = [
     heading: 'Management',
     items: [
       {
-        name: 'Worker Requests',
-        icon: WorkTwoToneIcon,
-        link: '/app/woker-requests'
-      },
-      {
         name: 'Workers',
         icon: HailIcon,
         link: '/app/worker'
@@ -69,11 +64,6 @@ const menuItems: MenuItems[] = [
         name: 'Reports',
         icon: AssessmentTwoToneIcon,
         link: '/app/report'
-      },
-      {
-        name: 'Inventory',
-        icon: BuildTwoToneIcon,
-        link: '/app/inventory'
       }
     ]
   }
