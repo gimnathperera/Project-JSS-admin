@@ -226,7 +226,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
               <TableCell align="center">Additional Info</TableCell>
               <TableCell align="center">ABN/ACN</TableCell>
               <TableCell align="center">Address</TableCell>
-              <TableCell align="center">BR Number</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
@@ -237,16 +236,7 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
 
               return (
                 <TableRow hover key={customer?.id} selected={isWorkerSelected}>
-                  <TableCell padding="checkbox" align="right">
-                    {/* <Checkbox
-                      color="primary"
-                      checked={isWorkerSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, customer?.id)
-                      }
-                      value={isWorkerSelected}
-                    /> */}
-                  </TableCell>
+                  <TableCell padding="checkbox" align="right"></TableCell>
                   <TableCell padding="checkbox" align="right">
                     <LogoImage
                       variant="rounded"
@@ -368,18 +358,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ customers }) => {
                       gutterBottom
                     >
                       {customer.address}
-                    </Typography>
-                  </TableCell>
-
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {customer.br_number || '-'}
                     </Typography>
                   </TableCell>
 

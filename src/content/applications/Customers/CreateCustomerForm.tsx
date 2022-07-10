@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
@@ -66,7 +67,6 @@ const CreateCustomerForm = ({
       .max(255)
       .required('Email is required'),
     address: Yup.string().required('Address is required'),
-    br_number: Yup.string().required('BR number is required'),
     abn_registration_number: Yup.string()
       .required('ABN number is required')
       .matches(/^[0-9]{11}$/, 'Must be exactly 11 digits'),
@@ -92,7 +92,6 @@ const CreateCustomerForm = ({
       .max(255)
       .required('Email is required'),
     address: Yup.string().required('Address is required'),
-    br_number: Yup.string().required('BR number is required'),
     abn_registration_number: Yup.string()
       .required('ABN number is required')
       .matches(/^[0-9]{11}$/, 'Must be exactly 11 digits'),
@@ -127,7 +126,6 @@ const CreateCustomerForm = ({
     _formData.append('name', values?.name);
     _formData.append('email', values?.email);
     _formData.append('address', values?.address);
-    _formData.append('br_number', values?.br_number);
     _formData.append(
       'abn_registration_number',
       values?.abn_registration_number
@@ -157,7 +155,6 @@ const CreateCustomerForm = ({
     _formData.append('name', values?.name);
     _formData.append('email', values?.email);
     _formData.append('address', values?.address);
-    _formData.append('br_number', values?.br_number);
     _formData.append(
       'abn_registration_number',
       values?.abn_registration_number
@@ -248,20 +245,6 @@ const CreateCustomerForm = ({
                 onChange={handleChange}
                 type="text"
                 value={values.address}
-                variant="outlined"
-              />
-
-              <TextField
-                error={Boolean(touched.br_number && errors.br_number)}
-                fullWidth
-                helperText={touched.br_number && errors.br_number}
-                label="BR Number"
-                margin="normal"
-                name="br_number"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                type="text"
-                value={values.br_number}
                 variant="outlined"
               />
 
