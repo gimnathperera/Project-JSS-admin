@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import {
   Box,
   Typography,
@@ -11,8 +11,6 @@ import {
   IconButton,
   CardContent,
   Grid,
-  Container,
-  CircularProgress,
   Divider
 } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
@@ -23,7 +21,6 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import Modal from 'src/components/Modal';
-import { getValidDate } from 'src/common/functions';
 import Text from 'src/components/Text';
 import Label from 'src/components/Label';
 import CreateWorkerForm from './CreateWorkerForm';
@@ -414,49 +411,143 @@ const WorkerEditTab = ({ _worker }: any) => {
                       </Box>
                     </Grid>
 
-                    <Grid
-                      item
-                      xs={12}
-                      sm={4}
-                      md={3}
-                      textAlign={{ sm: 'right' }}
-                    >
-                      <Box pr={3} pb={2}>
-                        Certification:
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={9}>
-                      <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
-                        <Text color="black">
-                          {' '}
-                          {_worker.certificate || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </Text>
-                      </Box>
-                    </Grid>
+                    <>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        textAlign={{ sm: 'right' }}
+                      >
+                        <Box pr={3} pb={2}>
+                          Passport / ID:
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={8} md={9}>
+                        <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
+                          <Text color="black">
+                            {' '}
+                            {_worker.certificate || (
+                              <Skeleton variant="text" width={210} />
+                            )}
+                          </Text>
+                        </Box>
+                      </Grid>
 
-                    <Grid
-                      item
-                      xs={12}
-                      sm={4}
-                      md={3}
-                      textAlign={{ sm: 'right' }}
-                    >
-                      <Box pr={3} pb={2}>
-                        Certification EXP:
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={8} md={9}>
-                      <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
-                        <Text color="black">
-                          {' '}
-                          {_worker.certificate_expire_date || (
-                            <Skeleton variant="text" width={210} />
-                          )}
-                        </Text>
-                      </Box>
-                    </Grid>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        textAlign={{ sm: 'right' }}
+                      >
+                        <Box pr={3} pb={2}>
+                          Passport / ID EXP:
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={8} md={9}>
+                        <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
+                          <Text color="black">
+                            {' '}
+                            {_worker.certificate_expire_date || (
+                              <Skeleton variant="text" width={210} />
+                            )}
+                          </Text>
+                        </Box>
+                      </Grid>
+                    </>
+
+                    <>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        textAlign={{ sm: 'right' }}
+                      >
+                        <Box pr={3} pb={2}>
+                          Work with child certificate:
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={8} md={9}>
+                        <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
+                          <Text color="black">
+                            {' '}
+                            {_worker.certificate_two || (
+                              <Skeleton variant="text" width={210} />
+                            )}
+                          </Text>
+                        </Box>
+                      </Grid>
+
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        textAlign={{ sm: 'right' }}
+                      >
+                        <Box pr={3} pb={2}>
+                          Work with child Certification EXP:
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={8} md={9}>
+                        <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
+                          <Text color="black">
+                            {' '}
+                            {_worker.certificate_two_expire_date || (
+                              <Skeleton variant="text" width={210} />
+                            )}
+                          </Text>
+                        </Box>
+                      </Grid>
+                    </>
+
+                    <>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        textAlign={{ sm: 'right' }}
+                      >
+                        <Box pr={3} pb={2}>
+                          Police certificate:
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={8} md={9}>
+                        <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
+                          <Text color="black">
+                            {' '}
+                            {_worker.certificate_three || (
+                              <Skeleton variant="text" width={210} />
+                            )}
+                          </Text>
+                        </Box>
+                      </Grid>
+
+                      <Grid
+                        item
+                        xs={12}
+                        sm={4}
+                        md={3}
+                        textAlign={{ sm: 'right' }}
+                      >
+                        <Box pr={3} pb={2}>
+                          Police Certification EXP:
+                        </Box>
+                      </Grid>
+                      <Grid item xs={12} sm={8} md={9}>
+                        <Box sx={{ maxWidth: { xs: 'auto', sm: 300 } }}>
+                          <Text color="black">
+                            {' '}
+                            {_worker.certificate_three_expire_date || (
+                              <Skeleton variant="text" width={210} />
+                            )}
+                          </Text>
+                        </Box>
+                      </Grid>
+                    </>
 
                     <Grid
                       item

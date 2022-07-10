@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, ChangeEvent, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -34,7 +36,6 @@ import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
 import BulkActions from './BulkActions';
-import { getValidDate } from 'src/common/functions';
 import { deleteWorker } from '../../../store/actions/worker.actions';
 import Modal from 'src/components/Modal';
 import WorkerJobSchedule from './WorkerJobSchedule';
@@ -249,9 +250,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
               <TableCell align="center">Employee Number</TableCell>
               <TableCell align="center">Job Allocation</TableCell>
               <TableCell align="center">Assign Alias</TableCell>
-              <TableCell align="center">Certification</TableCell>
-              {/* <TableCell align="center">Send Messages</TableCell>
-              <TableCell align="center">Send to "To Do List"</TableCell> */}
               <TableCell align="center">Send to "Notifications"</TableCell>
               <TableCell align="center">Incoming</TableCell>
               <TableCell align="center">Status</TableCell>
@@ -357,45 +355,6 @@ const WorkerTable: FC<RecentOrdersTableProps> = ({ workers }) => {
                     </Typography>
                   </TableCell>
 
-                  <TableCell align="center">
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {worker.certificate}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {`EXP: ${getValidDate(worker.certificate_expire_date)}`}
-                    </Typography>
-                  </TableCell>
-                  {/* <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: '#024DA1' }}
-                      endIcon={<SendIcon />}
-                      onClick={() => handleMessageModal(worker?.id, 'MESSAGE')}
-                    >
-                      Send
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      sx={{
-                        backgroundColor: '#F7981C',
-                        '&:hover': {
-                          background: '#f9ae4d'
-                        }
-                      }}
-                      variant="contained"
-                      endIcon={<SendIcon />}
-                      onClick={() => handleMessageModal(worker?.id, 'TODO')}
-                    >
-                      Send
-                    </Button>
-                  </TableCell> */}
                   <TableCell align="center">
                     <Button
                       sx={{

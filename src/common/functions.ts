@@ -6,11 +6,6 @@ import {
   DISTANCE_VARIABLE
 } from 'src/constants/common-configurations';
 
-export const getValidDate = (date: string) => {
-  let formattedDate = date.split('.').reverse().join('.');
-  return moment(formattedDate).format(DATE_FORMAT);
-};
-
 export const clearLocalStorage = () => {
   localStorage.clear();
 };

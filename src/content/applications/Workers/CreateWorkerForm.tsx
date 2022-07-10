@@ -11,7 +11,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import MenuItem from '@mui/material/MenuItem';
 
 import { createWorker, updateWorker } from 'src/store/actions/worker.actions';
-import { getValidDate } from 'src/common/functions';
 import { MOBILE_REGEX } from 'src/constants/common-configurations';
 
 interface CreateWorkerFormProps {
@@ -31,20 +30,18 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     status: formData?.status == 1 ? '1' : formData?.status == 0 ? '0' : '',
     assign_alias: formData?.assign_alias || '',
     additional_info: formData?.additional_info || '',
-    dob: formData ? getValidDate(formData?.dob) : '',
+    dob: formData ? formData?.dob : '',
     address: formData?.address || '',
     contact_number: formData?.contact_number || '',
     certificate: formData?.certificate || '',
-    certificate_expire_date: formData
-      ? getValidDate(formData.certificate_expire_date)
-      : '',
+    certificate_expire_date: formData ? formData.certificate_expire_date : '',
     certificate_two: formData?.certificate_two || '',
     certificate_two_expire_date: formData
-      ? getValidDate(formData.certificate_two_expire_date)
+      ? formData.certificate_two_expire_date
       : '',
     certificate_three: formData?.certificate_three || '',
     certificate_three_expire_date: formData
-      ? getValidDate(formData.certificate_three_expire_date)
+      ? formData.certificate_three_expire_date
       : ''
   };
 

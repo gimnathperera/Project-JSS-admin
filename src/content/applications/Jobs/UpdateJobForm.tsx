@@ -1,4 +1,6 @@
-import { useEffect, useRef } from 'react';
+/* eslint-disable eqeqeq */
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
@@ -13,7 +15,6 @@ import MenuItem from '@mui/material/MenuItem';
 import { updateJob } from 'src/store/actions/job.actions';
 import { fetchCustomerList } from 'src/store/actions/customer.actions';
 import { fetchCompanySiteList } from 'src/store/actions/company-site.actions';
-import { getValidDate } from 'src/common/functions';
 
 interface UpdateJobFormProps {
   onSuccess(): any;
@@ -41,8 +42,8 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
     type_id: formData?.type_id || '',
     company_id: formData?.company_id || '',
     site_id: formData?.site_id || '',
-    start_date: formData ? getValidDate(formData?.start_date) : '',
-    end_date: formData ? getValidDate(formData?.end_date) : '',
+    start_date: formData ? formData?.start_date : '',
+    end_date: formData ? formData?.end_date : '',
     status: formData?.status == 1 ? '1' : formData?.status == 0 ? '0' : ''
   };
 
@@ -122,7 +123,6 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 type="text"
                 value={values.name}
                 variant="outlined"
-                
               />
               <TextField
                 error={Boolean(touched.type_id && errors.type_id)}
