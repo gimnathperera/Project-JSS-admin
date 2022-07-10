@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
@@ -36,6 +37,14 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     certificate: formData?.certificate || '',
     certificate_expire_date: formData
       ? getValidDate(formData.certificate_expire_date)
+      : '',
+    certificate_two: formData?.certificate_two || '',
+    certificate_two_expire_date: formData
+      ? getValidDate(formData.certificate_two_expire_date)
+      : '',
+    certificate_three: formData?.certificate_three || '',
+    certificate_three_expire_date: formData
+      ? getValidDate(formData.certificate_three_expire_date)
       : ''
   };
 
@@ -57,6 +66,14 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     certificate: Yup.string().required('Certificate is required'),
     certificate_expire_date: Yup.string().required(
       'Certificate Exp is required'
+    ),
+    certificate_two: Yup.string().required('Certificate two is required'),
+    certificate_two_expire_date: Yup.string().required(
+      'Certificate Exp two is required'
+    ),
+    certificate_three: Yup.string().required('Certificate three is required'),
+    certificate_three_expire_date: Yup.string().required(
+      'Certificate Exp three is required'
     )
   });
 
@@ -77,6 +94,14 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     certificate: Yup.string().required('Certificate is required'),
     certificate_expire_date: Yup.string().required(
       'Certificate Exp is required'
+    ),
+    certificate_two: Yup.string().required('Certificate two is required'),
+    certificate_two_expire_date: Yup.string().required(
+      'Certificate Exp two is required'
+    ),
+    certificate_three: Yup.string().required('Certificate three is required'),
+    certificate_three_expire_date: Yup.string().required(
+      'Certificate Exp three is required'
     )
   });
 
@@ -248,11 +273,12 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
                 value={values.contact_number}
                 variant="outlined"
               />
+
               <TextField
                 error={Boolean(touched.certificate && errors.certificate)}
                 fullWidth
                 helperText={touched.certificate && errors.certificate}
-                label="Worker Certificate"
+                label="Passport/ID"
                 margin="normal"
                 name="certificate"
                 onBlur={handleBlur}
@@ -271,7 +297,7 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
                   touched.certificate_expire_date &&
                   errors.certificate_expire_date
                 }
-                label="Worker Certificate Expire Date"
+                label="Passport/ID Expire Date"
                 margin="normal"
                 name="certificate_expire_date"
                 onBlur={handleBlur}
@@ -283,6 +309,85 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
                 value={values.certificate_expire_date}
                 variant="outlined"
               />
+
+              <TextField
+                error={Boolean(
+                  touched.certificate_two && errors.certificate_two
+                )}
+                fullWidth
+                helperText={touched.certificate_two && errors.certificate_two}
+                label="Work with child certificate"
+                margin="normal"
+                name="certificate_two"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="text"
+                value={values.certificate_two}
+                variant="outlined"
+              />
+              <TextField
+                error={Boolean(
+                  touched.certificate_two_expire_date &&
+                    errors.certificate_two_expire_date
+                )}
+                fullWidth
+                helperText={
+                  touched.certificate_two_expire_date &&
+                  errors.certificate_two_expire_date
+                }
+                label="Work with child certificate Expire Date"
+                margin="normal"
+                name="certificate_two_expire_date"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={values.certificate_two_expire_date}
+                variant="outlined"
+              />
+
+              <TextField
+                error={Boolean(
+                  touched.certificate_three && errors.certificate_three
+                )}
+                fullWidth
+                helperText={
+                  touched.certificate_three && errors.certificate_three
+                }
+                label="Police certificate"
+                margin="normal"
+                name="certificate_three"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="text"
+                value={values.certificate_three}
+                variant="outlined"
+              />
+              <TextField
+                error={Boolean(
+                  touched.certificate_three_expire_date &&
+                    errors.certificate_three_expire_date
+                )}
+                fullWidth
+                helperText={
+                  touched.certificate_three_expire_date &&
+                  errors.certificate_three_expire_date
+                }
+                label="Police certificate Expire Date"
+                margin="normal"
+                name="certificate_three_expire_date"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{
+                  shrink: true
+                }}
+                value={values.certificate_three_expire_date}
+                variant="outlined"
+              />
+
               <Box sx={{ py: 2 }}>
                 {loading ? (
                   <CircularProgress />
