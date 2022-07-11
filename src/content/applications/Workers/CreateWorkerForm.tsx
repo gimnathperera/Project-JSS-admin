@@ -59,19 +59,7 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     address: Yup.string().required('Address is required'),
     contact_number: Yup.string()
       .matches(MOBILE_REGEX, 'Invalid phone number')
-      .required('Contact number required'),
-    certificate: Yup.string().required('Certificate is required'),
-    certificate_expire_date: Yup.string().required(
-      'Certificate Exp is required'
-    ),
-    certificate_two: Yup.string().required('Certificate two is required'),
-    certificate_two_expire_date: Yup.string().required(
-      'Certificate Exp two is required'
-    ),
-    certificate_three: Yup.string().required('Certificate three is required'),
-    certificate_three_expire_date: Yup.string().required(
-      'Certificate Exp three is required'
-    )
+      .required('Contact number required')
   });
 
   const workerUpdateSchema = Yup.object({
@@ -87,19 +75,7 @@ const CreateWorkerForm = ({ onSuccess, formData }: CreateWorkerFormProps) => {
     address: Yup.string().required('Address is required'),
     contact_number: Yup.string()
       .matches(MOBILE_REGEX, 'Invalid phone number')
-      .required('Contact number required'),
-    certificate: Yup.string().required('Certificate is required'),
-    certificate_expire_date: Yup.string().required(
-      'Certificate Exp is required'
-    ),
-    certificate_two: Yup.string().required('Certificate two is required'),
-    certificate_two_expire_date: Yup.string().required(
-      'Certificate Exp two is required'
-    ),
-    certificate_three: Yup.string().required('Certificate three is required'),
-    certificate_three_expire_date: Yup.string().required(
-      'Certificate Exp three is required'
-    )
+      .required('Contact number required')
   });
 
   const onSubmitWorker = (values: any) => {
