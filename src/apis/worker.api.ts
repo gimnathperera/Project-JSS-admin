@@ -77,6 +77,10 @@ export const updateWokerApi = async (worker: any) => {
       contact_number: worker?.contact_number,
       certificate: worker?.certificate,
       certificate_expire_date: worker?.certificate_expire_date,
+      certificate_two: worker?.certificate_two,
+      certificate_two_expire_date: worker?.certificate_two_expire_date,
+      certificate_three: worker?.certificate_three,
+      certificate_three_expire_date: worker?.certificate_three_expire_date,
       employee_number: worker?.employee_number
     });
 

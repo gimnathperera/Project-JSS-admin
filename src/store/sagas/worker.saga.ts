@@ -1,5 +1,4 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
-import _ from 'lodash';
 
 import {
   FETCH_WORKER_LIST,
