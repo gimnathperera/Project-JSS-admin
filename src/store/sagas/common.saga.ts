@@ -37,7 +37,8 @@ export function* fetchDashboardData(): any {
         completedJobsCount,
         jobsCount,
         todayJobsCount,
-        workersCount
+        workersCount,
+        activeCompaniesCount
       } = response?.data?.data;
       yield put({
         type: SET_DASHBOARD_DATA,
@@ -47,7 +48,8 @@ export function* fetchDashboardData(): any {
           completedJobsCount,
           jobsCount,
           todayJobsCount,
-          workersCount
+          workersCount,
+          activeCompaniesCount
         }
       });
     }

@@ -27,7 +27,7 @@ function WatchListColumn1({ count }) {
                 fontWeight: '600'
               }}
             >
-              Customers
+             Active Customers
             </Typography>
           </Box>
         </Box>

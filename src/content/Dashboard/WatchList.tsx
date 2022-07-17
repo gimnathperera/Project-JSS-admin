@@ -58,7 +58,7 @@ function WatchList() {
       >
         <>
           <Grid item lg={4} xs={12}>
-            <WatchListColumn1 count={_dashboard?.workersCount} />
+            <WatchListColumn1 count={_dashboard?.activeCompaniesCount} />
           </Grid>
           <Grid item lg={4} xs={12}>
             <WatchListColumn2 count={_dashboard?.activeWorkersCount} />

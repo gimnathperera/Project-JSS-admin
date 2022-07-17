@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   completedJobsCount: null,
   companySiteCount: null,
   workersCount: null,
-  activeWorkersCount: null
+  activeWorkersCount: null,
+  activeCompaniesCount: null
 };
 
 const dashboardReducer = (state = INITIAL_STATE, action) => {
@@ -19,7 +20,8 @@ const dashboardReducer = (state = INITIAL_STATE, action) => {
         completedJobsCount: action?.payload?.completedJobsCount,
         companySiteCount: action?.payload?.companySiteCount,
         workersCount: action?.payload?.workersCount,
-        activeWorkersCount: action?.payload?.activeWorkersCount
+        activeWorkersCount: action?.payload?.activeWorkersCount,
+        activeCompaniesCount: action?.payload?.activeCompaniesCount
       };
 
     default:
