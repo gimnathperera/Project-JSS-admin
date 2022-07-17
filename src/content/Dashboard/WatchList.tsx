@@ -68,7 +68,7 @@ function WatchList() {
           </Grid>
         </>
 
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Card
             sx={{
               textAlign: 'center',
@@ -107,7 +107,7 @@ function WatchList() {
               />
             </Grid>
           </Card>
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );
