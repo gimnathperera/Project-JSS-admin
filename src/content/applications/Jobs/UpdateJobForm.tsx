@@ -44,7 +44,8 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
     site_id: formData?.site_id || '',
     start_date: formData ? formData?.start_date : '',
     end_date: formData ? formData?.end_date : '',
-    status: formData?.status == 1 ? '1' : formData?.status == 0 ? '0' : ''
+    status: formData?.status == 1 ? '1' : formData?.status == 0 ? '0' : '',
+    description: formData?.description || '',
   };
 
   const jobUpdateSchema = Yup.object({
@@ -137,8 +138,8 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 value={values.type_id}
                 variant="outlined"
               >
-                <MenuItem value={'1'}>Full time</MenuItem>
-                <MenuItem value={'2'}>Part time</MenuItem>
+                <MenuItem value={'1'}>Once off</MenuItem>
+                <MenuItem value={'2'}>Ongoing</MenuItem>
               </TextField>
               <TextField
                 error={Boolean(touched.status && errors.status)}
@@ -156,6 +157,21 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 <MenuItem value={'1'}>Active</MenuItem>
                 <MenuItem value={'0'}>Inactive</MenuItem>
               </TextField>
+
+              <TextField
+                  error={Boolean(touched.description && errors.description)}
+                  fullWidth
+                  helperText={touched.description && errors.description}
+                  label="Job Description"
+                  margin="normal"
+                  name="description"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="text"
+                  value={values.description}
+                  variant="outlined"
+              />
+
               <TextField
                 error={Boolean(touched.company_id && errors.company_id)}
                 fullWidth

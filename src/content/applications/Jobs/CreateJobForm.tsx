@@ -41,7 +41,8 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
     site_id: '',
     start_date: '',
     end_date: '',
-    status: ''
+    status: '',
+    description:''
   };
 
   const jobRegisterSchema = Yup.object({
@@ -131,8 +132,8 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
                 value={values.type_id}
                 variant="outlined"
               >
-                <MenuItem value={'1'}>Full time</MenuItem>
-                <MenuItem value={'2'}>Part time</MenuItem>
+                <MenuItem value={'1'}>Once off</MenuItem>
+                <MenuItem value={'2'}>Ongoing</MenuItem>
               </TextField>
 
               <TextField
@@ -151,6 +152,20 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
                 <MenuItem value={'1'}>Active</MenuItem>
                 <MenuItem value={'0'}>Inactive</MenuItem>
               </TextField>
+
+              <TextField
+                  error={Boolean(touched.description && errors.description)}
+                  fullWidth
+                  helperText={touched.description && errors.description}
+                  label="Job Description"
+                  margin="normal"
+                  name="description"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  type="text"
+                  value={values.description}
+                  variant="outlined"
+              />
 
               <TextField
                 error={Boolean(touched.company_id && errors.company_id)}
