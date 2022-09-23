@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { createJob } from 'src/store/actions/job.actions';
 import { fetchCustomerList } from 'src/store/actions/customer.actions';
 import { fetchCompanySiteList } from 'src/store/actions/company-site.actions';
+import { fetchJobTypeList } from 'src/store/actions/job-type.actions';
 
 interface CreateJobFormProps {
   onSuccess(): any;
@@ -28,6 +29,10 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
   );
   const companySiteList = useSelector(
     ({ companySite }: RootStateOrAny) => companySite.list
+  );
+
+  const jobTypeList = useSelector(
+    ({ jobType }: RootStateOrAny) => jobType.list
   );
 
   useEffect(() => {
@@ -81,6 +86,24 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
     dispatch(fetchCompanySiteList(companyId));
   };
 
+
+  const renderJobTypeList = () =>
+    jobTypeList &&
+    jobTypeList?.length > 0 &&
+    jobTypeList.map((type: any) => {
+      return (
+        <MenuItem value={type.id} key={type.id}>
+          {type.name}
+        </MenuItem>
+      );
+    });
+
+
+    const fetchJobTypes = (typeId: string | number) => {
+      dispatch(fetchJobTypeList(typeId));
+    };
+  
+
   const onSubmitJob = (values: any) => {
     dispatch(createJob(values));
     onSuccess();
@@ -119,7 +142,7 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
                 variant="outlined"
               />
 
-              <TextField
+              {/* <TextField
                 error={Boolean(touched.type_id && errors.type_id)}
                 fullWidth
                 helperText={touched.type_id && errors.type_id}
@@ -134,6 +157,26 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
               >
                 <MenuItem value={'1'}>Once off</MenuItem>
                 <MenuItem value={'2'}>Ongoing</MenuItem>
+              </TextField> */}
+
+              <TextField
+                error={Boolean(touched.type_id && errors.type_id)}
+                fullWidth
+                helperText={touched.type_id && errors.type_id}
+                select
+                label="Job Type"
+                margin="normal"
+                name="type_id"
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  handleChange('type_id')(e);
+                  fetchJobTypes(e.target.value);
+                }}
+                value={values.type_id}
+                variant="outlined"
+                disabled={loading}
+              >
+                {renderJobTypeList()}
               </TextField>
 
               <TextField
