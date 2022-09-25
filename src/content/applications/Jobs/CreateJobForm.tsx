@@ -37,6 +37,7 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
 
   useEffect(() => {
     dispatch(fetchCustomerList());
+    dispatch(fetchJobTypeList());
   }, []);
 
   const initialFormValues = {
@@ -99,8 +100,8 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
     });
 
 
-    const fetchJobTypes = (typeId: string | number) => {
-      dispatch(fetchJobTypeList(typeId));
+    const fetchJobTypes = () => {
+      dispatch(fetchJobTypeList());
     };
   
 
@@ -168,10 +169,6 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
                 margin="normal"
                 name="type_id"
                 onBlur={handleBlur}
-                onChange={(e) => {
-                  handleChange('type_id')(e);
-                  fetchJobTypes(e.target.value);
-                }}
                 value={values.type_id}
                 variant="outlined"
                 disabled={loading}
