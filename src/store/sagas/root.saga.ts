@@ -8,7 +8,6 @@ import CompanySiteSaga from './company-site.saga';
 import JobSaga from './job.saga';
 import MsgSaga from './msg.saga';
 import ReportSaga from './report.saga';
-import JobTypeSaga from "./job-type.saga";
 
 export default function* rootSaga() {
   yield all([
@@ -19,7 +18,6 @@ export default function* rootSaga() {
     CompanySiteSaga(),
     JobSaga(),
     MsgSaga(),
-    ReportSaga(),
-    JobTypeSaga()
+    ReportSaga()
   ]);
 }

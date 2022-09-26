@@ -56,12 +56,6 @@ export const FETCH_JOB_BY_ID = 'FETCH_JOB_BY_ID';
 export const SET_CURRENT_JOB = 'SET_CURRENT_JOB';
 export const UPDATE_JOB = 'UPDATE_JOB';
 
-//job-type actions
-export const FETCH_JOBTYPE_LIST = 'FETCH_JOBTYPE_LIST';
-export const FETCH_JOBTYPE_BY_ID = 'FETCH_JOBTYPE_BY_ID';
-export const SET_JOBTYPE_LIST = 'SET_JOBTYPE_LIST';
-export const SET_CURRENT_JOBTYPE_SITE = 'SET_CURRENT_JOBTYPE_SITE';
-
 //job-worker actions
 export const FETCH_JOB_WOKER_LIST = 'FETCH_JOB_WOKER_LIST';
 export const SET_JOB_WOKER_LIST = 'SET_JOB_WOKER_LIST';
