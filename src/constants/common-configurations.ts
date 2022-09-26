@@ -1,5 +1,5 @@
-// export const BASE_URL = 'https://jss.kriyo.net/api/v1';
-export const BASE_URL = process.env.REACT_APP_IMAGE_URL;
+export const BASE_URL = 'https://jss.kriyo.net/api/v1';
+// export const BASE_URL = 'http://localhost:4800/api/v1';
 export const HTTP_UNAUTHORIZED = 401;
 export const MOBILE_REGEX =
   // eslint-disable-next-line no-useless-escape
