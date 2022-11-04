@@ -134,6 +134,23 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
               >
                 <MenuItem value={'1'}>Once off</MenuItem>
                 <MenuItem value={'2'}>Ongoing</MenuItem>
+              </TextField> */}
+
+              <TextField
+                error={Boolean(touched.type_id && errors.type_id)}
+                fullWidth
+                helperText={touched.type_id && errors.type_id}
+                select
+                label="Job Type"
+                margin="normal"
+                name="type_id"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.type_id}
+                variant="outlined"
+                disabled={loading}
+              >
+                {renderJobTypeList()}
               </TextField>
 
               <TextField

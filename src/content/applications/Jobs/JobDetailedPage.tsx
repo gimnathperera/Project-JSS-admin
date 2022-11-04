@@ -9,7 +9,8 @@ import JobEditTab from './JobEditTab';
 
 import {
   fetchJobById,
-  fetchJobWorkerList
+  fetchJobWorkerList,
+  fetchWorkerPlanList,
 } from '../../../store/actions/job.actions';
 
 const JobDetailedPage = () => {
@@ -21,6 +22,7 @@ const JobDetailedPage = () => {
   useEffect(() => {
     dispatch(fetchJobById(id));
     dispatch(fetchJobWorkerList(id));
+    dispatch(fetchWorkerPlanList(id));
   }, []);
 
   return (
