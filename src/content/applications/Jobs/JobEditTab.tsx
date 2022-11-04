@@ -25,6 +25,7 @@ import Modal from 'src/components/Modal';
 import UpdateJobForm from './UpdateJobForm';
 import AddWorkerToJobForm from './AddWorkerToJobForm';
 import JobWokerTable from './JobWokerTable';
+import WorkerPlanTable from './workerPlanTable';
 
 type Props = {};
 
@@ -343,6 +344,32 @@ const JobEditTab = ({ _job }: any) => {
               </CardContent>
             </Card>
           </Grid>
+
+          <Grid item xs={12} ref={myRef}>
+            <Card>
+              <Box
+                p={3}
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Box>
+                  <Typography variant="h4" gutterBottom>
+                    WorkPlan Workers
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    Manage Workers Related to Work Plans
+                  </Typography>
+                </Box>
+              </Box>
+              <Divider />
+              <CardContent>
+              {/* <WorkerPlanTable /> */}
+              </CardContent>
+            </Card>
+          </Grid>
+
+
         </Grid>
       </Grid>
       <Modal

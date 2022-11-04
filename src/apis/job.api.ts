@@ -87,3 +87,16 @@ export const fetchLatestJobsByWorkerApi = async ({ workerId, jobDate }) => {
     throw error;
   }
 };
+
+export const fetchWorkerPlanListApi = async ({jobId}) => {
+  try {
+    const response = await axios({
+      method: 'GET',
+      url: `${BASE_URL}/worker-plan/{jobId}`
+    });
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

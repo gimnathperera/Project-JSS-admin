@@ -103,7 +103,7 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
     const fetchJobTypes = () => {
       dispatch(fetchJobTypeList());
     };
-  
+
 
   const onSubmitJob = (values: any) => {
     dispatch(createJob(values));
@@ -169,6 +169,7 @@ const CreateJobForm = ({ onSuccess }: CreateJobFormProps) => {
                 margin="normal"
                 name="type_id"
                 onBlur={handleBlur}
+                onChange={handleChange}
                 value={values.type_id}
                 variant="outlined"
                 disabled={loading}
