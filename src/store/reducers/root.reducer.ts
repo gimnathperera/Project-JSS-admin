@@ -11,6 +11,7 @@ import customerReducer from './customer.reducer';
 import companySiteReducer from './company-site.reducer';
 import jobReducer from './job.reducer';
 import jobWorkerReducer from './job-worker.reducer';
+import workerPlanReducer from './worker-plan.reducer';
 import dashboardReducer from './dashboard.reducer';
 import dailyJobReducer from './daily-job.reducer';
 import msgReducer from './msg.reducer';
@@ -44,6 +45,7 @@ const appReducer = combineReducers({
   job: jobReducer,
   jobType: jobTypeReducer,
   jobWorker: jobWorkerReducer,
+  workerPlan: workerPlanReducer,
   dashboard: dashboardReducer,
   dailyJob: dailyJobReducer,
   msg: msgReducer,

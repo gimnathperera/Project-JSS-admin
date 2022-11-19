@@ -207,11 +207,11 @@ export function* fetchWorkerPlanList({
   try {
     yield put({ type: START_LOADING });
 
-    const response = yield call(fetchWorkerPlanList, payload);
+    const response = yield call(fetchWorkerPlanListApi, payload);
     if (response?.data) {
       yield put({
         type: SET_WORKERPLAN_LIST,
-        payload: response?.data?.data?.worker_plans
+        payload: response?.data?.data
       });
     } else {
       yield put({

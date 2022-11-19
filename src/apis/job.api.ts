@@ -88,11 +88,11 @@ export const fetchLatestJobsByWorkerApi = async ({ workerId, jobDate }) => {
   }
 };
 
-export const fetchWorkerPlanListApi = async ({jobId}) => {
+export const fetchWorkerPlanListApi = async (jobId) => {
   try {
     const response = await axios({
       method: 'GET',
-      url: `${BASE_URL}/worker-plan/{jobId}`
+      url: `${BASE_URL}/worker-plan/${jobId}`
     });
 
     return response;
