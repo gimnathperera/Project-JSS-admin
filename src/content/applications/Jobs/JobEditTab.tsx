@@ -355,16 +355,16 @@ const JobEditTab = ({ _job }: any) => {
               >
                 <Box>
                   <Typography variant="h4" gutterBottom>
-                    WorkPlan Workers
+                    Work Plan
                   </Typography>
                   <Typography variant="subtitle2">
-                    Manage Workers Related to Work Plans
+                    Job work plan for users
                   </Typography>
                 </Box>
               </Box>
               <Divider />
               <CardContent>
-              {/* <WorkerPlanTable /> */}
+               <WorkerPlanTable />
               </CardContent>
             </Card>
           </Grid>
