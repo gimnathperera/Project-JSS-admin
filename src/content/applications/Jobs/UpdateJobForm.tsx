@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { updateJob } from 'src/store/actions/job.actions';
 import { fetchCustomerList } from 'src/store/actions/customer.actions';
 import { fetchCompanySiteList } from 'src/store/actions/company-site.actions';
+import { fetchJobTypeList } from 'src/store/actions/job-type.actions';
 
 interface UpdateJobFormProps {
   onSuccess(): any;
@@ -32,9 +33,14 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
     ({ companySite }: RootStateOrAny) => companySite.list
   );
 
+  const jobTypeList = useSelector(
+      ({ jobType }: RootStateOrAny) => jobType.list
+  );
+
   useEffect(() => {
     dispatch(fetchCustomerList());
     dispatch(fetchCompanySiteList(formData.company_id));
+    dispatch(fetchJobTypeList());
   }, []);
 
   const initialFormValues = {
@@ -68,6 +74,18 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
         </MenuItem>
       );
     });
+
+  const renderJobTypeList = () =>
+      jobTypeList &&
+      jobTypeList?.length > 0 &&
+      jobTypeList.map((type: any) => {
+        return (
+            <MenuItem value={type.id} key={type.id}>
+              {type.name}
+            </MenuItem>
+        );
+      });
+
 
   const renderCompanySiteList = () =>
     companySiteList &&
@@ -126,20 +144,20 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 variant="outlined"
               />
               <TextField
-                error={Boolean(touched.type_id && errors.type_id)}
-                fullWidth
-                helperText={touched.type_id && errors.type_id}
-                select
-                label="Job Type"
-                margin="normal"
-                name="type_id"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.type_id}
-                variant="outlined"
+                  error={Boolean(touched.type_id && errors.type_id)}
+                  fullWidth
+                  helperText={touched.type_id && errors.type_id}
+                  select
+                  label="Job Type"
+                  margin="normal"
+                  name="type_id"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.type_id}
+                  variant="outlined"
+                  disabled={loading}
               >
-                <MenuItem value={'1'}>Once off</MenuItem>
-                <MenuItem value={'2'}>Ongoing</MenuItem>
+                {renderJobTypeList()}
               </TextField>
               <TextField
                 error={Boolean(touched.status && errors.status)}
