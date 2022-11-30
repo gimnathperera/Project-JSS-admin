@@ -14,7 +14,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import _ from 'lodash';
 
-import {createJobWorkers, createWorkerPlan} from 'src/store/actions/job.actions';
+import {createWorkerPlan} from 'src/store/actions/job.actions';
 import { fetchWorkerPlanList } from 'src/store/actions/job.actions';
 import { fetchAvailableWorkerList } from 'src/store/actions/worker.actions';
 
@@ -127,7 +127,7 @@ const AddWorkerPlanToJobForm = ({
        )));
   };
 
-  const renderMoreWorker = (
+  const renderMoreWorkerPlan = (
     errors: any,
     handleBlur: any,
     handleChange: any,
@@ -136,7 +136,7 @@ const AddWorkerPlanToJobForm = ({
   ): JSX.Element => {
     return (
       <FieldArray
-        name="job_worker_plans"
+        name="worker_plans"
         render={(helpers) => (
           <>
             {Array.from(
@@ -280,11 +280,11 @@ const AddWorkerPlanToJobForm = ({
                   <Box display="flex">
                     <Button
                       onClick={() =>
-                        helpers.insert(index, {
+                        helpers.insert(index,  {
                             worker_id: '',
                             start_time: '',
                             end_time: '',
-                            day_of_week: 0
+                            day_of_week: ''
                         })
                       }
                       color="primary"
@@ -320,10 +320,11 @@ const AddWorkerPlanToJobForm = ({
           }}
           enableReinitialize
         >
-          {({ errors, handleBlur, handleChange, touched, values }) => {
+          {
+              ({ errors, handleBlur, handleChange, touched, values }) => {
             return (
               <Form>
-                {renderMoreWorker(
+                {renderMoreWorkerPlan(
                   errors,
                   handleBlur,
                   handleChange,
