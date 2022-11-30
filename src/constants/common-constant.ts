@@ -72,6 +72,7 @@ export const SET_LATEST_JOBS_BY_WORKER = 'SET_LATEST_JOBS_BY_WORKER';
 //worker-plan actions
 export const FETCH_WORKERPLAN_LIST = 'FETCH_WORKERPLAN_LIST';
 export const SET_WORKERPLAN_LIST = 'SET_WORKERPLAN_LIST'
+export const ADD_WORKER_PLAN = 'ADD_WORKER_PLAN'
 
 // message actions
 export const SEND_MESSAGE = 'SEND_MESSAGE';

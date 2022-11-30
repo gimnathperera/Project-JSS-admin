@@ -18,7 +18,8 @@ import {
   SET_LATEST_JOBS_BY_WORKER,
   SET_SUCCESS_MESSAGE,
   FETCH_WORKERPLAN_LIST,
-  SET_WORKERPLAN_LIST
+  SET_WORKERPLAN_LIST,
+  ADD_WORKER_PLAN
 } from '../../constants/common-constant';
 import {
   fetchJobListApi,
@@ -28,7 +29,7 @@ import {
   fetchJobWorkerListApi,
   createJobWorkersApi,
   fetchLatestJobsByWorkerApi,
-  fetchWorkerPlanListApi,
+  fetchWorkerPlanListApi, createWorkerPlanApi,
 } from '../../apis/job.api';
 
 export function* fetchJobList(): any {
@@ -174,6 +175,31 @@ export function* createJobWorkers({
   }
 }
 
+export function* createWorkerPlan({
+                                    payload
+                                  }: {
+  type: typeof ADD_WORKER_PLAN;
+  payload: any;
+}): any {
+  try {
+    yield put({ type: START_LOADING });
+
+    const newWorker = yield call(createWorkerPlanApi, payload);
+
+    if (newWorker.data) {
+      const message = 'Worker assigned successfully';
+      yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
+      yield put({ type: FETCH_JOB_WOKER_LIST, payload: payload?.job_id });
+    }
+
+    yield put({ type: END_LOADING });
+  } catch (error) {
+    const message = error?.response?.data?.msg || 'Worker assigning failed';
+    yield put({ type: SET_ERROR_MESSAGE, payload: message });
+    yield put({ type: END_LOADING });
+  }
+}
+
 export function* fetchLatestJobsByWorker({
   payload
 }: {
@@ -237,6 +263,7 @@ function* jobSaga() {
   yield takeEvery(ADD_JOB_WORKER, createJobWorkers);
   yield takeEvery(FETCH_LATEST_JOBS_BY_WORKER, fetchLatestJobsByWorker);
   yield takeEvery(FETCH_WORKERPLAN_LIST, fetchWorkerPlanList);
+  yield takeEvery(ADD_WORKER_PLAN, createWorkerPlan);
 }
 
 export default jobSaga;

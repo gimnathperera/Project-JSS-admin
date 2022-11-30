@@ -26,6 +26,7 @@ import UpdateJobForm from './UpdateJobForm';
 import AddWorkerToJobForm from './AddWorkerToJobForm';
 import JobWokerTable from './JobWokerTable';
 import WorkerPlanTable from './workerPlanTable';
+import AddWorkerPlanToJobForm from "./AddWorkerPlanToJobForm";
 
 type Props = {};
 
@@ -63,6 +64,7 @@ const JobEditTab = ({ _job }: any) => {
   const myRef = useRef(null);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [isAddWorker, setIsAddWorker] = useState<boolean>(false);
+  const [isCreateWorkerPlan, setIsCreateWorkerPlan] = useState<boolean>(false);
 
   const handleBackClick = () => {
     navigate('/app/job');
@@ -73,6 +75,7 @@ const JobEditTab = ({ _job }: any) => {
   const handleModalClose = () => {
     setIsEdit(false);
     setIsAddWorker(false);
+    setIsCreateWorkerPlan(false);
   };
 
   return (
@@ -129,13 +132,22 @@ const JobEditTab = ({ _job }: any) => {
               justifyContent="space-between"
             >
               <Box>
+                {_job.job_type === 'Ongoing' ? (
                 <Button
                   size="small"
                   variant="contained"
-                  onClick={() => setIsAddWorker(true)}
+                  onClick={() => setIsCreateWorkerPlan(true)}
                 >
-                  Assign Worker
-                </Button>
+                  Create Worker Plan
+                </Button> ) : (
+                    <Button
+                        size="small"
+                        variant="contained"
+                        onClick={() => setIsAddWorker(true)}
+                    >
+                      Assign Worker
+                    </Button>
+                    )}
                 <Button
                   size="small"
                   sx={{ mx: 1 }}
@@ -311,29 +323,6 @@ const JobEditTab = ({ _job }: any) => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} ref={myRef}>
-            <Card>
-              <Box
-                p={3}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Box>
-                  <Typography variant="h4" gutterBottom>
-                    Job workers
-                  </Typography>
-                  <Typography variant="subtitle2">
-                    Manage workers related to job
-                  </Typography>
-                </Box>
-              </Box>
-              <Divider />
-              <CardContent>
-                <JobWokerTable />
-              </CardContent>
-            </Card>
-          </Grid>
           {_job.job_type === 'Ongoing' ? (
           <Grid item xs={12} ref={myRef}>
             <Card>
@@ -358,7 +347,30 @@ const JobEditTab = ({ _job }: any) => {
               </CardContent>
             </Card>
           </Grid>
-              ) : ""}
+              ) : (
+                  <Grid item xs={12} ref={myRef}>
+            <Card>
+              <Box
+                  p={3}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+              >
+                <Box>
+                  <Typography variant="h4" gutterBottom>
+                    Job workers
+                  </Typography>
+                  <Typography variant="subtitle2">
+                    Manage workers related to job
+                  </Typography>
+                </Box>
+              </Box>
+              <Divider />
+              <CardContent>
+                <JobWokerTable />
+              </CardContent>
+            </Card>
+          </Grid>)}
 
         </Grid>
       </Grid>
@@ -386,6 +398,21 @@ const JobEditTab = ({ _job }: any) => {
         modalDescription={
           'Fill the forum and press update button to update the selected job.'
         }
+      />
+
+      <Modal
+          isOpen={isCreateWorkerPlan}
+          handleClose={handleModalClose}
+          content={
+            <AddWorkerPlanToJobForm
+                onSuccess={handleModalClose}
+                jobID={_job?.id}
+            />
+          }
+          modalHeader={'Add Worker Plan'}
+          modalDescription={
+            'Fill the forum and press update button to update the selected job.'
+          }
       />
     </Grid>
   );

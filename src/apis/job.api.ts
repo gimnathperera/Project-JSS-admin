@@ -100,3 +100,16 @@ export const fetchWorkerPlanListApi = async (jobId) => {
     throw error;
   }
 };
+
+export const createWorkerPlanApi = async ({jobId, days}) => {
+  try {
+    days = {
+      "days" : days
+    }
+    const response = await request('POST', `/job/${jobId}/worker-plan`, days);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -26,23 +26,6 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
     ({ workerPlan }: RootStateOrAny) => workerPlan.list
   );
 
-//   const getStatusLabel = (customerStatus: any): JSX.Element => {
-//     const map = {
-//       '1': {
-//         text: 'Active',
-//         color: 'success'
-//       },
-//       '0': {
-//         text: 'Inactive',
-//         color: 'warning'
-//       }
-//     };
-
-//     const { text, color }: any = map[customerStatus];
-
-//     return <Label color={color}>{text}</Label>;
-//   };
-
   const applyPagination = (
     _workerPlans: any,
     page: number,
@@ -58,6 +41,32 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setLimit(parseInt(event.target.value));
   };
+
+  const renderDayOfWeek = (day) => {
+    switch (day) {
+      case 1 : {
+        return 'Sunday';
+      }
+      case 2 : {
+        return 'Monday';
+      }
+      case 3 : {
+        return 'Tuesday';
+      }
+      case 4 : {
+        return 'Wednesday';
+      }
+      case 5 : {
+        return 'Thursday';
+      }
+      case 6 : {
+        return 'Friday';
+      }
+      case 7 : {
+        return 'Saturday';
+      }
+    }
+  };
   const paginatedWorkerPlans = applyPagination(workerPlanList, page, limit);
 
   return (
@@ -67,8 +76,8 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="center">Job Id</TableCell>
-              <TableCell align="center">Worker Id</TableCell>
+              <TableCell align="center">Worker name</TableCell>
+              <TableCell align="center">Worker email</TableCell>
               <TableCell align="center">Day of Week</TableCell>
               <TableCell align="center">Start Time</TableCell>
               <TableCell align="center">End Time</TableCell>
@@ -87,7 +96,7 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
                       gutterBottom
                       noWrap
                     >
-                      {site?.job_id || '-'}
+                      {site?.worker_name || '-'}
                     </Typography>
                   </TableCell>
 
@@ -99,7 +108,7 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
                       gutterBottom
                       noWrap
                     >
-                      {site?.worker_id || '-'}
+                      {site?.worker_email || '-'}
                     </Typography>
                   </TableCell>
 
@@ -111,7 +120,7 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
                       gutterBottom
                       noWrap
                     >
-                      {site?.day_of_week || '-'}
+                      {renderDayOfWeek(site?.day_of_week) || '-'}
                     </Typography>
                   </TableCell>
 
