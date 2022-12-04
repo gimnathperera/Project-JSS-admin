@@ -11,9 +11,9 @@ export const fetchWorkerList = () => ({
   type: FETCH_WORKER_LIST
 });
 
-export const fetchAvailableWorkerList = (payload: any) => ({
+export const fetchAvailableWorkerList = ({jobId: any, plan: boolean = false}) => ({
   type: FETCH_AVAILABLE_WORKER_LIST,
-  payload: payload
+  payload: {jobId:any, plan:boolean}
 });
 
 export const createWorker = (payload: any) => ({

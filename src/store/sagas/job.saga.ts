@@ -186,10 +186,10 @@ export function* createWorkerPlan({
 
     const newWorker = yield call(createWorkerPlanApi, payload);
 
-    if (newWorker.data) {
-      const message = 'Worker assigned successfully';
+    if (newWorker.status == 200) {
+      const message = 'Worker plan assigned successfully';
       yield put({ type: SET_SUCCESS_MESSAGE, payload: message });
-      yield put({ type: FETCH_JOB_WOKER_LIST, payload: payload?.job_id });
+      yield put({ type: FETCH_WORKERPLAN_LIST, payload: payload.jobId });
     }
 
     yield put({ type: END_LOADING });

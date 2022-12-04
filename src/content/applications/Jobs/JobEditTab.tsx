@@ -138,7 +138,7 @@ const JobEditTab = ({ _job }: any) => {
                   variant="contained"
                   onClick={() => setIsCreateWorkerPlan(true)}
                 >
-                  Create Worker Plan
+                  Manage Worker Plan
                 </Button> ) : (
                     <Button
                         size="small"

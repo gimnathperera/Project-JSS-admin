@@ -39,7 +39,7 @@ const AddWorkerToJobForm = ({
     ({ jobWorker }: RootStateOrAny) => jobWorker.list
   );
   useEffect(() => {
-    dispatch(fetchAvailableWorkerList(jobID));
+    dispatch(fetchAvailableWorkerList({jobId: jobID, plan: false}));
   }, []);
 
   const initialFormValues = {

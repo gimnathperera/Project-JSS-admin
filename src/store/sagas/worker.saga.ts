@@ -48,7 +48,7 @@ export function* fetchAvailableWorkerList({
   try {
     yield put({ type: START_LOADING });
 
-    const response = yield call(fetchAvailableWorkerListApi, payload);
+    const response = yield call(fetchAvailableWorkerListApi, {job_id:payload.jobId, plan:payload.plan});
     yield put({ type: SET_AVAILABLE_WORKER_LIST, payload: response.data.data });
 
     yield put({ type: END_LOADING });

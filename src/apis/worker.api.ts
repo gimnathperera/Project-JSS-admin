@@ -9,11 +9,9 @@ export const fetchWorkerListApi = async () => {
     throw error;
   }
 };
-export const fetchAvailableWorkerListApi = async (id: string) => {
+export const fetchAvailableWorkerListApi = async (payload: any) => {
   try {
-    const response = await request('POST', `/get-available-workers`, {
-      job_id: id
-    });
+    const response = await request('POST', `/get-available-workers`, payload);
 
     return response;
   } catch (error) {

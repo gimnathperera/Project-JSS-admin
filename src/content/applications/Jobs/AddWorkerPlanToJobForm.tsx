@@ -39,7 +39,7 @@ const AddWorkerPlanToJobForm = ({
 
     useEffect(() => {
         dispatch(fetchWorkerPlanList(jobID));
-        dispatch(fetchAvailableWorkerList(jobID));
+        dispatch(fetchAvailableWorkerList({jobId : jobID,plan: true }));
     }, []);
 
   const initialFormValues = {
