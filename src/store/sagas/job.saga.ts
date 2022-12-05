@@ -19,7 +19,7 @@ import {
   SET_SUCCESS_MESSAGE,
   FETCH_WORKERPLAN_LIST,
   SET_WORKERPLAN_LIST,
-  ADD_WORKER_PLAN
+  ADD_WORKER_PLAN, DELETE_JOB
 } from '../../constants/common-constant';
 import {
   fetchJobListApi,
@@ -29,7 +29,7 @@ import {
   fetchJobWorkerListApi,
   createJobWorkersApi,
   fetchLatestJobsByWorkerApi,
-  fetchWorkerPlanListApi, createWorkerPlanApi,
+  fetchWorkerPlanListApi, createWorkerPlanApi, deleteJobApi,
 } from '../../apis/job.api';
 
 export function* fetchJobList(): any {
@@ -254,6 +254,33 @@ export function* fetchWorkerPlanList({
   }
 }
 
+export function* deleteJob({
+                                       payload
+                                     }: {
+  type: typeof FETCH_WORKERPLAN_LIST;
+  payload: any;
+}): any {
+  try {
+    yield put({ type: START_LOADING });
+
+    const response = yield call(deleteJobApi, payload);
+    if (response?.status == 200) {
+      yield put({ type: FETCH_JOB_LIST});
+    } else {
+      yield put({
+        type: SET_WORKERPLAN_LIST,
+        payload: []
+      });
+    }
+
+    yield put({ type: END_LOADING });
+  } catch (error) {
+    yield put({ type: END_LOADING });
+    const message = 'Something went wrong. Please try again';
+    yield put({ type: SET_ERROR_MESSAGE, payload: message });
+  }
+}
+
 function* jobSaga() {
   yield takeEvery(FETCH_JOB_LIST, fetchJobList);
   yield takeEvery(FETCH_JOB_BY_ID, fetchJobById);
@@ -264,6 +291,7 @@ function* jobSaga() {
   yield takeEvery(FETCH_LATEST_JOBS_BY_WORKER, fetchLatestJobsByWorker);
   yield takeEvery(FETCH_WORKERPLAN_LIST, fetchWorkerPlanList);
   yield takeEvery(ADD_WORKER_PLAN, createWorkerPlan);
+  yield takeEvery(DELETE_JOB, deleteJob);
 }
 
 export default jobSaga;

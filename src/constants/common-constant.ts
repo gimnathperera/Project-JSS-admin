@@ -55,6 +55,7 @@ export const SET_JOB_LIST = 'SET_JOB_LIST';
 export const FETCH_JOB_BY_ID = 'FETCH_JOB_BY_ID';
 export const SET_CURRENT_JOB = 'SET_CURRENT_JOB';
 export const UPDATE_JOB = 'UPDATE_JOB';
+export const DELETE_JOB = 'DELETE_JOB';
 
 //job-type actions
 export const FETCH_JOBTYPE_LIST = 'FETCH_JOBTYPE_LIST';

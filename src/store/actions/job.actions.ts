@@ -7,7 +7,8 @@ import {
   ADD_JOB_WORKER,
   FETCH_LATEST_JOBS_BY_WORKER,
   FETCH_WORKERPLAN_LIST,
-  ADD_WORKER_PLAN
+  ADD_WORKER_PLAN,
+    DELETE_JOB
 } from '../../constants/common-constant';
 
 export const fetchJobList = () => ({
@@ -21,6 +22,11 @@ export const createJob = (payload: any) => ({
 
 export const updateJob = (payload: any) => ({
   type: UPDATE_JOB,
+  payload: payload
+});
+
+export const deleteJob = (payload: any) => ({
+  type: DELETE_JOB,
   payload: payload
 });
 

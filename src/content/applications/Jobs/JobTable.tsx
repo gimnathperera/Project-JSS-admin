@@ -1,4 +1,5 @@
-import { FC, ChangeEvent, useState } from 'react';
+import {FC, ChangeEvent, useState, useEffect} from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Tooltip,
   Divider,
@@ -24,6 +25,12 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { useSelector, RootStateOrAny } from 'react-redux';
 
 import Label from 'src/components/Label';
@@ -31,6 +38,10 @@ import Modal from 'src/components/Modal';
 import UpdateJobForm from './UpdateJobForm';
 import BulkActions from './BulkActions';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
+import {fetchJobList} from "../../../store/actions/job.actions";
+import {
+  deleteJob
+} from '../../../store/actions/job.actions';
 
 interface RecentOrdersTableProps {
   className?: string;
@@ -43,6 +54,7 @@ interface Filters {
 }
 
 const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -55,9 +67,16 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
   });
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedJob, setSelectedJob] = useState<any>({});
+  const [open, setOpen] = useState<any>(false);
+  const [jobId, setJobId] = useState<number>();
 
   const handleModalClose = () => {
     setModalOpen(false);
+    setOpen(false);
+  };
+
+  const handleJobDelete = () => {
+
   };
 
   const statusOptions = [
@@ -135,6 +154,18 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
     setSelectedJob(job);
     setModalOpen(true);
   };
+
+  const handleDeleteJob = (jobId: number) => {
+    setJobId(jobId);
+    setOpen(true);
+  };
+
+
+  const handleYesClick = () => {
+    dispatch(deleteJob(jobId))
+    setOpen(false);
+  };
+
 
   const filteredJobs = applyFilters(jobs, filters);
 
@@ -317,6 +348,21 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
                         <EditTwoToneIcon />
                       </IconButton>
                     </Tooltip>
+                    <Tooltip title="Delete job" arrow>
+                      <IconButton
+                          sx={{
+                            '&:hover': {
+                              background: theme.colors.primary.lighter
+                            },
+                            color: '#FF607D'
+                          }}
+                          color="inherit"
+                          size="small"
+                          onClick={() => handleDeleteJob(job.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );
@@ -346,6 +392,27 @@ const JobTable: FC<RecentOrdersTableProps> = ({ jobs }) => {
           'Fill the forum and press submit button to update job.'
         }
       />
+      <Dialog
+          open={open}
+          onClose={handleModalClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this job?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Deleting this job effect all the shift appointed in to this and worker plans will be removed.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleModalClose}>CANCEL</Button>
+          <Button onClick={handleYesClick} autoFocus>
+            YES
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };

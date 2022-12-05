@@ -101,6 +101,19 @@ export const fetchWorkerPlanListApi = async (jobId) => {
   }
 };
 
+export const deleteJobApi = async (jobId) => {
+  try {
+    const response = await axios({
+      method: 'DELETE',
+      url: `${BASE_URL}/job/${jobId}`
+    });
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createWorkerPlanApi = async ({jobId, days}) => {
   try {
     days = {
