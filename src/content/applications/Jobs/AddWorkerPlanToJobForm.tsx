@@ -58,31 +58,31 @@ const AddWorkerPlanToJobForm = ({
 
   const daysOfWeek = [
       {
-          'id' : 1,
+          'id' : 7,
           'name' : 'Sunday'
       },
       {
-          'id' : 2,
+          'id' : 1,
           'name' : 'Monday'
       },
       {
-          'id' : 3,
+          'id' : 2,
           'name' : 'Tuesday'
       },
       {
-          'id' : 4,
+          'id' : 3,
           'name' : 'Wednesday'
       },
       {
-          'id' : 5,
+          'id' : 4,
           'name' : 'Thursday'
       },
       {
-          'id' : 6,
+          'id' : 5,
           'name' : 'Friday'
       },
       {
-          'id' : 7,
+          'id' : 6,
           'name' : 'Saturday'
       }
   ];

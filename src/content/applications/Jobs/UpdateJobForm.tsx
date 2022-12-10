@@ -230,6 +230,7 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 fullWidth
                 helperText={touched.start_date && errors.start_date}
                 type="date"
+                disabled={(new Date(values.start_date)) <= (new Date())}
                 label="Start Date"
                 margin="normal"
                 name="start_date"
@@ -246,6 +247,7 @@ const UpdateJobForm = ({ onSuccess, formData }: UpdateJobFormProps) => {
                 fullWidth
                 helperText={touched.end_date && errors.end_date}
                 type="date"
+                disabled={(new Date(values.end_date)) <= (new Date())}
                 label="End Date"
                 margin="normal"
                 name="end_date"

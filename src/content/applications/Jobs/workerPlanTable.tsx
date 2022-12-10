@@ -44,25 +44,25 @@ const WorkerPlanTable: FC<RecentOrdersTableProps> = () => {
 
   const renderDayOfWeek = (day) => {
     switch (day) {
-      case 1 : {
+      case 7 : {
         return 'Sunday';
       }
-      case 2 : {
+      case 1 : {
         return 'Monday';
       }
-      case 3 : {
+      case 2 : {
         return 'Tuesday';
       }
-      case 4 : {
+      case 3 : {
         return 'Wednesday';
       }
-      case 5 : {
+      case 4 : {
         return 'Thursday';
       }
-      case 6 : {
+      case 5 : {
         return 'Friday';
       }
-      case 7 : {
+      case 6 : {
         return 'Saturday';
       }
     }
